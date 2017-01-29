@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.CustomBow;
 import com.chrismin13.moreminecraft.api.CustomItem;
 import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
 
@@ -69,13 +68,6 @@ public class CustomItemUtils {
 
 	public static boolean isCustomItem(ItemStack item) {
 		if (item.getType() != Material.AIR && getIdName(item) != null)
-			return true;
-		return false;
-	}
-
-	// TODO: Add for the rest of the types as well
-	public static boolean isCustomBow(ItemStack item) {
-		if (isCustomItem(item) && getCustomItem(item) instanceof CustomBow)
 			return true;
 		return false;
 	}

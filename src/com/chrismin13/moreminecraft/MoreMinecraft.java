@@ -3,6 +3,7 @@ package com.chrismin13.moreminecraft;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockBreak;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockIgnite;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemFish;
@@ -19,6 +20,7 @@ import com.chrismin13.moreminecraft.listeners.vanilla.CraftingTableEvent;
 import com.chrismin13.moreminecraft.listeners.vanilla.EnchantmentListener;
 import com.chrismin13.moreminecraft.listeners.vanilla.EntityDamageByEntity;
 import com.chrismin13.moreminecraft.listeners.vanilla.EntityShootBow;
+import com.chrismin13.moreminecraft.listeners.vanilla.EntityToggleGlide;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerFish;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerInteract;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerItemDamage;
@@ -26,7 +28,12 @@ import com.chrismin13.moreminecraft.listeners.vanilla.PlayerShearEntity;
 
 public class MoreMinecraft extends JavaPlugin {
 
+	private static JavaPlugin instance;
+	
 	public void onEnable() {
+		
+		instance = this;
+		
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new EnchantmentListener(), this);
 		pm.registerEvents(new AnvilEvent(), this);
@@ -48,10 +55,16 @@ public class MoreMinecraft extends JavaPlugin {
 		pm.registerEvents(new EntityShootBow(), this);
 		pm.registerEvents(new EntityShootCustomBow(), this);
 		pm.registerEvents(new CustomShieldEntityDamageByEntity(), this);
+		pm.registerEvents(new EntityToggleGlide(), this);
+		pm.registerEvents(new CustomElytraPlayerToggleGlide(), this);
 	}
 	
 	public void onDisable() {
 		
+	}
+	
+	public static JavaPlugin getInstance() {
+		return instance;
 	}
 	
 }
