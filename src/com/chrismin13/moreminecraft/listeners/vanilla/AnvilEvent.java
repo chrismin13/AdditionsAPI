@@ -15,15 +15,15 @@ import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class AnvilEvent extends CustomItemUtils implements Listener {
+public class AnvilEvent implements Listener {
 	@EventHandler
 	public void onItemRename(PrepareAnvilEvent event) {
 		if (event.getResult() == null)
 			return;
 		ItemStack resultItem = event.getResult();
-		if (!isCustomItem(resultItem))
+		if (!CustomItemUtils.isCustomItem(resultItem))
 			return;
-		CustomItem cItem = getCustomItem(resultItem);
+		CustomItem cItem = CustomItemUtils.getCustomItem(resultItem);
 		AnvilInventory inv = event.getInventory();
 		ItemMeta resultMeta = resultItem.getItemMeta();
 

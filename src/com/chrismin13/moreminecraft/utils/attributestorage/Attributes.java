@@ -25,8 +25,10 @@ import java.util.concurrent.ConcurrentMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import com.chrismin13.moreminecraft.utils.EquipmentSlotUtils;
 import com.chrismin13.moreminecraft.utils.attributestorage.NbtFactory.NbtCompound;
 import com.chrismin13.moreminecraft.utils.attributestorage.NbtFactory.NbtList;
 import com.google.common.base.Function;
@@ -59,29 +61,6 @@ public class Attributes {
 		}
 	}
 
-	public enum Slot {
-		MAINHAND, OFFHAND, HEAD, CHEST, LEGS, FEET;
-
-		public String toString() {
-			switch (this) {
-			case CHEST:
-				return "chest";
-			case FEET:
-				return "feet";
-			case HEAD:
-				return "head";
-			case LEGS:
-				return "legs";
-			case MAINHAND:
-				return "mainhand";
-			case OFFHAND:
-				return "offhand";
-			default:
-				return null;
-			}
-		}
-	}
-
 	public static class AttributeType {
 		private static ConcurrentMap<String, AttributeType> LOOKUP = Maps.newConcurrentMap();
 		public static final AttributeType GENERIC_MAX_HEALTH = new AttributeType("generic.maxHealth").register();
@@ -94,6 +73,9 @@ public class Attributes {
 				"generic.knockbackResistance").register();
 		public static final AttributeType ARMOR = new AttributeType("generic.armor").register();
 		public static final AttributeType ARMOR_TOUGHNESS = new AttributeType("generic.armorToughness").register();
+		public static final AttributeType GENERIC_LUCK = new AttributeType("generic.luck").register();
+		public static final AttributeType HORSE_JUMP_STRENGTH = new AttributeType("horse.jumpStrength").register();
+		public static final AttributeType ZOMBIE_SPAWN_REINFORCEMENTS = new AttributeType("zombie.spawnReinforcements").register();
 
 		private final String minecraftId;
 
@@ -216,9 +198,9 @@ public class Attributes {
 			return data.getString("Slot", null);
 		}
 
-		public void setSlot(@Nonnull Slot slot) {
+		public void setSlot(@Nonnull EquipmentSlot slot) {
 			Preconditions.checkNotNull(slot, "type cannot be NULL.");
-			data.put("Slot", slot.toString());
+			data.put("Slot", EquipmentSlotUtils.toAttributeString(slot));
 		}
 
 		/**
@@ -238,7 +220,7 @@ public class Attributes {
 			private AttributeType type;
 			private String name;
 			private UUID uuid;
-			private Slot slot;
+			private EquipmentSlot slot;
 
 			private Builder() {
 				// Don't make this accessible
@@ -269,7 +251,7 @@ public class Attributes {
 				return this;
 			}
 
-			public Builder slot(Slot slot) {
+			public Builder slot(EquipmentSlot slot) {
 				this.slot = slot;
 				return this;
 			}

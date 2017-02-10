@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import com.chrismin13.moreminecraft.api.CustomItem;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
-public class CraftingTableEvent extends CustomItemUtils implements Listener {
+public class CraftingTableEvent implements Listener {
 
 	@EventHandler
 	public void prepareCrafting(PrepareItemCraftEvent event) {
@@ -20,8 +20,8 @@ public class CraftingTableEvent extends CustomItemUtils implements Listener {
 		 */
 		if (event.isRepair()) {
 			for (ItemStack item : matrix) {
-				if (isCustomItem(item)) {
-					CustomItem cItem = getCustomItem(item);
+				if (CustomItemUtils.isCustomItem(item)) {
+					CustomItem cItem = CustomItemUtils.getCustomItem(item);
 					if (!cItem.isCombinableInCrafting()) {
 						event.getInventory().setResult(new ItemStack(Material.AIR));
 						break;

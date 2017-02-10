@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.chrismin13.moreminecraft.api.CustomItem;
 import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 
 public class ElytraDurabilityTask extends BukkitRunnable {
 	
@@ -30,7 +31,7 @@ public class ElytraDurabilityTask extends BukkitRunnable {
         if (player.isGliding()) {
         	Bukkit.getPluginManager().callEvent(new PlayerCustomItemDamageEvent(player, elytra, 1, cItem));
         } else {
-        	this.cancel();
+        	CustomElytraPlayerToggleGlide.cancelPlayerGlideDamage(player.getUniqueId());
         }
     }
 

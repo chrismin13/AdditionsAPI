@@ -9,17 +9,19 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import com.chrismin13.moreminecraft.api.recipes.CustomRecipes;
 import com.chrismin13.moreminecraft.enums.ItemType;
+import com.chrismin13.moreminecraft.utils.MaterialUtils;
 import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.Attribute;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.AttributeType;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.Operation;
-import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.Slot;
 
 public class CustomItem {
 
@@ -42,9 +44,10 @@ public class CustomItem {
 	private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
 	private List<Enchantment> forbiddenEnchantments = new ArrayList<Enchantment>();
 
-	// Crafting
+	// Recipes
 	private boolean canBeCombinedInCrafting = false;
-
+	private CustomRecipes recipes = new CustomRecipes();
+	
 	// Attributes
 	private List<Attribute> attributes = new ArrayList<Attribute>();
 
@@ -257,7 +260,7 @@ public class CustomItem {
 		this.canBeEnchanted = canBeEnchanted;
 	}
 
-	// === CRAFTING TABLE === //
+	// === RECIPES === //
 
 	/**
 	 * Get if the Item can be Combined in a Crafting Table
@@ -272,15 +275,23 @@ public class CustomItem {
 	public void setCombinedInCrafting(boolean canBeCombined) {
 		canBeCombinedInCrafting = canBeCombined;
 	}
+	
+	public CustomRecipes getCustomRecipes() {
+		return recipes;
+	}
+	
+	public void setCustomRecipes(CustomRecipes recipes) {
+		this.recipes = recipes; 
+	}
 
 	// === ATTRIBUTES === //
 
-	public void addAttribute(AttributeType type, Double amount, Slot slot, Operation operation) {
+	public void addAttribute(AttributeType type, Double amount, EquipmentSlot slot, Operation operation) {
 		addAttribute(type, amount, slot, operation, attributeStorageUUID);
 	}
 
-	public void addAttribute(AttributeType type, Double amount, Slot slot, Operation operation, UUID uuid) {
-		if (slot == Slot.HEAD || slot == Slot.CHEST || slot == Slot.FEET || slot == Slot.LEGS) {
+	public void addAttribute(AttributeType type, Double amount, EquipmentSlot slot, Operation operation, UUID uuid) {
+		if (slot == EquipmentSlot.HEAD || slot == EquipmentSlot.CHEST || slot == EquipmentSlot.FEET || slot == EquipmentSlot.LEGS) {
 			attributes.add(Attribute.newBuilder().name("TBD").amount(amount).uuid(UUID.randomUUID())
 					.operation(operation).type(type).slot(slot).build());
 		} else {
@@ -394,9 +405,9 @@ public class CustomItem {
 			ItemStack fromMaterial = new ItemStack(this.getMaterial());
 
 			if (!hasSpeed)
-				attackSpeed = AttributeStorage.getBaseSpeed(fromMaterial);
+				attackSpeed = MaterialUtils.getBaseSpeed(fromMaterial);
 			if (!hasDamage)
-				attackDamage = AttributeStorage.getBaseDamage(fromMaterial);
+				attackDamage = MaterialUtils.getBaseDamage(fromMaterial);
 
 			loreToAdd.add("");
 			loreToAdd.add(ChatColor.GRAY + "When in main hand:");
@@ -471,9 +482,9 @@ public class CustomItem {
 			CustomTool cTool = ((CustomTool) this);
 			
 			if (cTool.getAttackSpeed() != null)
-				addAttribute(AttributeType.GENERIC_ATTACK_SPEED, cTool.getAttackSpeed() - 4, Slot.MAINHAND, Operation.ADD_NUMBER);
+				addAttribute(AttributeType.GENERIC_ATTACK_SPEED, cTool.getAttackSpeed() - 4, EquipmentSlot.HAND, Operation.ADD_NUMBER);
 			if (cTool.getAttackDamage() != null)
-				addAttribute(AttributeType.GENERIC_ATTACK_DAMAGE, cTool.getAttackDamage() - 1, Slot.MAINHAND, Operation.ADD_NUMBER);
+				addAttribute(AttributeType.GENERIC_ATTACK_DAMAGE, cTool.getAttackDamage() - 1, EquipmentSlot.HAND, Operation.ADD_NUMBER);
 			
 			if (cTool.hideAttributes()) 
 				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

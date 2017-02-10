@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.chrismin13.moreminecraft.api.CustomItem;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
-public class EnchantmentListener extends CustomItemUtils implements Listener {
+public class EnchantmentListener implements Listener {
 
 	@EventHandler
 	public void onItemEnchant(EnchantItemEvent event) {
@@ -26,10 +26,10 @@ public class EnchantmentListener extends CustomItemUtils implements Listener {
 		Map<Enchantment, Integer> eToAdd = event.getEnchantsToAdd();
 		Set<Enchantment> eSet = eToAdd.keySet();
 		List<Enchantment> e = new ArrayList<Enchantment>(eSet);
-		if (!isCustomItem(item)) {
+		if (!CustomItemUtils.isCustomItem(item)) {
 			return;
 		}
-		CustomItem cItem = getCustomItem(item);
+		CustomItem cItem = CustomItemUtils.getCustomItem(item);
 		/*
 		 * Non Enchantable Items
 		 */

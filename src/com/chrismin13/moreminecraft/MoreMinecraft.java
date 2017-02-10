@@ -3,6 +3,8 @@ package com.chrismin13.moreminecraft;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
+import com.chrismin13.moreminecraft.files.ConfigFile;
 import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockBreak;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockIgnite;
@@ -25,14 +27,18 @@ import com.chrismin13.moreminecraft.listeners.vanilla.PlayerFish;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerInteract;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerItemDamage;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerShearEntity;
+import com.chrismin13.moreminecraft.utils.CustomItemUtils;
+import com.chrismin13.moreminecraft.utils.Debug;
 
 public class MoreMinecraft extends JavaPlugin {
 
 	private static JavaPlugin instance;
-	
+
 	public void onEnable() {
-		
+
 		instance = this;
+
+		ConfigFile.getInstance().setup();
 		
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new EnchantmentListener(), this);
@@ -57,14 +63,24 @@ public class MoreMinecraft extends JavaPlugin {
 		pm.registerEvents(new CustomShieldEntityDamageByEntity(), this);
 		pm.registerEvents(new EntityToggleGlide(), this);
 		pm.registerEvents(new CustomElytraPlayerToggleGlide(), this);
-	}
-	
-	public void onDisable() {
+		pm.registerEvents(new CustomItemUtils(), this);
 		
+		// TODO: Find a better way of doing this.
+		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+			public void run() {
+				Debug.say("Starting MoreMinecraftAPI Intialization");
+				getServer().getPluginManager().callEvent(new MoreMinecraftAPIInitializationEvent());
+				Debug.say("Finished Initialization.");
+				Debug.saySuper("aaaaand chat spam. :P");
+			}
+		}, 50L);
 	}
-	
+
+	public void onDisable() {
+
+	}
+
 	public static JavaPlugin getInstance() {
 		return instance;
 	}
-	
 }
