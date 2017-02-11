@@ -3,7 +3,6 @@ package com.chrismin13.moreminecraft.files;
 import java.io.File;
 import java.io.IOException;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +10,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.moreminecraft.MoreMinecraft;
+import com.chrismin13.moreminecraft.utils.Debug;
 
 public class ConfigFile {
 
@@ -55,7 +55,8 @@ public class ConfigFile {
 		try {
 			config.save(cfile);
 		} catch (IOException e) {
-			Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save config.yml!");
+			Debug.sayError(ChatColor.RED + "Could not save config.yml!");
+			e.printStackTrace();
 		}
 	}
 

@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.ConfigFile;
+import com.chrismin13.moreminecraft.files.DataFile;
 import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockBreak;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockIgnite;
@@ -39,7 +40,8 @@ public class MoreMinecraft extends JavaPlugin {
 		instance = this;
 
 		ConfigFile.getInstance().setup();
-		
+		DataFile.getInstance().setup();
+
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new EnchantmentListener(), this);
 		pm.registerEvents(new AnvilEvent(), this);
@@ -64,20 +66,21 @@ public class MoreMinecraft extends JavaPlugin {
 		pm.registerEvents(new EntityToggleGlide(), this);
 		pm.registerEvents(new CustomElytraPlayerToggleGlide(), this);
 		pm.registerEvents(new CustomItemUtils(), this);
-		
+
 		// TODO: Find a better way of doing this.
 		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			public void run() {
 				Debug.say("Starting MoreMinecraftAPI Intialization");
 				getServer().getPluginManager().callEvent(new MoreMinecraftAPIInitializationEvent());
 				Debug.say("Finished Initialization.");
-				Debug.saySuper("aaaaand chat spam. :P");
+				Debug.saySuper("aaaaand chat spam too. :P");
 			}
 		}, 50L);
 	}
 
 	public void onDisable() {
-
+		ConfigFile.getInstance().saveConfig();
+		DataFile.getInstance().saveData();
 	}
 
 	public static JavaPlugin getInstance() {
