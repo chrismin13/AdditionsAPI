@@ -76,9 +76,6 @@ public class MoreMinecraft extends JavaPlugin {
 		}, 0L);
 	}
 
-	public void onDisable() {
-	}
-
 	public static JavaPlugin getInstance() {
 		return instance;
 	}
