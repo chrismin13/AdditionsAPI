@@ -25,9 +25,12 @@ import org.bukkit.inventory.ShapedRecipe;
 
 import com.chrismin13.moreminecraft.MoreMinecraft;
 import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.api.StorageCustomItem;
 import com.chrismin13.moreminecraft.api.recipes.CustomRecipes;
 import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
+import com.chrismin13.moreminecraft.files.DataFile;
 import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
 
 public class CustomItemUtils implements Listener {
@@ -35,7 +38,7 @@ public class CustomItemUtils implements Listener {
 	// === VARIABLES === //
 
 	private static HashMap<String, CustomItem> customItems = new HashMap<String, CustomItem>();
-	private static HashMap<String, ItemStack> customItemStacks = new HashMap<String, ItemStack>();
+	private static HashMap<String, CustomItemStack> customItemStacks = new HashMap<String, CustomItemStack>();
 
 	private static File dataFolder = MoreMinecraft.getInstance().getDataFolder();
 	private static String path = dataFolder.getPath().replace("\\", "/");
@@ -49,18 +52,30 @@ public class CustomItemUtils implements Listener {
 		Debug.say("Recieved in total " + Integer.toString(cItems.length) + " Custom Items!");
 		for (CustomItem cItem : cItems) {
 			Debug.saySuper("Currently Processing: " + cItem.getCustomItemIdName());
+			// Adding to data.yml and obtaining values
+			DataFile dataFile = DataFile.getInstance();
+			String texture = "default";
+			short durability = 0;
+			if (cItem.hasCustomTexture())
+				if (dataFile.getCustomItem(cItem.getCustomItemIdName(), texture) == null)
+					durability = dataFile.getFreeDurability(cItem.getMaterial());
+				else
+					durability = dataFile.getCustomItem(cItem.getCustomItemIdName(), texture).getDurability();
 			// CustomItems and ItemStacks
-			ItemStack item = cItem.getItemStack();
+			CustomItemStack cStack = new CustomItemStack(cItem, durability, texture);
+			ItemStack item = cStack.getItemStack();
+			Debug.saySuper("cStack Display Name: " + cStack.getCustomItem().getCustomItemIdName());
+			Debug.saySuper("cStack Durability: " + item.getDurability());
 			String idName = cItem.getCustomItemIdName();
 			customItems.put(idName, cItem);
-			customItemStacks.put(idName, item);
+			customItemStacks.put(idName, cStack);
+			dataFile.addStorageCustomItem(new StorageCustomItem(cItem.getMaterial(), durability, idName, texture));
 			// Crafting Recipes
 			CustomRecipes recipes = cItem.getCustomRecipes();
 			CustomShapedRecipe[] shapedRecipes = recipes.getShapedRecipes();
 			for (CustomShapedRecipe shapedRecipe : shapedRecipes) {
 				Debug.saySuper("Adding Recipe.");
 				ShapedRecipe recipe = new ShapedRecipe(item);
-
 				recipe.shape(shapedRecipe.getShape());
 				Map<Character, ItemStack> ingredients = shapedRecipe.getIngredientMap();
 				for (char character : ingredients.keySet()) {
@@ -71,10 +86,12 @@ public class CustomItemUtils implements Listener {
 				Bukkit.addRecipe(recipe);
 			}
 		}
+		DataFile.getInstance().saveData();
 	}
-/*
- * MUST REMOVE
- */
+
+	/*
+	 * MUST REMOVE
+	 */
 	public static void main() throws IOException {
 		Map<String, String> env = new HashMap<>();
 		env.put("create", "true");
@@ -104,6 +121,7 @@ public class CustomItemUtils implements Listener {
 	}
 
 	public static CustomItem getCustomItem(ItemStack item) {
+		// TODO: Clone
 		return customItems.get(getIdName(item));
 	}
 
@@ -111,11 +129,11 @@ public class CustomItemUtils implements Listener {
 		return customItems.get(idName);
 	}
 
-	public static ItemStack getCustomItemStack(ItemStack item) {
+	public static CustomItemStack getCustomItemStack(ItemStack item) {
 		return customItemStacks.get(getIdName(item));
 	}
 
-	public static ItemStack getCustomItemStack(String idName) {
+	public static CustomItemStack getCustomItemStack(String idName) {
 		return customItemStacks.get(idName);
 	}
 

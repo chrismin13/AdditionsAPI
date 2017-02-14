@@ -3,14 +3,14 @@ package com.chrismin13.moreminecraft.events;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
 
-public class CustomItemPlayerInteractEvent extends CustomItemEvent implements Cancellable {
+public class CustomItemPlayerInteractEvent extends CustomItemStackEvent implements Cancellable {
 
 	private PlayerInteractEvent playerInteractEvent;
 	
-	public CustomItemPlayerInteractEvent(PlayerInteractEvent event, CustomItem cItem) {
-		super(cItem);
+	public CustomItemPlayerInteractEvent(PlayerInteractEvent event, CustomItemStack cStack) {
+		super(cStack);
 		this.playerInteractEvent = event;
 	}
 

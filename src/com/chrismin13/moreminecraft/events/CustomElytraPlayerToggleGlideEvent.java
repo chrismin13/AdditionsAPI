@@ -4,14 +4,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
 
-public class CustomElytraPlayerToggleGlideEvent extends CustomItemEvent implements Cancellable {
+public class CustomElytraPlayerToggleGlideEvent extends CustomItemStackEvent implements Cancellable {
 
 	private EntityToggleGlideEvent entityToggleGlideEvent;
 	
-	public CustomElytraPlayerToggleGlideEvent(EntityToggleGlideEvent event, CustomItem cItem) {
-		super(cItem);
+	public CustomElytraPlayerToggleGlideEvent(EntityToggleGlideEvent event, CustomItemStack cStack) {
+		super(cStack);
 		this.entityToggleGlideEvent = event;
 	}
 	

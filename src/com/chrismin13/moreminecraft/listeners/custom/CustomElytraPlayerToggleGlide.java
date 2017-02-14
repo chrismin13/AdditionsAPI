@@ -26,7 +26,7 @@ public class CustomElytraPlayerToggleGlide implements Listener {
 		UUID playerUUID = player.getUniqueId();
 		if (cItem.getItemType() == ItemType.ELYTRA) {
 			cancelPlayerGlideDamage(playerUUID);
-			ElytraDurabilityTask task = new ElytraDurabilityTask(player, player.getInventory().getChestplate(), cItem);
+			ElytraDurabilityTask task = new ElytraDurabilityTask(player, customEvent.getCustomItemStack().getItemStack(), cItem);
 			task.runTaskTimer(MoreMinecraft.getInstance(), 0L, 20L);
 			playersGliding.put(playerUUID, task.getTaskId());
 		}

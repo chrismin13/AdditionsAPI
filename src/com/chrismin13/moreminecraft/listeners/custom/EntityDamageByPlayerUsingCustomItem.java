@@ -22,7 +22,7 @@ public class EntityDamageByPlayerUsingCustomItem implements Listener {
 		Player player = event.getPlayer();
 		CustomItem cItem = event.getCustomItem();
 		//ItemType type = cItem.getItemType();
-		ItemStack item = player.getInventory().getItemInMainHand();
+		ItemStack item = event.getCustomItemStack().getItemStack();
 		GameMode gm = player.getGameMode();
 		if ((gm == GameMode.SURVIVAL || gm == GameMode.ADVENTURE) && cItem.hasFakeDurability()) {
 			PlayerCustomItemDamageEvent damageEvent = new PlayerCustomItemDamageEvent(player, item, 0, cItem);

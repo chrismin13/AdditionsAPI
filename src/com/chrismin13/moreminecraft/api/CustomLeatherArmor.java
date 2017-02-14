@@ -1,9 +1,6 @@
 package com.chrismin13.moreminecraft.api;
 
 import org.bukkit.Color;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-
 import com.chrismin13.moreminecraft.enums.ArmorType;
 
 public class CustomLeatherArmor extends CustomArmor {
@@ -25,15 +22,5 @@ public class CustomLeatherArmor extends CustomArmor {
 
 	public Color getColor() {
 		return color;
-	}
-
-	public ItemStack getItemStack() {
-		ItemStack item = super.getItemStack();
-		LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-
-		meta.setColor(color);
-
-		item.setItemMeta(meta);
-		return item;
 	}
 }

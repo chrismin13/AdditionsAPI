@@ -2,14 +2,14 @@ package com.chrismin13.moreminecraft.events;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.BlockBreakEvent;
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
 
-public final class CustomItemBlockBreakEvent extends CustomItemEvent implements Cancellable {
+public final class CustomItemBlockBreakEvent extends CustomItemStackEvent implements Cancellable {
 
 	private BlockBreakEvent blockBreakEvent;
 
-	public CustomItemBlockBreakEvent(BlockBreakEvent event, CustomItem cItem) {
-		super(cItem);
+	public CustomItemBlockBreakEvent(BlockBreakEvent event, CustomItemStack cStack) {
+		super(cStack);
 		this.blockBreakEvent = event;
 	}
 

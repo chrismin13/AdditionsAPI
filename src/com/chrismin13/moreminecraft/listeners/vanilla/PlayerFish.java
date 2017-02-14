@@ -7,6 +7,8 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.events.CustomItemFishEvent;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
@@ -14,15 +16,15 @@ public class PlayerFish implements Listener {
 
 	@EventHandler
 	public void onPlayerFishEvent(PlayerFishEvent event) {
-		PlayerInventory inv = event.getPlayer().getInventory(); 
+		PlayerInventory inv = event.getPlayer().getInventory();
 		ItemStack item = inv.getItemInMainHand();
-		if (!CustomItemUtils.isCustomItem(item)) {
+		if (!CustomItemUtils.isCustomItem(item) || CustomItemUtils.getCustomItem(item).getItemType() != ItemType.FISHING_ROD) {
 			item = inv.getItemInOffHand();
-			if (!CustomItemUtils.isCustomItem(item))
+			if (!CustomItemUtils.isCustomItem(item) || CustomItemUtils.getCustomItem(item).getItemType() != ItemType.FISHING_ROD)
 				return;
 		}
 		Bukkit.getServer().getPluginManager()
-				.callEvent(new CustomItemFishEvent(event, CustomItemUtils.getCustomItem(item)));
+				.callEvent(new CustomItemFishEvent(event, new CustomItemStack(item)));
 	}
 
 }

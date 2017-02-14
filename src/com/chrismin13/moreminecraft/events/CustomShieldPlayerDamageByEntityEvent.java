@@ -3,14 +3,14 @@ package com.chrismin13.moreminecraft.events;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
 
-public class CustomShieldPlayerDamageByEntityEvent extends CustomItemEvent implements Cancellable {
+public class CustomShieldPlayerDamageByEntityEvent extends CustomItemStackEvent implements Cancellable {
 
 	private EntityDamageByEntityEvent entityDamageByEntityEvent;
 	
-	public CustomShieldPlayerDamageByEntityEvent(EntityDamageByEntityEvent event, CustomItem cItem) {
-		super(cItem);
+	public CustomShieldPlayerDamageByEntityEvent(EntityDamageByEntityEvent event, CustomItemStack cStack) {
+		super(cStack);
 		this.entityDamageByEntityEvent = event;
 	}
 	

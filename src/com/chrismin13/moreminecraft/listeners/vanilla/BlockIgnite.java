@@ -7,6 +7,8 @@ import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.events.CustomItemBlockIgniteEvent;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
@@ -18,14 +20,13 @@ public class BlockIgnite implements Listener {
 			return;
 		PlayerInventory inv = event.getPlayer().getInventory(); 
 		ItemStack item = inv.getItemInMainHand();
-		if (!CustomItemUtils.isCustomItem(item)) {
+		if (!CustomItemUtils.isCustomItem(item) || CustomItemUtils.getCustomItem(item).getItemType() != ItemType.FLINT_AND_STEEL) {
 			item = inv.getItemInOffHand();
-			if (!CustomItemUtils.isCustomItem(item))
+			if (!CustomItemUtils.isCustomItem(item) || CustomItemUtils.getCustomItem(item).getItemType() != ItemType.FLINT_AND_STEEL)
 				return;
 		}
 		CustomItemBlockIgniteEvent customEvent = new CustomItemBlockIgniteEvent(event,
-				CustomItemUtils.getCustomItem(item));
+				new CustomItemStack(item));
 		Bukkit.getServer().getPluginManager().callEvent(customEvent);
-	}
-	
+	}	
 }

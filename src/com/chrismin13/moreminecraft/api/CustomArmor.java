@@ -17,6 +17,7 @@ public class CustomArmor extends CustomItem {
 	public CustomArmor(Material material, int amount, short durability, String customItemIdName, ArmorType armorType) {
 		super(material, amount, durability, customItemIdName, ItemType.ARMOR);
 		this.armorType = armorType;
+		super.setCustomTexture(false);
 	}
 	
 	// === CONFIGURING THE ARMOR === //

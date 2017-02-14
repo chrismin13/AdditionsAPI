@@ -3,14 +3,14 @@ package com.chrismin13.moreminecraft.events;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.entity.EntityShootBowEvent;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
 
-public class EntityShootCustomBowEvent extends CustomItemEvent implements Cancellable {
+public class EntityShootCustomBowEvent extends CustomItemStackEvent implements Cancellable {
 	
 	private EntityShootBowEvent playerFishEvent;
 	
-	public EntityShootCustomBowEvent(EntityShootBowEvent event, CustomItem cItem) {
-		super(cItem);
+	public EntityShootCustomBowEvent(EntityShootBowEvent event, CustomItemStack cStack) {
+		super(cStack);
 		this.playerFishEvent = event;
 	}
 	

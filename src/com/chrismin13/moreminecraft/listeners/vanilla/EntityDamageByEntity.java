@@ -1,7 +1,6 @@
 package com.chrismin13.moreminecraft.listeners.vanilla;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,7 +11,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.events.CustomShieldPlayerDamageByEntityEvent;
 import com.chrismin13.moreminecraft.events.EntityDamageByPlayerUsingCustomItemEvent;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
@@ -28,9 +28,8 @@ public class EntityDamageByEntity implements Listener {
 			Player player = (Player) damager;
 			ItemStack item = player.getInventory().getItemInMainHand();
 			if (CustomItemUtils.isCustomItem(item)) {
-				CustomItem cItem = CustomItemUtils.getCustomItem(item);
 				Bukkit.getServer().getPluginManager()
-						.callEvent(new EntityDamageByPlayerUsingCustomItemEvent(event, cItem));
+						.callEvent(new EntityDamageByPlayerUsingCustomItemEvent(event, new CustomItemStack(item)));
 			}
 		}
 		Entity damagee = event.getEntity();
@@ -38,17 +37,17 @@ public class EntityDamageByEntity implements Listener {
 		if (damageeType == EntityType.PLAYER) {
 			Player player = (Player) damagee;
 			PlayerInventory inv = player.getInventory();
-			ItemStack item;
-			if (inv.getItemInMainHand().getType() == Material.SHIELD) {
-				item = inv.getItemInMainHand();
-			} else if (inv.getItemInOffHand().getType() == Material.SHIELD) {
+			ItemStack item = inv.getItemInMainHand();
+			if (!CustomItemUtils.isCustomItem(item)
+					|| CustomItemUtils.getCustomItem(item).getItemType() != ItemType.SHIELD) {
 				item = inv.getItemInOffHand();
-			} else {
-				return;
+				if (!CustomItemUtils.isCustomItem(item)
+						|| CustomItemUtils.getCustomItem(item).getItemType() != ItemType.SHIELD)
+					return;
 			}
 			if (player.isBlocking() && CustomItemUtils.isCustomItem(item)) {
-				CustomItem cItem = CustomItemUtils.getCustomItem(item);
-				Bukkit.getServer().getPluginManager().callEvent(new CustomShieldPlayerDamageByEntityEvent(event, cItem));
+				Bukkit.getServer().getPluginManager()
+						.callEvent(new CustomShieldPlayerDamageByEntityEvent(event, new CustomItemStack(item)));
 			}
 		}
 	}

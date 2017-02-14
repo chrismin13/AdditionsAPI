@@ -12,18 +12,15 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-
 import com.chrismin13.moreminecraft.api.recipes.CustomRecipes;
 import com.chrismin13.moreminecraft.enums.ItemType;
+import com.chrismin13.moreminecraft.utils.Debug;
 import com.chrismin13.moreminecraft.utils.MaterialUtils;
-import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.Attribute;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.AttributeType;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.Operation;
 
-public class CustomItem {
+public class CustomItem implements Cloneable {
 
 	// Required variables
 	private Material material = Material.AIR;
@@ -47,10 +44,11 @@ public class CustomItem {
 	// Recipes
 	private boolean canBeCombinedInCrafting = false;
 	private CustomRecipes recipes = new CustomRecipes();
-	
+
 	// Attributes
 	private List<Attribute> attributes = new ArrayList<Attribute>();
-
+	private final UUID attributeStorageUUID = UUID.fromString("8c16d72b-d950-410c-b7d1-eeed86e734c7");
+	
 	// Lore
 	private List<String> lore = new ArrayList<String>();
 
@@ -58,10 +56,11 @@ public class CustomItem {
 	private boolean addFakeDurability = false;
 	private int fakeDurability = 0;
 
+	// ItemFlags
 	private List<ItemFlag> itemFlags = new ArrayList<ItemFlag>();
-
-	// Variables requiring an ItemStack and specify the CustomItem
-	private UUID attributeStorageUUID = UUID.fromString("8c16d72b-d950-410c-b7d1-eeed86e734c7");
+	
+	// Textures
+	private boolean customTexture = true;
 
 	/**
 	 * Create a new Custom Item from the specified Material, Amount, Durability
@@ -275,13 +274,13 @@ public class CustomItem {
 	public void setCombinedInCrafting(boolean canBeCombined) {
 		canBeCombinedInCrafting = canBeCombined;
 	}
-	
+
 	public CustomRecipes getCustomRecipes() {
 		return recipes;
 	}
-	
+
 	public void setCustomRecipes(CustomRecipes recipes) {
-		this.recipes = recipes; 
+		this.recipes = recipes;
 	}
 
 	// === ATTRIBUTES === //
@@ -291,7 +290,8 @@ public class CustomItem {
 	}
 
 	public void addAttribute(AttributeType type, Double amount, EquipmentSlot slot, Operation operation, UUID uuid) {
-		if (slot == EquipmentSlot.HEAD || slot == EquipmentSlot.CHEST || slot == EquipmentSlot.FEET || slot == EquipmentSlot.LEGS) {
+		if (slot == EquipmentSlot.HEAD || slot == EquipmentSlot.CHEST || slot == EquipmentSlot.FEET
+				|| slot == EquipmentSlot.LEGS) {
 			attributes.add(Attribute.newBuilder().name("TBD").amount(amount).uuid(UUID.randomUUID())
 					.operation(operation).type(type).slot(slot).build());
 		} else {
@@ -442,71 +442,27 @@ public class CustomItem {
 		return loreToAdd;
 	}
 
-	// === ITEMSTACKS === //
-
-	/**
-	 * Create and return an ItemStack according to the properties of this
-	 * CustomItem
-	 * 
-	 * @return ItemStack
-	 */
-	public ItemStack getItemStack() {
-		// Material, amount and durability
-		ItemStack item = new ItemStack(material, amount, durability);
-		ItemMeta meta = item.getItemMeta();
-
-		// Unbreakable
-		meta.spigot().setUnbreakable(unbreakable);
-
-		// Unbreakable Visibility
-		if (!unbreakableVisibility)
-			meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-
-		// Display Name
-		meta.setDisplayName(displayName);
-
-		// Enchantments
-		for (Enchantment e : enchantments.keySet())
-			meta.addEnchant(e, enchantments.get(e), true);
-
-		// Lore
-		meta.setLore(getFullLore(enchantments, fakeDurability));
-
-		// ItemFlags
-		for (ItemFlag flag : itemFlags)
-			meta.addItemFlags(flag);
-
-		if (this instanceof CustomTool) {
-			// Add attack speed and attack damage
-			
-			CustomTool cTool = ((CustomTool) this);
-			
-			if (cTool.getAttackSpeed() != null)
-				addAttribute(AttributeType.GENERIC_ATTACK_SPEED, cTool.getAttackSpeed() - 4, EquipmentSlot.HAND, Operation.ADD_NUMBER);
-			if (cTool.getAttackDamage() != null)
-				addAttribute(AttributeType.GENERIC_ATTACK_DAMAGE, cTool.getAttackDamage() - 1, EquipmentSlot.HAND, Operation.ADD_NUMBER);
-			
-			if (cTool.hideAttributes()) 
-				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-			
+	@Override
+	protected CustomItem clone() {
+		try {
+			return (CustomItem) super.clone();
+		} catch (CloneNotSupportedException e) {
+			Debug.sayTrueError("Cloning not supported!");
+			e.printStackTrace();
 		}
-		
-		// Set the lore and return the item
-		item.setItemMeta(meta);
+		return null;
+	}
 
-		// Store data in the attributes about the CustomItem's ID
-		AttributeStorage attributeStorage = AttributeStorage.newTarget(item, attributeStorageUUID, attributes);
-		attributeStorage.setData(customItemIdName);
-		item = attributeStorage.getTarget();
-		
-		if (this instanceof CustomLeatherArmor) {
-			LeatherArmorMeta leatherMeta = (LeatherArmorMeta) item.getItemMeta();
+	public UUID getAttributeStorageUUID() {
+		return attributeStorageUUID;
+	}
 
-			leatherMeta.setColor(((CustomLeatherArmor)this).getColor());
+	public boolean hasCustomTexture() {
+		return customTexture;
+	}
 
-			item.setItemMeta(leatherMeta);
-		}
-		return item;
+	public void setCustomTexture(boolean customTexture) {
+		this.customTexture = customTexture;
 	}
 
 }

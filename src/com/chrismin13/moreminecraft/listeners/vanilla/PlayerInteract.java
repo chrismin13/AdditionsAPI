@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.chrismin13.moreminecraft.api.CustomItemStack;
 import com.chrismin13.moreminecraft.events.CustomItemPlayerInteractEvent;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
@@ -32,8 +33,7 @@ public class PlayerInteract implements Listener {
 		if (item.getType() == Material.AIR)
 			return;
 		if (CustomItemUtils.isCustomItem(item)) {
-			CustomItemPlayerInteractEvent customEvent = new CustomItemPlayerInteractEvent(event,
-					CustomItemUtils.getCustomItem(item));
+			CustomItemPlayerInteractEvent customEvent = new CustomItemPlayerInteractEvent(event, new CustomItemStack(item));
 			Bukkit.getServer().getPluginManager().callEvent(customEvent);
 		}
 	}

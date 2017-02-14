@@ -3,14 +3,14 @@ package com.chrismin13.moreminecraft.events;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.player.PlayerFishEvent;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.CustomItemStack;
 
-public class CustomItemFishEvent extends CustomItemEvent implements Cancellable {
+public class CustomItemFishEvent extends CustomItemStackEvent implements Cancellable {
 
 	private PlayerFishEvent playerFishEvent;
 	
-	public CustomItemFishEvent(PlayerFishEvent event, CustomItem cItem) {
-		super(cItem);
+	public CustomItemFishEvent(PlayerFishEvent event, CustomItemStack cStack) {
+		super(cStack);
 		this.playerFishEvent = event;
 	}
 	

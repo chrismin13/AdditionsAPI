@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.chrismin13.moreminecraft.api.CustomItem;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
-public class EnchantmentListener implements Listener {
+public class EnchantItem implements Listener {
 
 	@EventHandler
 	public void onItemEnchant(EnchantItemEvent event) {

@@ -27,7 +27,7 @@ public class CustomItemBlockBreak implements Listener {
 		Player player = breakEvent.getPlayer();
 		CustomItem cItem = event.getCustomItem();
 		ItemType type = cItem.getItemType();
-		ItemStack item = player.getInventory().getItemInMainHand();
+		ItemStack item = event.getCustomItemStack().getItemStack();
 		Block block = breakEvent.getBlock();
 		Material material = block.getType();
 		Boolean instantlyBreakable = MaterialUtils.isInstantlyBreakable(material);

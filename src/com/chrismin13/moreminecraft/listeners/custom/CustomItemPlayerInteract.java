@@ -11,8 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import com.chrismin13.moreminecraft.api.CustomItem;
 import com.chrismin13.moreminecraft.api.CustomTool;
 import com.chrismin13.moreminecraft.enums.ToolType;
@@ -29,19 +27,8 @@ public class CustomItemPlayerInteract implements Listener {
 		Action action = event.getAction();
 		CustomItem cItem = customEvent.getCustomItem();
 		//ItemType type = cItem.getItemType();
-		ItemStack item;
+		ItemStack item = customEvent.getCustomItemStack().getItemStack();
 		Player player = event.getPlayer();
-		PlayerInventory inv = player.getInventory();
-		switch (event.getHand()) {
-		case HAND:
-			item = inv.getItemInMainHand();
-			break;
-		case OFF_HAND:
-			item = inv.getItemInOffHand();
-			break;
-		default:
-			return;
-		}
 		PlayerCustomItemDamageEvent damageEvent = new PlayerCustomItemDamageEvent(player, item, 0, cItem);
 		if (action == Action.RIGHT_CLICK_BLOCK) {
 			Block block = event.getClickedBlock();

@@ -1,7 +1,6 @@
 package com.chrismin13.moreminecraft.listeners.vanilla;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,6 +9,8 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.events.CustomElytraPlayerToggleGlideEvent;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
@@ -23,10 +24,11 @@ public class EntityToggleGlide implements Listener {
 		if (inv.getChestplate() == null)
 			return;
 		ItemStack elytra = inv.getChestplate();
-		if (elytra.getType() != Material.ELYTRA || !CustomItemUtils.isCustomItem(elytra))
+		if (!CustomItemUtils.isCustomItem(elytra)
+				|| CustomItemUtils.getCustomItem(elytra).getItemType() != ItemType.ELYTRA)
 			return;
 		Bukkit.getServer().getPluginManager()
-				.callEvent(new CustomElytraPlayerToggleGlideEvent(event, CustomItemUtils.getCustomItem(elytra)));
+				.callEvent(new CustomElytraPlayerToggleGlideEvent(event, new CustomItemStack(elytra)));
 	}
 
 }
