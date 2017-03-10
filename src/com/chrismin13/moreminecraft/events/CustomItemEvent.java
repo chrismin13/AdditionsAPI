@@ -3,7 +3,7 @@ package com.chrismin13.moreminecraft.events;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomItem;
 
 public class CustomItemEvent extends Event {
 

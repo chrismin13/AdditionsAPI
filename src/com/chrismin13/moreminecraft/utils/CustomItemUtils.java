@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +25,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
 import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.api.CustomItem;
-import com.chrismin13.moreminecraft.api.CustomItemStack;
-import com.chrismin13.moreminecraft.api.StorageCustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomItemStack;
+import com.chrismin13.moreminecraft.api.items.StorageCustomItem;
 import com.chrismin13.moreminecraft.api.recipes.CustomRecipes;
 import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.DataFile;
 import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
+
+import us.fihgu.toolbox.item.ModelInjector;
 
 public class CustomItemUtils implements Listener {
 
@@ -52,25 +55,48 @@ public class CustomItemUtils implements Listener {
 		Debug.say("Recieved in total " + Integer.toString(cItems.length) + " Custom Items!");
 		for (CustomItem cItem : cItems) {
 			Debug.saySuper("Currently Processing: " + cItem.getCustomItemIdName());
-			// Adding to data.yml and obtaining values
+			/*
+			 * Adding to data.yml and obtaining values
+			 */
 			DataFile dataFile = DataFile.getInstance();
-			String texture = "default";
-			short durability = 0;
-			if (cItem.hasCustomTexture())
-				if (dataFile.getCustomItem(cItem.getCustomItemIdName(), texture) == null)
-					durability = dataFile.getFreeDurability(cItem.getMaterial());
-				else
-					durability = dataFile.getCustomItem(cItem.getCustomItemIdName(), texture).getDurability();
-			// CustomItems and ItemStacks
+			String texture = null;
+			String idName = cItem.getCustomItemIdName();
+			if (cItem instanceof ModelInjector) {
+				ModelInjector model = (ModelInjector) cItem;
+				Map<String, Short> textures = model.getAllTextures();
+				for (String string : textures.keySet()) {
+					Debug.saySuper("Currently Processing Texure: " + string);
+					short freeDurability;
+					if (dataFile.getCustomItem(cItem.getCustomItemIdName(), string) == null) {
+						freeDurability = dataFile.getFreeDurability(cItem.getMaterial());
+						Debug.saySuper("Set durability to: " + freeDurability);
+					} else {
+						freeDurability = dataFile.getCustomItem(cItem.getCustomItemIdName(), string).getDurability();
+						Debug.saySuper("Set durability to: " + freeDurability);
+					}
+					textures.put(string, freeDurability);
+					if (model.getDefaultTexture().equals(string)) {
+						Debug.saySuper("Is default texture");
+						cItem.setDurability(freeDurability);
+						texture = string;
+					}
+					dataFile.addStorageCustomItem(new StorageCustomItem(cItem.getMaterial(), freeDurability, idName, string));
+				}
+				Debug.saySuper("Final map:" + textures);
+			}
+			short durability = cItem.getDurability();
+			/*
+			 * CustomItems and ItemStacks
+			 */
 			CustomItemStack cStack = new CustomItemStack(cItem, durability, texture);
 			ItemStack item = cStack.getItemStack();
 			Debug.saySuper("cStack Display Name: " + cStack.getCustomItem().getCustomItemIdName());
 			Debug.saySuper("cStack Durability: " + item.getDurability());
-			String idName = cItem.getCustomItemIdName();
 			customItems.put(idName, cItem);
 			customItemStacks.put(idName, cStack);
-			dataFile.addStorageCustomItem(new StorageCustomItem(cItem.getMaterial(), durability, idName, texture));
-			// Crafting Recipes
+			/*
+			 * Crafting Recipes
+			 */
 			CustomRecipes recipes = cItem.getCustomRecipes();
 			CustomShapedRecipe[] shapedRecipes = recipes.getShapedRecipes();
 			for (CustomShapedRecipe shapedRecipe : shapedRecipes) {
@@ -135,6 +161,10 @@ public class CustomItemUtils implements Listener {
 
 	public static CustomItemStack getCustomItemStack(String idName) {
 		return customItemStacks.get(idName);
+	}
+
+	public static Collection<CustomItem> getAllCustomItems() {
+		return customItems.values();
 	}
 
 	// === ITEMSTACKS === //

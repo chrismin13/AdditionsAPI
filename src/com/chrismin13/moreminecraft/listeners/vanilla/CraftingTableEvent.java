@@ -1,17 +1,18 @@
 package com.chrismin13.moreminecraft.listeners.vanilla;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomItem;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class CraftingTableEvent implements Listener {
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void prepareCrafting(PrepareItemCraftEvent event) {
 		ItemStack[] matrix = event.getInventory().getMatrix();
 		/*

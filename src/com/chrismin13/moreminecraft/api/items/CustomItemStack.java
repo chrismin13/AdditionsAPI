@@ -1,4 +1,4 @@
-package com.chrismin13.moreminecraft.api;
+package com.chrismin13.moreminecraft.api.items;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
@@ -34,7 +34,8 @@ public class CustomItemStack {
 		else
 			Debug.sayTrueError("The following ItemStack is not a CustomItem: Material: " + item.getType()
 					+ ", Durability: " + item.getDurability());
-		this.texture = data.getCustomItem(item.getType(), item.getDurability()).getTexture();
+		if (data.getCustomItem(item.getType(), item.getDurability()) != null)
+			this.texture = data.getCustomItem(item.getType(), item.getDurability()).getTexture();
 	}
 
 	private static ItemStack getItemStack(CustomItem cItem, short durability) {
@@ -89,6 +90,7 @@ public class CustomItemStack {
 		attributeStorage.setData(cItem.getCustomItemIdName());
 		item = attributeStorage.getTarget();
 
+		// Leather Armor stuff
 		if (cItem instanceof CustomLeatherArmor) {
 			LeatherArmorMeta leatherMeta = (LeatherArmorMeta) item.getItemMeta();
 
@@ -115,6 +117,7 @@ public class CustomItemStack {
 
 	public void setTexture(String texture) {
 		itemStack.setDurability(data.getCustomItem(cItem.getCustomItemIdName(), texture).getDurability());
+		Debug.saySuper(Short.toString(data.getCustomItem(cItem.getCustomItemIdName(), texture).getDurability()));
 	}
 
 	public ItemStack getItemStack() {

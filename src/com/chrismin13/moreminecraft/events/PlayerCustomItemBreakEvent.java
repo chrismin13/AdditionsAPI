@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomItem;
 
 public class PlayerCustomItemBreakEvent extends PlayerItemBreakEvent {
 	

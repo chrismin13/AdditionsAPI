@@ -1,2 +1,12 @@
 # MoreMinecraftAPI by chrismin13
 enable-debug: false
+
+http:
+ localhost: 
+ port: 8124
+ host: 
+ numReadThread: 4
+ numWriteThread: 4
+ 
+resource-pack:
+ overwrite-files: true

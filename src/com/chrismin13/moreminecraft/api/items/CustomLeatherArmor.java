@@ -1,6 +1,7 @@
-package com.chrismin13.moreminecraft.api;
+package com.chrismin13.moreminecraft.api.items;
 
 import org.bukkit.Color;
+
 import com.chrismin13.moreminecraft.enums.ArmorType;
 
 public class CustomLeatherArmor extends CustomArmor {

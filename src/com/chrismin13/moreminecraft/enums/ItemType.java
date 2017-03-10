@@ -3,12 +3,43 @@ package com.chrismin13.moreminecraft.enums;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.chrismin13.moreminecraft.api.durability.ArmorDurability;
+import com.chrismin13.moreminecraft.api.durability.BowDurability;
+import com.chrismin13.moreminecraft.api.durability.ElytraDurability;
+import com.chrismin13.moreminecraft.api.durability.FishingRodDurability;
+import com.chrismin13.moreminecraft.api.durability.FlintAndSteelDurability;
+import com.chrismin13.moreminecraft.api.durability.ItemDurability;
+import com.chrismin13.moreminecraft.api.durability.ShearDurability;
+import com.chrismin13.moreminecraft.api.durability.ShieldDurability;
+
 public enum ItemType {
 
 	BLOCK, TOOL, ARMOR, FOOD, RECORD, BOAT, BOOK, RAW_MATERIAL, BOW, BUCKET, UTILITY, BARDING, POTION, PROJECTILE, ELYTRA, SHIELD, ARROW, SHEARS, FISHING_ROD, FLINT_AND_STEEL;
 
 	public static ItemType getItemType(ItemStack item) {
 		return getItemType(item.getType());
+	}
+
+	public ItemDurability getItemDurability() {
+		switch (this) {
+		case BOW:
+			return new BowDurability();
+		case ELYTRA:
+			return new ElytraDurability();
+		case FISHING_ROD:
+			return new FishingRodDurability();
+		case FLINT_AND_STEEL:
+			return new FlintAndSteelDurability();
+		case SHEARS:
+			return new ShearDurability();
+		case SHIELD:
+			return new ShieldDurability();
+		case ARMOR:
+			return new ArmorDurability();
+		case BARDING:
+		default:
+			return new ItemDurability();
+		}
 	}
 
 	public static ItemType getItemType(Material material) {

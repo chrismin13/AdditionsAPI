@@ -1,4 +1,4 @@
-package com.chrismin13.moreminecraft.api;
+package com.chrismin13.moreminecraft.api.items;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+
+import com.chrismin13.moreminecraft.api.durability.ItemDurability;
 import com.chrismin13.moreminecraft.api.recipes.CustomRecipes;
 import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.utils.Debug;
@@ -20,7 +22,7 @@ import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.Attribute;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.AttributeType;
 import com.chrismin13.moreminecraft.utils.attributestorage.Attributes.Operation;
 
-public class CustomItem implements Cloneable {
+public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	// Required variables
 	private Material material = Material.AIR;
@@ -48,20 +50,18 @@ public class CustomItem implements Cloneable {
 	// Attributes
 	private List<Attribute> attributes = new ArrayList<Attribute>();
 	private final UUID attributeStorageUUID = UUID.fromString("8c16d72b-d950-410c-b7d1-eeed86e734c7");
-	
+
 	// Lore
 	private List<String> lore = new ArrayList<String>();
 
 	// Durability
+	private ItemDurability itemDurability;
 	private boolean addFakeDurability = false;
 	private int fakeDurability = 0;
 
 	// ItemFlags
 	private List<ItemFlag> itemFlags = new ArrayList<ItemFlag>();
 	
-	// Textures
-	private boolean customTexture = true;
-
 	/**
 	 * Create a new Custom Item from the specified Material, Amount, Durability
 	 * Short and ItemType
@@ -73,11 +73,26 @@ public class CustomItem implements Cloneable {
 	 */
 	public CustomItem(final Material material, final int amount, final short durability, final String customItemIdName,
 			final ItemType itemType) {
+		this(material, amount, durability, customItemIdName, itemType, itemType.getItemDurability());
+	}
+	
+	/**
+	 * Create a new Custom Item from the specified Material, Amount, Durability
+	 * Short and ItemType
+	 * 
+	 * @param material
+	 * @param amount
+	 * @param durability
+	 * @param itemType
+	 */
+	public CustomItem(final Material material, final int amount, final short durability, final String customItemIdName,
+			final ItemType itemType, final ItemDurability itemDurability) {
 		this.material = material;
 		this.amount = amount;
 		this.durability = durability;
 		this.customItemIdName = customItemIdName;
 		this.itemType = itemType;
+		this.itemDurability = itemDurability;
 	}
 
 	// === MATERIAL, AMOUNT & DURABILITY === //
@@ -286,18 +301,29 @@ public class CustomItem implements Cloneable {
 	// === ATTRIBUTES === //
 
 	public void addAttribute(AttributeType type, Double amount, EquipmentSlot slot, Operation operation) {
-		addAttribute(type, amount, slot, operation, attributeStorageUUID);
+		switch(slot) {
+		case HEAD:
+			addAttribute(type, amount, slot, operation, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
+			return;
+		case CHEST:
+			addAttribute(type, amount, slot, operation, UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"));
+			return;
+		case LEGS:
+			addAttribute(type, amount, slot, operation, UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"));
+			return;
+		case FEET:
+			addAttribute(type, amount, slot, operation, UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"));
+			return;
+		// TODO
+		default:
+			addAttribute(type, amount, slot, operation, attributeStorageUUID);
+			return;
+		}
 	}
 
 	public void addAttribute(AttributeType type, Double amount, EquipmentSlot slot, Operation operation, UUID uuid) {
-		if (slot == EquipmentSlot.HEAD || slot == EquipmentSlot.CHEST || slot == EquipmentSlot.FEET
-				|| slot == EquipmentSlot.LEGS) {
-			attributes.add(Attribute.newBuilder().name("TBD").amount(amount).uuid(UUID.randomUUID())
-					.operation(operation).type(type).slot(slot).build());
-		} else {
 			attributes.add(Attribute.newBuilder().name("TBD").amount(amount).uuid(uuid).operation(operation).type(type)
 					.slot(slot).build());
-		}
 	}
 
 	public List<Attribute> getAttributes() {
@@ -443,7 +469,7 @@ public class CustomItem implements Cloneable {
 	}
 
 	@Override
-	protected CustomItem clone() {
+	public CustomItem clone() {
 		try {
 			return (CustomItem) super.clone();
 		} catch (CloneNotSupportedException e) {
@@ -457,12 +483,34 @@ public class CustomItem implements Cloneable {
 		return attributeStorageUUID;
 	}
 
-	public boolean hasCustomTexture() {
-		return customTexture;
+	@Override
+	public int compareTo(CustomItem cItem) {
+		final int before = -1;
+		final int equal = 0;
+		final int after = 1;
+
+		if (this == cItem)
+			return equal;
+
+		if (this.durability < cItem.durability)
+			return before;
+		if (this.durability > cItem.durability)
+			return after;
+
+		return equal;
 	}
 
-	public void setCustomTexture(boolean customTexture) {
-		this.customTexture = customTexture;
+	/**
+	 * @return the itemDurability
+	 */
+	public ItemDurability getDurabilityMechanics() {
+		return itemDurability;
 	}
 
+	/**
+	 * @param itemDurability the itemDurability to set
+	 */
+	public void setDurabilityMechanics(ItemDurability itemDurability) {
+		this.itemDurability = itemDurability;
+	}
 }

@@ -1,7 +1,10 @@
 package com.chrismin13.moreminecraft;
 
+import java.io.IOException;
+
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.ConfigFile;
@@ -29,6 +32,10 @@ import com.chrismin13.moreminecraft.listeners.vanilla.PlayerInteract;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerShearEntity;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 import com.chrismin13.moreminecraft.utils.Debug;
+
+import us.fihgu.toolbox.resourcepack.ResourcePackListener;
+import us.fihgu.toolbox.resourcepack.ResourcePackManager;
+import us.fihgu.toolbox.resourcepack.ResourcePackServer;
 
 public class MoreMinecraft extends JavaPlugin {
 
@@ -64,16 +71,44 @@ public class MoreMinecraft extends JavaPlugin {
 		pm.registerEvents(new EntityToggleGlide(), this);
 		pm.registerEvents(new CustomElytraPlayerToggleGlide(), this);
 		pm.registerEvents(new CustomItemUtils(), this);
-
-		// TODO: Find a better way of doing this.
-		getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+		new ResourcePackListener().register(this);
+		// After all plugins have been enabled
+		BukkitRunnable task = new BukkitRunnable() {
+			@Override
 			public void run() {
+				
 				Debug.say("Starting MoreMinecraftAPI Intialization");
 				getServer().getPluginManager().callEvent(new MoreMinecraftAPIInitializationEvent());
 				Debug.say("Finished Initialization.");
 				Debug.saySuper("aaaaand chat spam too. :P");
+				
+				// TODO
+				// save custom item id configuration
+				//CustomItemManager.saveIdConfiguration();
+
+				if (ResourcePackManager.hasResource()) {
+					setupHTTPServer();
+				}
 			}
-		}, 0L);
+		};
+		task.runTask(this);
+	}
+	
+	public void onDisable() {
+		ResourcePackServer.stopServer();
+	}
+
+	private void setupHTTPServer() {
+		try {
+			ResourcePackManager.Load();
+			ResourcePackManager.buildResourcePack();
+			System.out.println("Starting a http server for hosting resource pack.");
+			ResourcePackServer.startServer();
+			this.saveConfig();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public static JavaPlugin getInstance() {

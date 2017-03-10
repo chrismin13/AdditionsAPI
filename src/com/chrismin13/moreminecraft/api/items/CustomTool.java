@@ -1,6 +1,7 @@
-package com.chrismin13.moreminecraft.api;
+package com.chrismin13.moreminecraft.api.items;
 
 import org.bukkit.Material;
+
 import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.enums.ToolType;
 
@@ -18,7 +19,8 @@ public class CustomTool extends CustomItem {
 	// === CREATING THE TOOL === //
 
 	public CustomTool(Material material, int amount, short durability, String customItemIdName) {
-		super(material, amount, durability, customItemIdName, ItemType.TOOL);
+		super(material, amount, durability, customItemIdName, ItemType.TOOL,
+				ToolType.getToolType(material).getDurabilityMechanics());
 		this.toolType = ToolType.getToolType(material);
 	}
 
@@ -55,13 +57,13 @@ public class CustomTool extends CustomItem {
 	public boolean getFakeDamageLore() {
 		return fakeDamageLore;
 	}
-	
+
 	// === ITEMFLAGS === //
-	
+
 	public boolean hideAttributes() {
 		return hideAttributes;
 	}
-	
+
 	public void hideAttributes(boolean hideAttributes) {
 		this.hideAttributes = hideAttributes;
 	}

@@ -1,4 +1,4 @@
-package com.chrismin13.moreminecraft.api;
+package com.chrismin13.moreminecraft.api.items;
 
 import org.bukkit.Material;
 
@@ -52,6 +52,5 @@ public class StorageCustomItem {
 	
 	public CustomItem getCustomItem() {
 		return CustomItemUtils.getCustomItem(idName);
-	}
-	
+	}	
 }

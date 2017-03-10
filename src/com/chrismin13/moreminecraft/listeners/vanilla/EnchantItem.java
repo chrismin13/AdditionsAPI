@@ -7,17 +7,18 @@ import java.util.Set;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomItem;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class EnchantItem implements Listener {
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onItemEnchant(EnchantItemEvent event) {
 		if (event.isCancelled())
 			return;

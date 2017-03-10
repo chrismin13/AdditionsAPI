@@ -2,8 +2,15 @@ package com.chrismin13.moreminecraft.enums;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bukkit.Material;
 
+import com.chrismin13.moreminecraft.api.durability.AxeDurability;
+import com.chrismin13.moreminecraft.api.durability.HoeDurability;
+import com.chrismin13.moreminecraft.api.durability.ItemDurability;
+import com.chrismin13.moreminecraft.api.durability.PickaxeDurability;
+import com.chrismin13.moreminecraft.api.durability.SpadeDurability;
+import com.chrismin13.moreminecraft.api.durability.SwordDurability;
 import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.utils.Debug;
 import com.chrismin13.moreminecraft.utils.RecipeUtils;
@@ -12,9 +19,26 @@ public enum ToolType {
 
 	SWORD, AXE, PICKAXE, SPADE, HOE;
 
+	public ItemDurability getDurabilityMechanics() {
+		switch (this) {
+		case AXE:
+			return new AxeDurability();
+		case HOE:
+			return new HoeDurability();
+		case PICKAXE:
+			return new PickaxeDurability();
+		case SPADE:
+			return new SpadeDurability();
+		case SWORD:
+			return new SwordDurability();
+		default:
+			return new ItemDurability();
+		}
+	}
+
 	public List<CustomShapedRecipe> getCustomShapedRecipe(Material itemMaterial, Material stickMaterial) {
 		List<CustomShapedRecipe> recipes = new ArrayList<CustomShapedRecipe>();
-		
+
 		CustomShapedRecipe itemRecipe = new CustomShapedRecipe();
 
 		itemRecipe.setIngredient('1', itemMaterial, 0);
@@ -31,7 +55,7 @@ public enum ToolType {
 			recipes.add(RecipeUtils.newWithShape(itemRecipe, "110", "120", "020"));
 			recipes.add(RecipeUtils.newWithShape(itemRecipe, "011", "021", "020"));
 			recipes.add(RecipeUtils.newWithShape(itemRecipe, "011", "012", "002"));
-			
+
 			break;
 		case PICKAXE:
 			recipes.add(RecipeUtils.newWithShape(itemRecipe, "111", "020", "020"));
@@ -51,10 +75,10 @@ public enum ToolType {
 			Debug.sayError("Invalid Tool Type: " + this.toString() + ". Is the plugin up to date?");
 			break;
 		}
-		
+
 		return recipes;
 	}
-	
+
 	public static ToolType getToolType(Material material) {
 		switch (material) {
 		// Swords

@@ -3,20 +3,21 @@ package com.chrismin13.moreminecraft.listeners.vanilla;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.chrismin13.moreminecraft.api.CustomItem;
-import com.chrismin13.moreminecraft.api.CustomTool;
+import com.chrismin13.moreminecraft.api.items.CustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomTool;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 import net.md_5.bungee.api.ChatColor;
 
 public class AnvilEvent implements Listener {
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onItemRename(PrepareAnvilEvent event) {
 		if (event.getResult() == null)
 			return;

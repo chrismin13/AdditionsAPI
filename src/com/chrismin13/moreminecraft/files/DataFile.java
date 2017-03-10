@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.api.CustomItemStack;
-import com.chrismin13.moreminecraft.api.StorageCustomItem;
+import com.chrismin13.moreminecraft.api.items.CustomItemStack;
+import com.chrismin13.moreminecraft.api.items.StorageCustomItem;
 import com.chrismin13.moreminecraft.utils.Debug;
 
 public class DataFile {
@@ -94,8 +94,10 @@ public class DataFile {
 					durability--;
 				Debug.saySuper("Available Durability for Material " + material + ": " + durability);
 				if (durability <= 0) {
+					Debug.sayError("***********************");
 					Debug.sayError("TEXTURE LIMIT REACHED FOR MATERIAL: " + material);
-					Debug.sayError("REMOVE ANY UNUSED CUSTOM ITEMS FROM THE DATA.YML FILE!");
+					Debug.sayError("REMOVE ANY CUSTOM ITEMS FROM THE DATA.YML FILE THAT ARE FROM REMOVED PLUGINS!");
+					Debug.sayError("***********************");
 					return (short) (material.getMaxDurability() + 1);
 				} else {
 					return durability;

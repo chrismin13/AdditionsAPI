@@ -1,6 +1,6 @@
 package com.chrismin13.moreminecraft.events;
 
-import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.api.items.CustomItemStack;
 
 public class CustomItemStackEvent extends CustomItemEvent {
 

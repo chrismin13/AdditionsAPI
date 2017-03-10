@@ -4,19 +4,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.api.items.CustomItemStack;
 import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.events.CustomElytraPlayerToggleGlideEvent;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class EntityToggleGlide implements Listener {
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityToggleGlide(EntityToggleGlideEvent event) {
 		if (event.getEntityType() != EntityType.PLAYER)
 			return;

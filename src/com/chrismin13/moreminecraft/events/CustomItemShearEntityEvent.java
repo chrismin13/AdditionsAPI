@@ -3,7 +3,7 @@ package com.chrismin13.moreminecraft.events;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 
-import com.chrismin13.moreminecraft.api.CustomItemStack;
+import com.chrismin13.moreminecraft.api.items.CustomItemStack;
 
 public class CustomItemShearEntityEvent extends CustomItemStackEvent implements Cancellable {
 
