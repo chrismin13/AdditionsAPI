@@ -1,35 +1,21 @@
 package com.chrismin13.moreminecraft.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 
-import com.chrismin13.moreminecraft.MoreMinecraft;
 import com.chrismin13.moreminecraft.api.items.CustomItem;
 import com.chrismin13.moreminecraft.api.items.CustomItemStack;
 import com.chrismin13.moreminecraft.api.items.StorageCustomItem;
-import com.chrismin13.moreminecraft.api.recipes.CustomRecipes;
-import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.DataFile;
 import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
@@ -43,12 +29,8 @@ public class CustomItemUtils implements Listener {
 	private static HashMap<String, CustomItem> customItems = new HashMap<String, CustomItem>();
 	private static HashMap<String, CustomItemStack> customItemStacks = new HashMap<String, CustomItemStack>();
 
-	private static File dataFolder = MoreMinecraft.getInstance().getDataFolder();
-	private static String path = dataFolder.getPath().replace("\\", "/");
-
 	// === INITIALIZATION === //
 
-	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onInitialization(MoreMinecraftAPIInitializationEvent event) {
 		CustomItem[] cItems = event.getCustomItems();
@@ -94,46 +76,10 @@ public class CustomItemUtils implements Listener {
 			Debug.saySuper("cStack Durability: " + item.getDurability());
 			customItems.put(idName, cItem);
 			customItemStacks.put(idName, cStack);
-			/*
-			 * Crafting Recipes
-			 */
-			CustomRecipes recipes = cItem.getCustomRecipes();
-			CustomShapedRecipe[] shapedRecipes = recipes.getShapedRecipes();
-			for (CustomShapedRecipe shapedRecipe : shapedRecipes) {
-				Debug.saySuper("Adding Recipe.");
-				ShapedRecipe recipe = new ShapedRecipe(item);
-				recipe.shape(shapedRecipe.getShape());
-				Map<Character, ItemStack> ingredients = shapedRecipe.getIngredientMap();
-				for (char character : ingredients.keySet()) {
-					ItemStack ingredient = ingredients.get(character);
-					recipe.setIngredient(character, ingredient.getType(), ingredient.getDurability());
-				}
-
-				Bukkit.addRecipe(recipe);
-			}
 		}
 		DataFile.getInstance().saveData();
 	}
-
-	/*
-	 * MUST REMOVE
-	 */
-	public static void main() throws IOException {
-		Map<String, String> env = new HashMap<>();
-		env.put("create", "true");
-		// locate file system by using the syntax
-		// defined in java.net.JarURLConnection
-		URI uri = URI.create(
-				"jar:file:/" + dataFolder.getAbsolutePath().replace("\\", "/").replace(" ", "%20") + "/zipfstest.zip");
-
-		try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
-			Path externalTxtFile = Paths.get(path + "/SomeTextFile.txt");
-			Path pathInZipfile = zipfs.getPath("/SomeTextFile.txt");
-			// copy a file into the zip file
-			Files.copy(externalTxtFile, pathInZipfile, StandardCopyOption.REPLACE_EXISTING);
-		}
-	}
-
+	
 	// === STORAGE === //
 
 	public static boolean isValidCustomItem(String customItemIdName) {

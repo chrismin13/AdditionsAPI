@@ -7,7 +7,6 @@ import org.bukkit.inventory.EquipmentSlot;
 
 import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.utils.Debug;
-import com.chrismin13.moreminecraft.utils.RecipeUtils;
 
 public enum ArmorType {
 
@@ -128,18 +127,18 @@ public enum ArmorType {
 
 		switch (this) {
 		case HELMET:
-			recipes.add(RecipeUtils.newWithShape(itemRecipe, "111", "101", "000"));
-			recipes.add(RecipeUtils.newWithShape(itemRecipe, "000", "111", "101"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("111", "101", "000"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("000", "111", "101"));
 			break;
 		case CHESTPLATE:
-			recipes.add(RecipeUtils.newWithShape(itemRecipe, "101", "111", "111"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("101", "111", "111"));
 			break;
 		case LEGGINGS:
-			recipes.add(RecipeUtils.newWithShape(itemRecipe, "111", "101", "101"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("111", "101", "101"));
 			break;
 		case BOOTS:
-			recipes.add(RecipeUtils.newWithShape(itemRecipe, "000", "101", "101"));
-			recipes.add(RecipeUtils.newWithShape(itemRecipe, "101", "101", "000"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("000", "101", "101"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("101", "101", "000"));
 			break;
 		default:
 			Debug.sayError("Invalid Armor Type: " + this.toString() + ". Is the plugin up to date?");

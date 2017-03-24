@@ -14,7 +14,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import com.chrismin13.moreminecraft.api.durability.ItemDurability;
-import com.chrismin13.moreminecraft.api.recipes.CustomRecipes;
+import com.chrismin13.moreminecraft.api.recipes.CustomFurnaceRecipe;
+import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
+import com.chrismin13.moreminecraft.api.recipes.CustomShapelessRecipe;
 import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.utils.Debug;
 import com.chrismin13.moreminecraft.utils.MaterialUtils;
@@ -45,7 +47,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	// Recipes
 	private boolean canBeCombinedInCrafting = false;
-	private CustomRecipes recipes = new CustomRecipes();
+	private List<CustomShapedRecipe> shapedRecipes = new ArrayList<CustomShapedRecipe>();
+	private List<CustomShapelessRecipe> shapelessRecipes = new ArrayList<CustomShapelessRecipe>();
+	private List<CustomFurnaceRecipe> furnaceRecipes = new ArrayList<CustomFurnaceRecipe>();
 
 	// Attributes
 	private List<Attribute> attributes = new ArrayList<Attribute>();
@@ -290,12 +294,40 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 		canBeCombinedInCrafting = canBeCombined;
 	}
 
-	public CustomRecipes getCustomRecipes() {
-		return recipes;
+	public List<CustomShapedRecipe> getCustomShapedRecipes() {
+		return shapedRecipes;
 	}
 
-	public void setCustomRecipes(CustomRecipes recipes) {
-		this.recipes = recipes;
+	public void addCustomShapedRecipe(CustomShapedRecipe recipe) {
+		this.shapedRecipes.add(recipe);
+	}
+	
+	public void addAllCustomShapedRecipe(List<CustomShapedRecipe> recipes) {
+		this.shapedRecipes.addAll(recipes);
+	}
+	
+	public List<CustomShapelessRecipe> getCustomShapelessRecipes() {
+		return shapelessRecipes;
+	}
+
+	public void addCustomShapelessRecipe(CustomShapelessRecipe recipe) {
+		this.shapelessRecipes.add(recipe);
+	}
+	
+	public void addAllCustomShapelessRecipe(List<CustomShapelessRecipe> recipes) {
+		this.shapelessRecipes.addAll(recipes);
+	}
+	
+	public List<CustomFurnaceRecipe> getCustomFurnaceRecipes() {
+		return furnaceRecipes;
+	}
+
+	public void addCustomFurnaceRecipe(CustomFurnaceRecipe recipe) {
+		this.furnaceRecipes.add(recipe);
+	}
+	
+	public void addAllCustomFurnaceRecipe(List<CustomFurnaceRecipe> recipes) {
+		this.furnaceRecipes.addAll(recipes);
 	}
 
 	// === ATTRIBUTES === //
