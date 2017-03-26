@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.ConfigFile;
 import com.chrismin13.moreminecraft.files.DataFile;
+import com.chrismin13.moreminecraft.listeners.custom.ArrowFromCustomBowHit;
 import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockBreak;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockIgnite;
@@ -19,10 +20,10 @@ import com.chrismin13.moreminecraft.listeners.custom.CustomShieldEntityDamageByE
 import com.chrismin13.moreminecraft.listeners.custom.EntityDamageByPlayerUsingCustomItem;
 import com.chrismin13.moreminecraft.listeners.custom.EntityShootCustomBow;
 import com.chrismin13.moreminecraft.listeners.custom.PlayerCustomItemDamage;
-import com.chrismin13.moreminecraft.listeners.vanilla.AnvilEvent;
+import com.chrismin13.moreminecraft.listeners.vanilla.Anvil;
 import com.chrismin13.moreminecraft.listeners.vanilla.BlockBreak;
 import com.chrismin13.moreminecraft.listeners.vanilla.BlockIgnite;
-import com.chrismin13.moreminecraft.listeners.vanilla.CraftingTableEvent;
+import com.chrismin13.moreminecraft.listeners.vanilla.CraftingTable;
 import com.chrismin13.moreminecraft.listeners.vanilla.EnchantItem;
 import com.chrismin13.moreminecraft.listeners.vanilla.EntityDamageByEntity;
 import com.chrismin13.moreminecraft.listeners.vanilla.EntityShootBow;
@@ -50,8 +51,8 @@ public class MoreMinecraft extends JavaPlugin {
 
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new EnchantItem(), this);
-		pm.registerEvents(new AnvilEvent(), this);
-		pm.registerEvents(new CraftingTableEvent(), this);
+		pm.registerEvents(new Anvil(), this);
+		pm.registerEvents(new CraftingTable(), this);
 		pm.registerEvents(new BlockBreak(), this);
 		pm.registerEvents(new CustomItemBlockBreak(), this);
 		pm.registerEvents(new EntityDamageByEntity(), this);
@@ -71,6 +72,7 @@ public class MoreMinecraft extends JavaPlugin {
 		pm.registerEvents(new EntityToggleGlide(), this);
 		pm.registerEvents(new CustomElytraPlayerToggleGlide(), this);
 		pm.registerEvents(new CustomItemUtils(), this);
+		pm.registerEvents(new ArrowFromCustomBowHit(), this);
 		new ResourcePackListener().register(this);
 		// After all plugins have been enabled
 		BukkitRunnable task = new BukkitRunnable() {

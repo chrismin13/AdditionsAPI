@@ -12,9 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import us.fihgu.toolbox.nbt.NBTCompoundWrapper;
-import us.fihgu.toolbox.nbt.NBTUtils;
-
 /**
  * this class provides ItemStack/Item related shortcuts.
  */
@@ -161,26 +158,5 @@ public class ItemUtils {
 		}
 
 		return item.getType().toString().toLowerCase();
-	}
-
-	/**
-	 * parse the item into a NBTCompound which can be stored or used to display
-	 * the item in a hoverEvent enabled
-	 * {@link us.fihgu.toolbox.json.text.JsonText JsonText}.
-	 */
-	@SuppressWarnings("deprecation")
-	public static NBTCompoundWrapper toNBTCompoound(ItemStack item) {
-		NBTCompoundWrapper compound = new NBTCompoundWrapper();
-		NBTCompoundWrapper tag = NBTUtils.getNBTTag(item);
-
-		compound.setString("id", item.getTypeId() + "");
-		compound.setByte("Count", (byte) item.getAmount());
-		compound.setShort("Damage", item.getDurability());
-
-		if (tag != null) {
-			compound.set("tag", tag);
-		}
-
-		return compound;
 	}
 }

@@ -38,6 +38,7 @@ public class CustomItemStack {
 			this.texture = data.getCustomItem(item.getType(), item.getDurability()).getTexture();
 	}
 
+	@SuppressWarnings("deprecation")
 	private static ItemStack getItemStack(CustomItem cItem, short durability) {
 		// Material, amount and durability
 		ItemStack item = new ItemStack(cItem.getMaterial(), cItem.getAmount(), durability);

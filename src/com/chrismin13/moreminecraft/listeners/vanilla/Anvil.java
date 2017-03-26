@@ -16,7 +16,7 @@ import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class AnvilEvent implements Listener {
+public class Anvil implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onItemRename(PrepareAnvilEvent event) {
 		if (event.getResult() == null)

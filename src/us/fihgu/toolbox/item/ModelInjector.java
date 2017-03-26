@@ -1,6 +1,8 @@
 package us.fihgu.toolbox.item;
 
 import us.fihgu.toolbox.json.JsonUtils;
+import us.fihgu.toolbox.resourcepack.model.DisplayEntry;
+import us.fihgu.toolbox.resourcepack.model.DisplayOptions;
 import us.fihgu.toolbox.resourcepack.model.ItemModel;
 import us.fihgu.toolbox.resourcepack.model.OverrideEntry;
 import us.fihgu.toolbox.resourcepack.model.Predicate;
@@ -84,13 +86,27 @@ public interface ModelInjector {
 			else
 				predicate.setDamaged(1);
 			predicate.setDamage((double) durability / maxDurability);
-
+			
 			// inject this entry.
 			baseModel.addOverride(new OverrideEntry(entry.getPredicate(), entry.getModelName()));
 
+			// add the bow model if needed
+			if (entry instanceof BowModelInjection && ((BowModelInjection)entry).isStandby()) {
+				DisplayOptions bowDisplay = new DisplayOptions();
+				bowDisplay.setThirdperson_righthand(new DisplayEntry(new double[] { -80, 260, -40 },
+						new double[] { -1, -2, 2.5 }, new double[] { 0.9, 0.9, 0.9 }));
+				bowDisplay.setThirdperson_lefthand(new DisplayEntry(new double[] { -80, -280, 40 },
+						new double[] { -1, -2, 2.5 }, new double[] { 0.9, 0.9, 0.9 }));
+				bowDisplay.setFirstperson_righthand(new DisplayEntry(new double[] { 0, -90, 25 },
+						new double[] { 1.13, 3.2, 1.13 }, new double[] { 0.68, 0.68, 0.68 }));
+				bowDisplay.setFirstperson_lefthand(new DisplayEntry(new double[] { 0, 90, -25 },
+						new double[] { 1.13, 3.2, 1.13 }, new double[] { 0.68, 0.68, 0.68 }));
+				entry.getModel().setDisplay(bowDisplay);
+			}
+			
 			// add entry into work space
 			File json = new File(workspace,
-					"assets/" + name[0] + "/models/item/" + this.getTexture(durability) + ".json");
+					"assets/" + name[0] + "/models/item/" + entry.getModelName().split("/", 2)[1] + ".json");
 			if (!json.exists())
 				JsonUtils.toFile(json, entry.getModel());
 		}

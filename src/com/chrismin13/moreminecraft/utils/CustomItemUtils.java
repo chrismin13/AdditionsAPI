@@ -6,16 +6,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
 import com.chrismin13.moreminecraft.api.items.CustomItem;
 import com.chrismin13.moreminecraft.api.items.CustomItemStack;
 import com.chrismin13.moreminecraft.api.items.StorageCustomItem;
+import com.chrismin13.moreminecraft.api.recipes.CustomFurnaceRecipe;
+import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
+import com.chrismin13.moreminecraft.api.recipes.CustomShapelessRecipe;
+import com.chrismin13.moreminecraft.api.recipes.RecipeIngredient;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.DataFile;
 import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
@@ -62,7 +70,8 @@ public class CustomItemUtils implements Listener {
 						cItem.setDurability(freeDurability);
 						texture = string;
 					}
-					dataFile.addStorageCustomItem(new StorageCustomItem(cItem.getMaterial(), freeDurability, idName, string));
+					dataFile.addStorageCustomItem(
+							new StorageCustomItem(cItem.getMaterial(), freeDurability, idName, string));
 				}
 				Debug.saySuper("Final map:" + textures);
 			}
@@ -76,10 +85,53 @@ public class CustomItemUtils implements Listener {
 			Debug.saySuper("cStack Durability: " + item.getDurability());
 			customItems.put(idName, cItem);
 			customItemStacks.put(idName, cStack);
+			/*
+			 * Shaped Recipes
+			 */
+			for (CustomShapedRecipe cRecipe : cItem.getCustomShapedRecipes()) {
+				ShapedRecipe recipe = new ShapedRecipe(item);
+				Debug.saySuper("Adding recipe");
+
+				recipe.shape(cRecipe.getShape());
+				Debug.saySuper("Added shape:");
+				for (String s : cRecipe.getShape())
+					Debug.saySuper(s);
+				HashMap<Character, RecipeIngredient> map = cRecipe.getIngredients();
+				for (char key : map.keySet()) {
+					Debug.saySuper("Processing Character: " + key);
+					Debug.saySuper("Material: " + map.get(key).getMaterial());
+					recipe.setIngredient(key, map.get(key).getMaterial());
+				}
+
+				Bukkit.addRecipe(recipe);
+			}
+			/*
+			 * Shapeless Recipes
+			 */
+			for (CustomShapelessRecipe cRecipe : cItem.getCustomShapelessRecipes()) {
+				ShapelessRecipe recipe = new ShapelessRecipe(item);
+
+				for (RecipeIngredient ingredient : cRecipe.getIngredients()) {
+					if (ingredient != null)
+						recipe.addIngredient(ingredient.getMaterial());
+				}
+
+				Bukkit.addRecipe(recipe);
+			}
+			/*
+			 * Furnace Recipes
+			 */
+			for (CustomFurnaceRecipe cRecipe : cItem.getCustomFurnaceRecipes()) {
+				FurnaceRecipe recipe = new FurnaceRecipe(item, cRecipe.getInput().getMaterial());
+
+				recipe.setExperience(cRecipe.getExperience());
+
+				Bukkit.addRecipe(recipe);
+			}
 		}
 		DataFile.getInstance().saveData();
 	}
-	
+
 	// === STORAGE === //
 
 	public static boolean isValidCustomItem(String customItemIdName) {

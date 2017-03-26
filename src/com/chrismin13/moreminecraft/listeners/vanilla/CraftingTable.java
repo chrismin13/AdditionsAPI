@@ -3,25 +3,23 @@ package com.chrismin13.moreminecraft.listeners.vanilla;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.Bukkit;
+
+import java.util.List;
+
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
-import com.chrismin13.moreminecraft.MoreMinecraft;
 import com.chrismin13.moreminecraft.api.items.CustomItem;
 import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.api.recipes.RecipeIngredient;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 import com.chrismin13.moreminecraft.utils.Debug;
 
-public class CraftingTableEvent implements Listener {
+public class CraftingTable implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void prepareCrafting(PrepareItemCraftEvent event) {
@@ -44,18 +42,7 @@ public class CraftingTableEvent implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onItemClick(InventoryClickEvent event) {
-		Debug.saySuper("Evented");
-		if (event.isCancelled())
-			return;
-		if (event.getClickedInventory() instanceof CraftingInventory) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(MoreMinecraft.getInstance(),
-					() -> checkCustomShapedRecipe((CraftingInventory) event.getClickedInventory(), event.getView()), 1L);
-		}
-	}
-
-	public static void checkCustomShapedRecipe(CraftingInventory inventory, InventoryView view) {
+	public static void checkCustomShapedRecipe(CraftingInventory inventory, List<HumanEntity> list) {
 		ItemStack[] matrix = inventory.getMatrix();
 		CustomShapedRecipe recipe = new CustomShapedRecipe(matrix);
 		RecipeIngredient[] ingredients = recipe.getCraftingMatrix();
@@ -75,15 +62,10 @@ public class CraftingTableEvent implements Listener {
 				}
 				if (isRecipe) {
 					Debug.saySuper("IS CRAFTING RECIPE!");
-					if (inventory.getResult() == null || !inventory.getResult().equals(CustomItemUtils.getCustomItemStack(cItem.getCustomItemIdName())
-							.getItemStack())) {
-						inventory.setResult(
-								CustomItemUtils.getCustomItemStack(cItem.getCustomItemIdName()).getItemStack());
-						PrepareItemCraftEvent customEvent = new PrepareItemCraftEvent(inventory, view, false);
-						Bukkit.getPluginManager().callEvent(customEvent);
-						((Player) view.getPlayer()).updateInventory();
-						return;
-					}
+					for (HumanEntity e : list)
+						((Player) e).updateInventory();
+					inventory.setResult(CustomItemUtils.getCustomItemStack(cItem.getCustomItemIdName()).getItemStack());
+					return;
 				}
 			}
 		}

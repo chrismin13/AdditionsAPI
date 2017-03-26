@@ -5,7 +5,6 @@ import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.items.CustomItem;
 import com.chrismin13.moreminecraft.utils.Debug;
 
 public class CustomShapedRecipe {
@@ -26,7 +25,7 @@ public class CustomShapedRecipe {
 		setShape("123", "456", "789");
 		for (ItemStack item : recipeMatrix) {
 			if (item != null && item.getType() != Material.AIR)
-				this.setIngredient(Integer.toString(character).toCharArray()[0], item);
+				this.setIngredient(Integer.toString(character).toCharArray()[0], item.getType());
 			character++;
 		}
 	}
@@ -43,16 +42,16 @@ public class CustomShapedRecipe {
 	}
 
 	public CustomShapedRecipe setIngredient(char character, Material craftingMaterial) {
-		return setIngredient(character, new ItemStack(craftingMaterial));
+		return setIngredient(character, new RecipeIngredient(craftingMaterial));
 	}
 
-	public CustomShapedRecipe setIngredient(char character, ItemStack item) {
-		return setIngredient(character, new RecipeIngredient(item));
-	}
+	//public CustomShapedRecipe setIngredient(char character, ItemStack item) {
+	//	return setIngredient(character, new RecipeIngredient(item));
+	//}
 
-	public CustomShapedRecipe setIngredient(char character, CustomItem cItem) {
-		return setIngredient(character, new RecipeIngredient(cItem));
-	}
+	//public CustomShapedRecipe setIngredient(char character, CustomItem cItem) {
+	//	return setIngredient(character, new RecipeIngredient(cItem));
+	//}
 
 	public CustomShapedRecipe setIngredient(char character, RecipeIngredient ingredient) {
 		ingredients.put(character, ingredient);

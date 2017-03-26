@@ -23,6 +23,7 @@ import com.chrismin13.moreminecraft.utils.NumberUtils;
 
 public class PlayerCustomItemDamage implements Listener {
 
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerCustomItemDamage(PlayerCustomItemDamageEvent event) {
 		if (event.isCancelled())

@@ -61,7 +61,7 @@ public class OverrideEntry implements Comparable<OverrideEntry>
 	}
 
 	/**
-	 * Compares according to the predicate's damage
+	 * Compares according to the certain values of the predicate
 	 */
 	@Override
 	public int compareTo(OverrideEntry overrrideEntry) {
@@ -72,9 +72,41 @@ public class OverrideEntry implements Comparable<OverrideEntry>
 		if (this == overrrideEntry)
 			return equal;
 
-		if (this.getPredicate().getDamage() < overrrideEntry.getPredicate().getDamage())
+		Predicate thisPred = this.getPredicate();
+		Predicate thatPred = overrrideEntry.getPredicate();
+		
+		if (thisPred.getPulling() != null && thatPred.getPulling() != null) {
+			if (thisPred.getPulling() < thatPred.getPulling())
+				return before;
+			if (thisPred.getPulling() > thatPred.getPulling())
+				return after;
+		}
+		
+		if (thisPred.getPull() != null && thatPred.getPull() != null) {
+			if (thisPred.getPull() < thatPred.getPull())
+				return before;
+			if (thisPred.getPull() > thatPred.getPull())
+				return after;
+		} else if (thisPred.getPull() == null && thatPred.getPull() != null) {
 			return before;
-		if (this.getPredicate().getDamage() > overrrideEntry.getPredicate().getDamage())
+		} else if (thisPred.getPull() != null && thatPred.getPull() == null) {
+			return after;
+		}
+		
+		if (thisPred.getDamaged() == null || thatPred.getDamaged() == null)
+			return equal;
+		
+		if (thisPred.getDamaged() < thatPred.getDamaged())
+			return before;
+		if (thisPred.getDamaged() > thatPred.getDamaged())
+			return after;
+		
+		if (thisPred.getDamage() == null || thatPred.getDamage() == null)
+			return equal;
+		
+		if (thisPred.getDamage() < thatPred.getDamage())
+			return before;
+		if (thisPred.getDamage() > thatPred.getDamage())
 			return after;
 
 		return equal;

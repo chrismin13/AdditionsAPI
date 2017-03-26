@@ -3,9 +3,7 @@ package com.chrismin13.moreminecraft.api.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.inventory.ItemStack;
-
-import com.chrismin13.moreminecraft.api.items.CustomItem;
+import org.bukkit.Material;
 
 public class CustomShapelessRecipe {
 
@@ -17,13 +15,9 @@ public class CustomShapelessRecipe {
 		for (RecipeIngredient ingredient : recipe.getIngredients())
 			this.addIngredient(ingredient);
 	}
-
-	public CustomShapelessRecipe addIngredient(ItemStack item) {
-		return addIngredient(new RecipeIngredient(item));
-	}
 	
-	public CustomShapelessRecipe addIngredient(CustomItem cItem) {
-		return addIngredient(new RecipeIngredient(cItem));
+	public CustomShapelessRecipe addIngredient(Material material) {
+		return addIngredient(new RecipeIngredient(material));
 	}
 	
 	public CustomShapelessRecipe addIngredient(RecipeIngredient ingredient) {

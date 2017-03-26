@@ -1,20 +1,19 @@
 package com.chrismin13.moreminecraft.api.recipes;
 
-import org.bukkit.inventory.ItemStack;
-
-import com.chrismin13.moreminecraft.api.items.CustomItem;
+import org.bukkit.Material;
 
 public class CustomFurnaceRecipe {
 
 	private RecipeIngredient input;
 	private float experience = 0F;
 
-	public CustomFurnaceRecipe(ItemStack itemInput) {
-		input = new RecipeIngredient(itemInput);
+	public CustomFurnaceRecipe(Material input) {
+		setInput(new RecipeIngredient(input));
 	}
 	
-	public CustomFurnaceRecipe(CustomItem cItemInput) {
-		input = new RecipeIngredient(cItemInput);
+	public CustomFurnaceRecipe(Material input, float experience) {
+		setInput(new RecipeIngredient(input));
+		setExperience(experience);
 	}
 	
 	public CustomFurnaceRecipe(CustomFurnaceRecipe recipe) {
@@ -32,8 +31,9 @@ public class CustomFurnaceRecipe {
 	/**
 	 * @param input the input to set
 	 */
-	public void setInput(RecipeIngredient input) {
+	public CustomFurnaceRecipe setInput(RecipeIngredient input) {
 		this.input = input;
+		return this;
 	}
 
 	/**
@@ -46,8 +46,9 @@ public class CustomFurnaceRecipe {
 	/**
 	 * @param experience the experience to set
 	 */
-	public void setExperience(float experience) {
+	public CustomFurnaceRecipe setExperience(float experience) {
 		this.experience = experience;
+		return this;
 	}
 
 }

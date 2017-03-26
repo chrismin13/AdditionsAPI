@@ -5,12 +5,12 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 
 import com.chrismin13.moreminecraft.api.items.CustomItemStack;
 
-public class EntityShootCustomBowEvent extends CustomItemStackEvent implements Cancellable {
+public class EntityShootCustomBowEvent extends CustomBowStackEvent implements Cancellable {
 	
 	private EntityShootBowEvent playerFishEvent;
 	
-	public EntityShootCustomBowEvent(EntityShootBowEvent event, CustomItemStack cStack) {
-		super(cStack);
+	public EntityShootCustomBowEvent(EntityShootBowEvent event, CustomItemStack cBowStack) {
+		super(cBowStack);
 		this.playerFishEvent = event;
 	}
 	
