@@ -2,30 +2,16 @@ package com.chrismin13.moreminecraft.api.durability;
 
 import java.util.Arrays;
 import java.util.List;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class ArmorDurability extends ItemDurability {
 
-	private int hitByEntity = 1;
-	private int hitByBlock = 1;
-	private int thornsExtraDamage;
-	private List<Integer> nearExplosionDamage = Arrays.asList(13, 14);
-	private List<Integer> farExplosionDamage = Arrays.asList(1);
-	
-	public int getHitByEntity() {
-		return hitByEntity;
-	}
-
-	public void setHitByEntity(int hitByEntity) {
-		this.hitByEntity = hitByEntity;
-	}
-
-	public int getHitByBlock() {
-		return hitByBlock;
-	}
-
-	public void setHitByBlock(int hitByBlock) {
-		this.hitByBlock = hitByBlock;
-	}
+	private List<DamageCause> damageCuasesWithDurability = Arrays.asList(DamageCause.BLOCK_EXPLOSION,
+			DamageCause.CONTACT, DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION,
+			DamageCause.ENTITY_SWEEP_ATTACK, DamageCause.FIRE, DamageCause.HOT_FLOOR, DamageCause.LAVA,
+			DamageCause.LIGHTNING, DamageCause.PROJECTILE, DamageCause.THORNS, DamageCause.WITHER);
+	private int thornsExtraDamage = 1;
+	private int thornsExtraDamageOnHit = 2;
 
 	public int getThornsExtraDamage() {
 		return thornsExtraDamage;
@@ -35,28 +21,52 @@ public class ArmorDurability extends ItemDurability {
 		this.thornsExtraDamage = thornsExtraDamage;
 	}
 
-	public List<Integer> getNearExplosionDamage() {
-		return nearExplosionDamage;
+	/**
+	 * @return the damageCuasesWithDurability
+	 */
+	public List<DamageCause> getDamageCuasesWithDurability() {
+		return damageCuasesWithDurability;
 	}
 
-	public void setNearExplosionDamage(List<Integer> nearExplosionDamage) {
-		this.nearExplosionDamage = nearExplosionDamage;
+	/**
+	 * @param damageCuasesWithDurability
+	 *            the damageCuasesWithDurability to set
+	 */
+	public void setDamageCuasesWithDurability(List<DamageCause> damageCuasesWithDurability) {
+		this.damageCuasesWithDurability = damageCuasesWithDurability;
 	}
 
-	public void addNearExplosionDamage(int durability) {
-		this.nearExplosionDamage.add(durability);
+	/**
+	 * @return the thornsExtraDamageOnHit
+	 */
+	public int getThornsExtraDamageOnHit() {
+		return thornsExtraDamageOnHit;
 	}
 
-	public List<Integer> getFarExplosionDamage() {
-		return farExplosionDamage;
+	/**
+	 * @param thornsExtraDamageOnHit
+	 *            the thornsExtraDamageOnHit to set
+	 */
+	public void setThornsExtraDamageOnHit(int thornsExtraDamageOnHit) {
+		this.thornsExtraDamageOnHit = thornsExtraDamageOnHit;
 	}
 
-	public void setFarExplosionDamage(List<Integer> farExplosionDamage) {
-		this.farExplosionDamage = farExplosionDamage;
-	}
+	/**
+	 * Calculates the damage that the armor will take for the specified damage
+	 */
+	public int getArmorDamage(DamageCause cause, float damage, boolean hadThorns) {
+		if (!damageCuasesWithDurability.contains(cause))
+			return 0;
 
-	public void addFarExplosionDamage(int durability) {
-		this.farExplosionDamage.add(durability);
-	}
+		damage = damage / 4.0F;
 
+		if (damage < 1.0F) {
+			damage = 1.0F;
+		}
+
+		if (hadThorns)
+			return thornsExtraDamage + (int) damage;
+		else
+			return (int) damage;
+	}
 }

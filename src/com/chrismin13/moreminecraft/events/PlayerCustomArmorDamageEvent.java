@@ -5,28 +5,29 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.durability.ArmorDurability;
 import com.chrismin13.moreminecraft.api.items.CustomArmor;
 
 public class PlayerCustomArmorDamageEvent extends PlayerCustomItemDamageEvent {
 
 	private DamageCause damageCause;
 
-	public PlayerCustomArmorDamageEvent(PlayerItemDamageEvent event, CustomArmor cArmor, DamageCause damageCause) {
+	public PlayerCustomArmorDamageEvent(PlayerItemDamageEvent event, CustomArmor cArmor, DamageCause damageCause, short durability) {
 		super(event, cArmor);
-		event.setDamage(getDamage(damageCause, cArmor.getDurabilityMechanics()));
+		event.setDamage(durability);
 		setDamageCause(damageCause);
 	}
 
-	public PlayerCustomArmorDamageEvent(Player player, ItemStack what, CustomArmor cArmor, DamageCause damageCause) {
-		super(player, what, getDamage(damageCause, cArmor.getDurabilityMechanics()), cArmor);
+	public PlayerCustomArmorDamageEvent(Player player, ItemStack item, CustomArmor cArmor, DamageCause damageCause, short durability) {
+		super(player, item, durability, cArmor);
 		setDamageCause(damageCause);
 	}
-
-	private static int getDamage(DamageCause damageCause, ArmorDurability dur) {
-		if (damageCause == DamageCause.ENTITY_ATTACK)
-			return dur.getHitByEntity();
-		return 0;
+	
+	public PlayerCustomArmorDamageEvent(Player player, ItemStack item, CustomArmor cArmor, DamageCause damageCause, float damage, boolean hadThorns) {
+		this(player, item, cArmor, damageCause, (short) cArmor.getDurabilityMechanics().getArmorDamage(damageCause, damage, hadThorns));
+	}
+	
+	public PlayerCustomArmorDamageEvent(Player player, ItemStack item, CustomArmor cArmor, boolean usedThorns) {
+		this(player, item, cArmor, DamageCause.THORNS, (short) cArmor.getDurabilityMechanics().getThornsExtraDamageOnHit());
 	}
 	
 	/**
