@@ -9,11 +9,11 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
+import com.chrismin13.moreminecraft.items.CustomItem;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
 import com.chrismin13.moreminecraft.enums.ItemType;
-import com.chrismin13.moreminecraft.events.ArrowFromCustomBowHitEvent;
-import com.chrismin13.moreminecraft.events.EntityShootCustomBowEvent;
+import com.chrismin13.moreminecraft.events.bow.ArrowFromCustomBowHitEvent;
+import com.chrismin13.moreminecraft.events.bow.EntityShootCustomBowEvent;
 import com.chrismin13.moreminecraft.listeners.custom.ArrowFromCustomBowHit;
 import com.chrismin13.moreminecraft.utils.BowStackContainer;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
@@ -24,10 +24,11 @@ public class EntityShootBow implements Listener {
 	public void onEntityShootBow(EntityShootBowEvent event) {
 		ItemStack item = event.getBow();
 		if (CustomItemUtils.isCustomItem(item)) {
-			CustomItem cItem = CustomItemUtils.getCustomItem(item);
+			CustomItemStack cStack = new CustomItemStack(item);
+			CustomItem cItem = cStack.getCustomItem();
 			if (cItem.getItemType() == ItemType.BOW) {
 				Bukkit.getServer().getPluginManager()
-						.callEvent(new EntityShootCustomBowEvent(event, new CustomItemStack(item)));
+						.callEvent(new EntityShootCustomBowEvent(event, cStack));
 			}
 		}
 	}

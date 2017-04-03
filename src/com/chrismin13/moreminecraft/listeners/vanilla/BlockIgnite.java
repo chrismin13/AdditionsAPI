@@ -8,9 +8,9 @@ import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
 import com.chrismin13.moreminecraft.enums.ItemType;
-import com.chrismin13.moreminecraft.events.CustomItemBlockIgniteEvent;
+import com.chrismin13.moreminecraft.events.item.CustomItemBlockIgniteEvent;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class BlockIgnite implements Listener {

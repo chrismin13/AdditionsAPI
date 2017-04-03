@@ -13,12 +13,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.durability.HoeDurability;
-import com.chrismin13.moreminecraft.api.durability.ItemDurability;
-import com.chrismin13.moreminecraft.api.durability.SpadeDurability;
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.events.CustomItemPlayerInteractEvent;
-import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.durability.HoeDurability;
+import com.chrismin13.moreminecraft.durability.ItemDurability;
+import com.chrismin13.moreminecraft.durability.SpadeDurability;
+import com.chrismin13.moreminecraft.events.item.CustomItemPlayerInteractEvent;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.items.CustomItem;
 
 public class CustomItemPlayerInteract implements Listener {
 

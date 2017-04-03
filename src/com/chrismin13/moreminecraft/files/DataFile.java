@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
-import com.chrismin13.moreminecraft.api.items.StorageCustomItem;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
+import com.chrismin13.moreminecraft.items.StorageCustomItem;
 import com.chrismin13.moreminecraft.utils.Debug;
 
 public class DataFile {
@@ -47,7 +47,7 @@ public class DataFile {
 
 	public void addCustomItemStack(CustomItemStack cStack) {
 		String string = cStack.getCustomItem().getMaterial() + ";" + cStack.getItemStack().getDurability() + ";"
-				+ cStack.getCustomItem().getCustomItemIdName() + ";" + cStack.getTexture();
+				+ cStack.getCustomItem().getIdName() + ";" + cStack.getTexture();
 		if (!items.contains(string))
 			items.add(string);
 	}
@@ -118,7 +118,7 @@ public class DataFile {
 		try {
 			data.save(file);
 		} catch (IOException e) {
-			Debug.sayError(ChatColor.RED + "Could not save data.yml!");
+			Debug.sayError(ChatColor.RED + "Could not save data.yml! Is it in use by another program? Is there enough space?");
 			e.printStackTrace();
 		}
 	}

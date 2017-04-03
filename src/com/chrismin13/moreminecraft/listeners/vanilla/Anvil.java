@@ -10,8 +10,9 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.api.items.CustomTool;
+import com.chrismin13.moreminecraft.items.CustomItem;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
+import com.chrismin13.moreminecraft.items.CustomTool;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 import net.md_5.bungee.api.ChatColor;
@@ -24,10 +25,11 @@ public class Anvil implements Listener {
 		ItemStack resultItem = event.getResult();
 		if (!CustomItemUtils.isCustomItem(resultItem))
 			return;
-		CustomItem cItem = CustomItemUtils.getCustomItem(resultItem);
 		AnvilInventory inv = event.getInventory();
 		ItemMeta resultMeta = resultItem.getItemMeta();
-
+		CustomItemStack cStack = new CustomItemStack(resultItem);
+		CustomItem cItem = cStack.getCustomItem();
+		
 		ItemStack leftItem = inv.getItem(0);
 		ItemMeta leftMeta = leftItem.getItemMeta();
 		/*
@@ -74,10 +76,9 @@ public class Anvil implements Listener {
 		 */
 		if (cItem instanceof CustomTool) {
 			CustomTool cTool = (CustomTool) cItem;
-			if (cTool.getFakeDamageLore() && resultItem.getEnchantments() != null
+			if (cTool.hasFakeDamageLore() && resultItem.getEnchantments() != null
 					&& resultItem.getEnchantments().containsKey(Enchantment.DAMAGE_ALL)) {
-				resultMeta.setLore(cItem.getFullLore(resultItem.getEnchantments(),
-						CustomItemUtils.getCurrentFakeDurability(resultItem)));
+				cStack.updateLore();
 			}
 		}
 		resultItem.setItemMeta(resultMeta);

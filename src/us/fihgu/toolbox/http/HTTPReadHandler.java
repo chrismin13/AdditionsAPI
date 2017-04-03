@@ -9,6 +9,8 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.CoderResult;
 import java.util.Calendar;
 
+import com.chrismin13.moreminecraft.utils.Debug;
+
 import us.fihgu.toolbox.web.SelectionHandler;
 
 public class HTTPReadHandler implements SelectionHandler
@@ -216,10 +218,10 @@ public class HTTPReadHandler implements SelectionHandler
 		selectionKey.cancel();
 		if(server.debug)
 		{
-			System.out.println("");
-			System.out.println("Request recived from: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
-			System.out.println(request);
-			System.out.println("");
+			Debug.sayTrue("");
+			Debug.sayTrue("Request recived from: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
+			Debug.sayTrue(request.toString());
+			Debug.sayTrue("");
 		}
 		
 		HTTPContext context = server.getContext(request);
@@ -262,7 +264,7 @@ public class HTTPReadHandler implements SelectionHandler
 		{
 			if (server.info)
 			{
-				System.out.println("HTTP disconnect: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
+				Debug.sayTrue("HTTP disconnect: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
 			}
 			selectionKey.channel().close();
 			
@@ -280,7 +282,7 @@ public class HTTPReadHandler implements SelectionHandler
 		selectionKey.cancel();
 		if(server.debug)
 		{
-			System.out.println("Recived Bad Request.");
+			Debug.sayTrue("Recived Bad Request.");
 		}
 		
 		this.sendResponse(selectionKey, new HTTPResponse(ResponseCode.BAD_REQUEST, null));

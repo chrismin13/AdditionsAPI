@@ -10,7 +10,7 @@ import us.fihgu.toolbox.resourcepack.model.Predicate;
 import java.io.File;
 import java.util.Map;
 
-import com.chrismin13.moreminecraft.api.items.CustomItem;
+import com.chrismin13.moreminecraft.items.CustomItem;
 
 /**
  * Can be implemented by a {@link CustomItem}<br>
@@ -70,7 +70,7 @@ public interface ModelInjector {
 		checkCustomItem();
 
 		CustomItem item = (CustomItem) this;
-		String[] name = item.getCustomItemIdName().split(":");
+		String[] name = item.getIdName().split(":");
 		double maxDurability = (double) getDamageableItem().getMaxDurability();
 
 		Map<ModelInjection, Short> overrideEntries = this.getOverrideEntries();

@@ -1,13 +1,12 @@
 package com.chrismin13.moreminecraft.utils;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,25 +16,25 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
-import com.chrismin13.moreminecraft.api.items.StorageCustomItem;
-import com.chrismin13.moreminecraft.api.recipes.CustomFurnaceRecipe;
-import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
-import com.chrismin13.moreminecraft.api.recipes.CustomShapelessRecipe;
-import com.chrismin13.moreminecraft.api.recipes.RecipeIngredient;
+import com.chrismin13.moreminecraft.items.CustomItem;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
+import com.chrismin13.moreminecraft.items.StorageCustomItem;
+import com.chrismin13.moreminecraft.recipes.CustomFurnaceRecipe;
+import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
+import com.chrismin13.moreminecraft.recipes.CustomShapelessRecipe;
+import com.chrismin13.moreminecraft.recipes.RecipeIngredient;
+import com.comphenix.attribute.AttributeStorage;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.DataFile;
-import com.chrismin13.moreminecraft.utils.attributestorage.AttributeStorage;
 
 import us.fihgu.toolbox.item.ModelInjector;
 
 public class CustomItemUtils implements Listener {
 
 	// === VARIABLES === //
-
-	private static HashMap<String, CustomItem> customItems = new HashMap<String, CustomItem>();
-	private static HashMap<String, CustomItemStack> customItemStacks = new HashMap<String, CustomItemStack>();
+	// private static HashMap<String, CustomItem> customItems = new
+	// HashMap<String, CustomItem>();
+	private static List<CustomItemStack> customItemStacks = new ArrayList<CustomItemStack>();
 
 	// === INITIALIZATION === //
 
@@ -44,36 +43,35 @@ public class CustomItemUtils implements Listener {
 		CustomItem[] cItems = event.getCustomItems();
 		Debug.say("Recieved in total " + Integer.toString(cItems.length) + " Custom Items!");
 		for (CustomItem cItem : cItems) {
-			Debug.saySuper("Currently Processing: " + cItem.getCustomItemIdName());
+			Debug.saySuper("Currently Processing: " + cItem.getIdName());
 			/*
 			 * Adding to data.yml and obtaining values
 			 */
 			DataFile dataFile = DataFile.getInstance();
 			String texture = null;
-			String idName = cItem.getCustomItemIdName();
+			String idName = cItem.getIdName();
 			if (cItem instanceof ModelInjector) {
 				ModelInjector model = (ModelInjector) cItem;
 				Map<String, Short> textures = model.getAllTextures();
 				for (String string : textures.keySet()) {
 					Debug.saySuper("Currently Processing Texure: " + string);
 					short freeDurability;
-					if (dataFile.getCustomItem(cItem.getCustomItemIdName(), string) == null) {
+					if (dataFile.getCustomItem(cItem.getIdName(), string) == null) {
 						freeDurability = dataFile.getFreeDurability(cItem.getMaterial());
-						Debug.saySuper("Set durability to: " + freeDurability);
+						Debug.saySuper("Set durability of Texture '" + string + "' to: " + freeDurability);
 					} else {
-						freeDurability = dataFile.getCustomItem(cItem.getCustomItemIdName(), string).getDurability();
-						Debug.saySuper("Set durability to: " + freeDurability);
+						freeDurability = dataFile.getCustomItem(cItem.getIdName(), string).getDurability();
+						Debug.saySuper("Set durability of Texture '" + string + "' to: " + freeDurability);
 					}
 					textures.put(string, freeDurability);
 					if (model.getDefaultTexture().equals(string)) {
-						Debug.saySuper("Is default texture");
+						Debug.saySuper("Texture " + string + " is default texture.");
 						cItem.setDurability(freeDurability);
 						texture = string;
 					}
 					dataFile.addStorageCustomItem(
 							new StorageCustomItem(cItem.getMaterial(), freeDurability, idName, string));
 				}
-				Debug.saySuper("Final map:" + textures);
 			}
 			short durability = cItem.getDurability();
 			/*
@@ -81,16 +79,14 @@ public class CustomItemUtils implements Listener {
 			 */
 			CustomItemStack cStack = new CustomItemStack(cItem, durability, texture);
 			ItemStack item = cStack.getItemStack();
-			Debug.saySuper("cStack Display Name: " + cStack.getCustomItem().getCustomItemIdName());
-			Debug.saySuper("cStack Durability: " + item.getDurability());
-			customItems.put(idName, cItem);
-			customItemStacks.put(idName, cStack);
+			// customItems.put(idName, cItem);
+			customItemStacks.add(cStack);
 			/*
 			 * Shaped Recipes
 			 */
 			for (CustomShapedRecipe cRecipe : cItem.getCustomShapedRecipes()) {
 				ShapedRecipe recipe = new ShapedRecipe(item);
-				Debug.saySuper("Adding recipe");
+				Debug.saySuper("Adding shaped recipe");
 
 				recipe.shape(cRecipe.getShape());
 				Debug.saySuper("Added shape:");
@@ -111,9 +107,13 @@ public class CustomItemUtils implements Listener {
 			for (CustomShapelessRecipe cRecipe : cItem.getCustomShapelessRecipes()) {
 				ShapelessRecipe recipe = new ShapelessRecipe(item);
 
+				Debug.saySuper("Adding shapeless recipe");
+
 				for (RecipeIngredient ingredient : cRecipe.getIngredients()) {
-					if (ingredient != null)
+					if (ingredient != null) {
 						recipe.addIngredient(ingredient.getMaterial());
+						Debug.saySuper("Added Material: " + ingredient.getMaterial());
+					}
 				}
 
 				Bukkit.addRecipe(recipe);
@@ -136,33 +136,33 @@ public class CustomItemUtils implements Listener {
 
 	public static boolean isValidCustomItem(String customItemIdName) {
 		try {
-			if (customItems.get(customItemIdName) != null && customItemStacks.get(customItemIdName) != null)
-				return true;
+			for (CustomItemStack cStack : customItemStacks)
+				if (cStack.getCustomItem().getIdName().equals(customItemIdName))
+					return true;
 		} catch (Exception e) {
 			return false;
 		}
 		return false;
 	}
-
-	public static CustomItem getCustomItem(ItemStack item) {
-		// TODO: Clone
-		return customItems.get(getIdName(item));
+	
+	public static CustomItemStack[] getAllCustomItemStacks() {
+		CustomItemStack[] cStacks = new CustomItemStack[customItemStacks.size()];
+		int i = 0;
+		for (CustomItemStack cStack : customItemStacks){
+			cStacks[i] = cStack.clone();
+			i++;
+		}
+		return cStacks;
 	}
-
-	public static CustomItem getCustomItem(String idName) {
-		return customItems.get(idName);
-	}
-
-	public static CustomItemStack getCustomItemStack(ItemStack item) {
-		return customItemStacks.get(getIdName(item));
-	}
-
-	public static CustomItemStack getCustomItemStack(String idName) {
-		return customItemStacks.get(idName);
-	}
-
-	public static Collection<CustomItem> getAllCustomItems() {
-		return customItems.values();
+	
+	public static CustomItem[] getAllCustomItems() {
+		CustomItem[] cItems = new CustomItem[customItemStacks.size()];
+		int i = 0;
+		for (CustomItemStack cStack : customItemStacks){
+			cItems[i] = cStack.getCustomItem();
+			i++;
+		}
+		return cItems;
 	}
 
 	// === ITEMSTACKS === //
@@ -179,21 +179,5 @@ public class CustomItemUtils implements Listener {
 		if (item.getType() != Material.AIR && getIdName(item) != null)
 			return true;
 		return false;
-	}
-
-	public static int getCurrentFakeDurability(ItemStack item) {
-		return getCurrentFakeDurability(item.getItemMeta().getLore());
-	}
-
-	public static int getCurrentFakeDurability(List<String> lore) {
-		for (String string : lore) {
-			if (string.startsWith(ChatColor.GRAY + "Durability: ")) {
-				// TODO: Add language file
-				String durability = string.replaceFirst(ChatColor.GRAY + "Durability: ", "");
-				String segments[] = durability.split(" / ");
-				return Integer.parseInt(segments[0]);
-			}
-		}
-		return 0;
 	}
 }

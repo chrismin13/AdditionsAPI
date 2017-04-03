@@ -10,10 +10,10 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.durability.FishingRodDurability;
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.events.CustomItemFishEvent;
-import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.durability.FishingRodDurability;
+import com.chrismin13.moreminecraft.events.item.CustomItemFishEvent;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.items.CustomItem;
 
 public class CustomItemFish implements Listener {
 

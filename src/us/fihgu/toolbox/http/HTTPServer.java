@@ -11,6 +11,8 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.util.HashMap;
 
+import com.chrismin13.moreminecraft.utils.Debug;
+
 import us.fihgu.toolbox.web.SelectionHandler;
 import us.fihgu.toolbox.web.SelectorThreadPool;
 import us.fihgu.toolbox.web.TimerThread;
@@ -109,7 +111,7 @@ public class HTTPServer extends WebServer
 		super.startServer();
 		if(this.info)
 		{
-			System.out.println("HTTP Server binded to: " + this.address);
+			Debug.sayTrue("HTTP Server binded to: " + this.address);
 		}
 	}
 
@@ -131,7 +133,7 @@ public class HTTPServer extends WebServer
 		{
 			try
 			{
-				System.out.println("HTTP connection timeout: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
+				Debug.sayTrue("HTTP connection timeout: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
 			}
 			catch (IOException e)
 			{

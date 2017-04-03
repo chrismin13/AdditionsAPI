@@ -3,14 +3,14 @@ package com.chrismin13.moreminecraft.enums;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.durability.ArmorDurability;
-import com.chrismin13.moreminecraft.api.durability.BowDurability;
-import com.chrismin13.moreminecraft.api.durability.ElytraDurability;
-import com.chrismin13.moreminecraft.api.durability.FishingRodDurability;
-import com.chrismin13.moreminecraft.api.durability.FlintAndSteelDurability;
-import com.chrismin13.moreminecraft.api.durability.ItemDurability;
-import com.chrismin13.moreminecraft.api.durability.ShearDurability;
-import com.chrismin13.moreminecraft.api.durability.ShieldDurability;
+import com.chrismin13.moreminecraft.durability.ArmorDurability;
+import com.chrismin13.moreminecraft.durability.BowDurability;
+import com.chrismin13.moreminecraft.durability.ElytraDurability;
+import com.chrismin13.moreminecraft.durability.FishingRodDurability;
+import com.chrismin13.moreminecraft.durability.FlintAndSteelDurability;
+import com.chrismin13.moreminecraft.durability.ItemDurability;
+import com.chrismin13.moreminecraft.durability.ShearDurability;
+import com.chrismin13.moreminecraft.durability.ShieldDurability;
 
 public enum ItemType {
 

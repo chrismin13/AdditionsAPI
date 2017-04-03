@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
-import com.chrismin13.moreminecraft.events.CustomItemPlayerInteractEvent;
+import com.chrismin13.moreminecraft.events.item.CustomItemPlayerInteractEvent;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class PlayerInteract implements Listener {

@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Users/chrismin13/Desktop/Test Server/spigot-1.11.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/chrismin13/Desktop/MC Test Server/spigot-1.11.2-R0.1-SNAPSHOT.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/chrismin13/Downloads/bukkit-1.11.2-R0.1-20161221.112611-1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

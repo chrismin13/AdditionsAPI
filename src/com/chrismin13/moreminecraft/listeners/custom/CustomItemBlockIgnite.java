@@ -8,11 +8,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.durability.FlintAndSteelDurability;
-import com.chrismin13.moreminecraft.api.durability.ItemDurability;
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.events.CustomItemBlockIgniteEvent;
-import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.durability.FlintAndSteelDurability;
+import com.chrismin13.moreminecraft.durability.ItemDurability;
+import com.chrismin13.moreminecraft.events.item.CustomItemBlockIgniteEvent;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.items.CustomItem;
 
 public class CustomItemBlockIgnite implements Listener {
 	

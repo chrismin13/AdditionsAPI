@@ -8,10 +8,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.durability.ShieldDurability;
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.events.CustomShieldPlayerDamageByEntityEvent;
-import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.durability.ShieldDurability;
+import com.chrismin13.moreminecraft.items.CustomItem;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.events.shield.CustomShieldPlayerDamageByEntityEvent;
 import com.chrismin13.moreminecraft.utils.NumberUtils;
 
 public class CustomShieldEntityDamageByEntity implements Listener {

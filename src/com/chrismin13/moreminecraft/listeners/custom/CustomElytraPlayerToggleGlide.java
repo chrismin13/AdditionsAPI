@@ -9,9 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.api.durability.ElytraDurability;
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.events.CustomElytraPlayerToggleGlideEvent;
+import com.chrismin13.moreminecraft.durability.ElytraDurability;
+import com.chrismin13.moreminecraft.events.elytra.CustomElytraPlayerToggleGlideEvent;
+import com.chrismin13.moreminecraft.items.CustomItem;
 import com.chrismin13.moreminecraft.utils.ElytraDurabilityTask;
 
 public class CustomElytraPlayerToggleGlide implements Listener {

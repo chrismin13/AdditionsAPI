@@ -1,14 +1,14 @@
 package com.chrismin13.moreminecraft;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.ConfigFile;
 import com.chrismin13.moreminecraft.files.DataFile;
+import com.chrismin13.moreminecraft.files.LangFile;
 import com.chrismin13.moreminecraft.listeners.custom.ArrowFromCustomBowHit;
 import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockBreak;
@@ -25,9 +25,10 @@ import com.chrismin13.moreminecraft.listeners.vanilla.BlockBreak;
 import com.chrismin13.moreminecraft.listeners.vanilla.BlockIgnite;
 import com.chrismin13.moreminecraft.listeners.vanilla.CraftingTable;
 import com.chrismin13.moreminecraft.listeners.vanilla.EnchantItem;
-import com.chrismin13.moreminecraft.listeners.vanilla.EntityDamageByEntity;
+import com.chrismin13.moreminecraft.listeners.vanilla.EntityDamage;
 import com.chrismin13.moreminecraft.listeners.vanilla.EntityShootBow;
 import com.chrismin13.moreminecraft.listeners.vanilla.EntityToggleGlide;
+import com.chrismin13.moreminecraft.listeners.vanilla.PlayerDeath;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerFish;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerInteract;
 import com.chrismin13.moreminecraft.listeners.vanilla.PlayerShearEntity;
@@ -46,56 +47,62 @@ public class MoreMinecraft extends JavaPlugin {
 
 		instance = this;
 
-		ConfigFile.getInstance().setup();
+		ConfigFile config = ConfigFile.getInstance();
+		config.setup();
+		if (config.getConfig().getBoolean("resource-pack.force-on-join"))
+			ResourcePackManager.setForceResourcePack();
+		
 		DataFile.getInstance().setup();
+		
+		LangFile lang = LangFile.getInstance();
+		lang.setup();
+		String pluginName = "more_minecraft";
+		lang.addEntry(pluginName, "sword", "Sword");
+		lang.addEntry(pluginName, "axe", "Axe");
+		lang.addEntry(pluginName, "picakaxe", "Pickaxe");
+		lang.addEntry(pluginName, "spade", "Shovel");
+		lang.addEntry(pluginName, "hoe", "Hoe");
+		lang.addEntry(pluginName, "helmet", "Helmet");
+		lang.addEntry(pluginName, "chestplate", "Chestplate");
+		lang.addEntry(pluginName, "leggings", "Leggings");
+		lang.addEntry(pluginName, "boots", "Boots");
+		lang.addEntry(pluginName, "leather_helmet", "Cap");
+		lang.addEntry(pluginName, "leather_chestplate", "Tunic");
+		lang.addEntry(pluginName, "leather_leggings", "Pants");
+		lang.addEntry(pluginName, "leather_boots", "Boots");
+		lang.addEntry(pluginName, "attack_main_hand", "When in main hand:");
+		lang.addEntry(pluginName, "attack_speed", "Attack Speed");
+		lang.addEntry(pluginName, "attack_damage", "Attack Damage");
+		lang.addEntry(pluginName, "durability", "Durability:");
+		lang.addEntry(pluginName, "death_message", " using [CustomItem]");
+		lang.addEntry(pluginName, "resource_pack_kick", "You must accept the resource pack in order to join the server! Click on the server once, then click edit and change Server Resource pack to True.");
+		lang.saveData();
 
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvents(new EnchantItem(), this);
-		pm.registerEvents(new Anvil(), this);
-		pm.registerEvents(new CraftingTable(), this);
-		pm.registerEvents(new BlockBreak(), this);
-		pm.registerEvents(new CustomItemBlockBreak(), this);
-		pm.registerEvents(new EntityDamageByEntity(), this);
-		pm.registerEvents(new EntityDamageByPlayerUsingCustomItem(), this);
-		pm.registerEvents(new PlayerCustomItemDamage(), this);
-		pm.registerEvents(new PlayerInteract(), this);
-		pm.registerEvents(new CustomItemPlayerInteract(), this);
-		pm.registerEvents(new PlayerShearEntity(), this);
-		pm.registerEvents(new CustomItemShearEntity(), this);
-		pm.registerEvents(new PlayerFish(), this);
-		pm.registerEvents(new CustomItemFish(), this);
-		pm.registerEvents(new BlockIgnite(), this);
-		pm.registerEvents(new CustomItemBlockIgnite(), this);
-		pm.registerEvents(new EntityShootBow(), this);
-		pm.registerEvents(new EntityShootCustomBow(), this);
-		pm.registerEvents(new CustomShieldEntityDamageByEntity(), this);
-		pm.registerEvents(new EntityToggleGlide(), this);
-		pm.registerEvents(new CustomElytraPlayerToggleGlide(), this);
-		pm.registerEvents(new CustomItemUtils(), this);
-		pm.registerEvents(new ArrowFromCustomBowHit(), this);
+		for (Listener listener : Arrays.asList(new EnchantItem(), new Anvil(), new CraftingTable(), new BlockBreak(),
+				new CustomItemBlockBreak(), new EntityDamage(), new EntityDamageByPlayerUsingCustomItem(),
+				new PlayerCustomItemDamage(), new PlayerInteract(), new CustomItemPlayerInteract(),
+				new PlayerShearEntity(), new CustomItemShearEntity(), new PlayerFish(), new CustomItemFish(),
+				new BlockIgnite(), new CustomItemBlockIgnite(), new EntityShootBow(), new EntityShootCustomBow(),
+				new CustomShieldEntityDamageByEntity(), new EntityToggleGlide(), new CustomElytraPlayerToggleGlide(),
+				new CustomItemUtils(), new ArrowFromCustomBowHit(), new PlayerDeath())) {
+			getServer().getPluginManager().registerEvents(listener, this);
+		}
+		
 		new ResourcePackListener().register(this);
-		// After all plugins have been enabled
-		BukkitRunnable task = new BukkitRunnable() {
-			@Override
-			public void run() {
-				
-				Debug.say("Starting MoreMinecraftAPI Intialization");
-				getServer().getPluginManager().callEvent(new MoreMinecraftAPIInitializationEvent());
-				Debug.say("Finished Initialization.");
-				Debug.saySuper("aaaaand chat spam too. :P");
-				
-				// TODO
-				// save custom item id configuration
-				//CustomItemManager.saveIdConfiguration();
 
-				if (ResourcePackManager.hasResource()) {
-					setupHTTPServer();
-				}
+		// After all plugins have been enabled
+		getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+			Debug.say("Starting MoreMinecraftAPI Intialization");
+			getServer().getPluginManager().callEvent(new MoreMinecraftAPIInitializationEvent());
+			Debug.say("Finished Initialization.");
+			Debug.saySuper("aaaaand chat spam too. :P");
+
+			if (ResourcePackManager.hasResource()) {
+				setupHTTPServer();
 			}
-		};
-		task.runTask(this);
+		});
 	}
-	
+
 	public void onDisable() {
 		ResourcePackServer.stopServer();
 	}
@@ -104,7 +111,7 @@ public class MoreMinecraft extends JavaPlugin {
 		try {
 			ResourcePackManager.Load();
 			ResourcePackManager.buildResourcePack();
-			System.out.println("Starting a http server for hosting resource pack.");
+			Debug.sayTrue("Starting an HTTP Server for hosting the Resource Pack.");
 			ResourcePackServer.startServer();
 			this.saveConfig();
 		} catch (IOException e) {

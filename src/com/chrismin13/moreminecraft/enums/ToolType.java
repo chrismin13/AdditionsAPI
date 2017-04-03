@@ -5,14 +5,15 @@ import java.util.List;
 
 import org.bukkit.Material;
 
-import com.chrismin13.moreminecraft.api.durability.AxeDurability;
-import com.chrismin13.moreminecraft.api.durability.HoeDurability;
-import com.chrismin13.moreminecraft.api.durability.ItemDurability;
-import com.chrismin13.moreminecraft.api.durability.PickaxeDurability;
-import com.chrismin13.moreminecraft.api.durability.SpadeDurability;
-import com.chrismin13.moreminecraft.api.durability.SwordDurability;
-import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
+import com.chrismin13.moreminecraft.durability.AxeDurability;
+import com.chrismin13.moreminecraft.durability.HoeDurability;
+import com.chrismin13.moreminecraft.durability.ItemDurability;
+import com.chrismin13.moreminecraft.durability.PickaxeDurability;
+import com.chrismin13.moreminecraft.durability.SpadeDurability;
+import com.chrismin13.moreminecraft.durability.SwordDurability;
+import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.utils.Debug;
+import com.chrismin13.moreminecraft.utils.LangFileUtils;
 
 public enum ToolType {
 
@@ -141,4 +142,8 @@ public enum ToolType {
 		}
 	}
 
+	public String toIngameString() {
+		return LangFileUtils.get(this.toString().toLowerCase());
+	}
+	
 }

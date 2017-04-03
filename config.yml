@@ -9,4 +9,5 @@ http:
  numWriteThread: 4
  
 resource-pack:
+ force-on-join: true
  overwrite-files: true

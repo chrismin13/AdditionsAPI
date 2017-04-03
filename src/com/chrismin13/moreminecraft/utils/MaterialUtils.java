@@ -54,8 +54,8 @@ public class MaterialUtils {
 	/**
 	 * Retrieve the base damage of the given item.
 	 * 
-	 * @param stack
-	 *            - the stack.
+	 * @param material
+	 *            - the material that you want the base damage for.
 	 * @return The base damage.
 	 */
 	public static double getBaseDamage(Material material) {

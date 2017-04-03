@@ -55,7 +55,7 @@ public class ConfigFile {
 		try {
 			config.save(cfile);
 		} catch (IOException e) {
-			Debug.sayError(ChatColor.RED + "Could not save config.yml!");
+			Debug.sayError(ChatColor.RED + "Could not save config.yml! Is it in use by another program? Is there enough space?");
 			e.printStackTrace();
 		}
 	}

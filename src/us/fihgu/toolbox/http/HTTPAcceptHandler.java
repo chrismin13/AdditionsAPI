@@ -6,6 +6,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Calendar;
 
+import com.chrismin13.moreminecraft.utils.Debug;
+
 import us.fihgu.toolbox.web.SelectionHandler;
 
 public class HTTPAcceptHandler implements SelectionHandler
@@ -34,7 +36,7 @@ public class HTTPAcceptHandler implements SelectionHandler
 				
 				if(server.info)
 				{
-					System.out.println("HTTP connect: " + client.getRemoteAddress().toString());
+					Debug.sayTrue("HTTP connect: " + client.getRemoteAddress().toString());
 				}
 			}
 		}

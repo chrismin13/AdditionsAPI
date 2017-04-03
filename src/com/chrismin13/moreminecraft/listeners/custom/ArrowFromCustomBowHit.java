@@ -10,8 +10,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
-import com.chrismin13.moreminecraft.events.ArrowFromCustomBowHitEvent;
+import com.chrismin13.moreminecraft.events.bow.ArrowFromCustomBowHitEvent;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
 import com.chrismin13.moreminecraft.utils.BowStackContainer;
 
 public class ArrowFromCustomBowHit implements Listener {

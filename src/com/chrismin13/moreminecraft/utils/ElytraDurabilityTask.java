@@ -5,9 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.chrismin13.moreminecraft.api.durability.ElytraDurability;
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.durability.ElytraDurability;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.items.CustomItem;
 import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 
 public class ElytraDurabilityTask extends BukkitRunnable {

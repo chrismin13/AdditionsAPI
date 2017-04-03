@@ -7,9 +7,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.items.CustomItem;
-import com.chrismin13.moreminecraft.events.EntityDamageByPlayerUsingCustomItemEvent;
-import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.items.CustomItem;
+import com.chrismin13.moreminecraft.events.item.EntityDamageByPlayerUsingCustomItemEvent;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
 
 public class EntityDamageByPlayerUsingCustomItem implements Listener {
 

@@ -9,12 +9,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.durability.BowDurability;
-import com.chrismin13.moreminecraft.api.durability.ItemDurability;
-import com.chrismin13.moreminecraft.api.items.CustomBow;
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
-import com.chrismin13.moreminecraft.events.EntityShootCustomBowEvent;
-import com.chrismin13.moreminecraft.events.PlayerCustomItemDamageEvent;
+import com.chrismin13.moreminecraft.durability.BowDurability;
+import com.chrismin13.moreminecraft.durability.ItemDurability;
+import com.chrismin13.moreminecraft.items.CustomBow;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
+import com.chrismin13.moreminecraft.events.bow.EntityShootCustomBowEvent;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
 
 public class EntityShootCustomBow implements Listener {
 	

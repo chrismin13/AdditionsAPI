@@ -6,6 +6,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.CharacterCodingException;
 
+import com.chrismin13.moreminecraft.utils.Debug;
+
 import us.fihgu.toolbox.web.SelectionHandler;
 
 public class HTTPWriteHandler implements SelectionHandler
@@ -45,10 +47,10 @@ public class HTTPWriteHandler implements SelectionHandler
 					{
 						if(server.debug)
 						{
-							System.out.println("");
-							System.out.println("Response sent to: " + channel.getRemoteAddress());
-							System.out.println(response.toString());
-							System.out.println("");
+							Debug.sayTrue("");
+							Debug.sayTrue("Response sent to: " + channel.getRemoteAddress());
+							Debug.sayTrue(response.toString());
+							Debug.sayTrue("");
 						}
 						this.closeChannel(selectionKey);
 					}
@@ -134,7 +136,7 @@ public class HTTPWriteHandler implements SelectionHandler
 		{
 			if (server.info)
 			{
-				System.out.println("HTTP disconnect: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
+				Debug.sayTrue("HTTP disconnect: " + ((SocketChannel)selectionKey.channel()).getRemoteAddress());
 			}
 			selectionKey.channel().close();
 		}

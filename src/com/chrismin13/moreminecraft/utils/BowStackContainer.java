@@ -2,7 +2,7 @@ package com.chrismin13.moreminecraft.utils;
 
 import org.bukkit.entity.LivingEntity;
 
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
 
 public class BowStackContainer {
 	

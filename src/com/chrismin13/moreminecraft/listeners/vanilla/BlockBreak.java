@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.moreminecraft.api.items.CustomItemStack;
-import com.chrismin13.moreminecraft.events.CustomItemBlockBreakEvent;
+import com.chrismin13.moreminecraft.events.item.CustomItemBlockBreakEvent;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class BlockBreak implements Listener {

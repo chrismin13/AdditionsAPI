@@ -3,7 +3,7 @@ package us.fihgu.toolbox.resourcepack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.api.items.CustomItem;
+import com.chrismin13.moreminecraft.items.CustomItem;
 import com.chrismin13.moreminecraft.files.ConfigFile;
 import com.chrismin13.moreminecraft.files.ConfigFile.DebugType;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
@@ -60,12 +60,12 @@ public class ResourcePackManager {
 	/**
 	 * The file location for saving resource pack.
 	 */
-	private static File saveFile = new File("./fihgu/toolbox/resourceUsers.json");
+	private static File saveFile = new File(MoreMinecraft.getInstance().getDataFolder() + "resource-pack/resourceUsers.json");
 
 	/**
 	 * The file path for saving the final resource pack.
 	 */
-	private static File resourceFile = new File("./fihgu/toolbox/resource/resource.zip");
+	private static File resourceFile = new File(MoreMinecraft.getInstance().getDataFolder() + "resource-pack/resource.zip");
 
 	/**
 	 * A list of resources that needs to be merged to the final resource pack.
@@ -166,7 +166,8 @@ public class ResourcePackManager {
 
 	public static void buildResourcePack() throws IOException {
 		if (needsRebuild()) {
-			System.out.println("Resource pack change detected, building new resource pack.");
+			Debug.say("Creating Resource Pack.");
+			Debug.sayTrue("Resource pack change detected, building new resource pack.");
 			int build = MoreMinecraft.getInstance().getConfig().getInt("resource-pack.build", 0);
 			build++;
 			MoreMinecraft.getInstance().getConfig().set("resource-pack.build", build);
@@ -174,7 +175,7 @@ public class ResourcePackManager {
 			File work = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource/work/");
 			FileUtils.deleteFolder(work);
 			// a temporary file used for downloading resource pack files.
-			File temp = new File("./fihgu/toolbox/resource/download/temp.zip");
+			File temp = new File(MoreMinecraft.getInstance().getDataFolder() + "resource-pack/download/temp.zip");
 			FileUtils.createFileAndPath(temp);
 			// check and download server's original resource pack.
 			downloadResourcePack(work, temp);
@@ -186,15 +187,15 @@ public class ResourcePackManager {
 			FileUtils.copyResource(MoreMinecraft.getInstance(), "resource/pack.mcmeta", new File(work, "pack.mcmeta"));
 			FileUtils.copyResource(MoreMinecraft.getInstance(), "resource/pack.png", new File(work, "pack.png"));
 			// pack up result resource pack.
-			System.out.println("Packing complete resource pack.");
+			Debug.sayTrue("Packing complete resource pack.");
 			FileUtils.zip(work, resourceFile);
-			System.out.println("Resource pack has been constructed.");
+			Debug.sayTrue("Resource pack has been constructed.");
 
 			// remove temporary folder.
 			FileUtils.deleteFolder(work);
 			FileUtils.deleteFolder(temp.getParentFile());
 		} else {
-			System.out.println("No resource pack change, using cached resource pack.");
+			Debug.sayTrue("No resource pack change, using cached resource pack.");
 		}
 
 		// close all stream
@@ -231,12 +232,12 @@ public class ResourcePackManager {
 		String urlStr = getServerResourcePack();
 		ConfigFile.getInstance().getConfig().set("resource-pack.lastServerResourcePack", urlStr);
 		if (urlStr != null && !urlStr.equals("") && !urlStr.equals("null")) {
-			System.out.println("Found server resource pack setting.");
+			Debug.sayTrue("Found server resource pack setting.");
 			try {
-				System.out.println("downloading server resource pack");
+				Debug.sayTrue("downloading server resource pack");
 				URL url = new URL(urlStr);
 				FileUtils.copyURLtoFile(url, temp);
-				System.out.println("unpacking server resource pack");
+				Debug.sayTrue("unpacking server resource pack");
 				FileUtils.unzip(temp, work);
 			} catch (IOException e) {
 				e.printStackTrace();

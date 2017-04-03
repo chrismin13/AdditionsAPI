@@ -5,27 +5,21 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 
-import com.chrismin13.moreminecraft.api.recipes.CustomShapedRecipe;
+import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.utils.Debug;
+import com.chrismin13.moreminecraft.utils.LangFileUtils;
 
 public enum ArmorType {
 
 	HELMET, CHESTPLATE, LEGGINGS, BOOTS;
-
-	// TODO: Add language file
-	public String toLeatherArmorString() {
-		switch (this) {
-		case BOOTS:
-			return "Boots";
-		case CHESTPLATE:
-			return "Tunic";
-		case HELMET:
-			return "Cap";
-		case LEGGINGS:
-			return "Pants";
-		default:
-			return null;
-		}
+	
+	public String toIngameString() {
+		return LangFileUtils.get(this.toString().toLowerCase());
+	}
+	
+	// DONE: Add language file
+	public String toIngameLeatherString() {
+		return LangFileUtils.get("leather_" + this.toString().toLowerCase());
 	}
 
 	public Material getLeatherMaterial() {

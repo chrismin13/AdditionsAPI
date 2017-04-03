@@ -11,26 +11,23 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import com.chrismin13.moreminecraft.api.items.CustomItem;
+import com.chrismin13.moreminecraft.items.CustomItem;
+import com.chrismin13.moreminecraft.items.CustomItemStack;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class EnchantItem implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onItemEnchant(EnchantItemEvent event) {
-		if (event.isCancelled())
+		if (event.isCancelled() || !CustomItemUtils.isCustomItem(event.getItem()))
 			return;
 		ItemStack item = event.getItem();
-		ItemMeta meta = item.getItemMeta();
+		CustomItemStack cStack = new CustomItemStack(item);
 		Map<Enchantment, Integer> eToAdd = event.getEnchantsToAdd();
 		Set<Enchantment> eSet = eToAdd.keySet();
 		List<Enchantment> e = new ArrayList<Enchantment>(eSet);
-		if (!CustomItemUtils.isCustomItem(item)) {
-			return;
-		}
-		CustomItem cItem = CustomItemUtils.getCustomItem(item);
+		CustomItem cItem = cStack.getCustomItem();
 		/*
 		 * Non Enchantable Items
 		 */
@@ -54,8 +51,7 @@ public class EnchantItem implements Listener {
 			}
 		}
 		if (item.containsEnchantment(Enchantment.DAMAGE_ALL)) {
-			meta.setLore(cItem.getFullLore(eToAdd, CustomItemUtils.getCurrentFakeDurability(item)));
+			cStack.updateLore();
 		}
-		item.setItemMeta(meta);
 	}
 }

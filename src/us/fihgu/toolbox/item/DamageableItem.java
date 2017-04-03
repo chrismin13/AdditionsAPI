@@ -1,15 +1,20 @@
 package us.fihgu.toolbox.item;
 
-import org.bukkit.Material;
-import us.fihgu.toolbox.resourcepack.model.*;
-
 import java.util.EnumSet;
+
+import org.bukkit.Material;
+
+import com.chrismin13.moreminecraft.items.textured.CustomTexturedItem;
+
+import us.fihgu.toolbox.resourcepack.model.DisplayEntry;
+import us.fihgu.toolbox.resourcepack.model.DisplayOptions;
+import us.fihgu.toolbox.resourcepack.model.ItemModel;
+import us.fihgu.toolbox.resourcepack.model.OverrideEntry;
+import us.fihgu.toolbox.resourcepack.model.Predicate;
 
 /**
  * An item with damage value.<br>
- * Used for identifying {@link CustomItem}<br>
- * You should check "usedCustomItemIds.txt" before using an id, so you don't run
- * into id conflicts all the time.<br>
+ * Used for identifying {@link CustomTexturedItem}<br>
  */
 public enum DamageableItem {
 	WOOD_HOE,
