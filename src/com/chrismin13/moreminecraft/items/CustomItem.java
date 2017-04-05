@@ -92,9 +92,12 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *            the amount of the CustomItem
 	 * @param durability
 	 *            the durability of the CustomItem
+	 * @param idName
+	 *            the Custom Item's ID Name. This has a format similar to
+	 *            "vanilla_additions:emerald_sword" and is saved in the
+	 *            ItemStack so you can easily what Custom Item it is.
 	 */
-	public CustomItem(final Material material, final int amount, final short durability,
-			final String idName) {
+	public CustomItem(final Material material, final int amount, final short durability, final String idName) {
 		this(material, amount, durability, idName, ItemType.getItemType(material).getItemDurability());
 	}
 
@@ -112,7 +115,10 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *            for the Item. This will modify the way that durability drops
 	 *            for the Custom Item. All Classes under package
 	 *            com.chrismin13.moreminecraft.durability are valid.
-	 */
+	 * @param idName
+	 *            the Custom Item's ID Name. This has a format similar to
+	 *            "vanilla_additions:emerald_sword" and is saved in the
+	 *            ItemStack so you can easily what Custom Item it is.	 */
 	public CustomItem(final Material material, final int amount, final short durability, final String idName,
 			final ItemDurability itemDurability) {
 		this.material = material;
@@ -182,8 +188,6 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === UNBREAKABLE === //
 
 	/**
-	 *
-	 * 
 	 * @return Boolean that states if the item is unbreakable or not. However,
 	 *         just because the Item is unbreakable doesn't mean that it will
 	 *         not have it's durability reduced as it can have Fake Durability.
