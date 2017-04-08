@@ -2,6 +2,16 @@ package com.chrismin13.moreminecraft.items;
 
 import org.bukkit.Material;
 
+import com.chrismin13.moreminecraft.files.DataFile;
+
+/**
+ * Used for Converting the Objects saved in the data.yml file. Meant mostly for
+ * internal use in the API. In order to obtain one, use the methods is
+ * {@link DataFile}
+ * 
+ * @author chrismin13
+ *
+ */
 public class StorageCustomItem {
 
 	private Material material;

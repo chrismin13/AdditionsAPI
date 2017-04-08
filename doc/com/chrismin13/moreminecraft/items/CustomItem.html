@@ -158,7 +158,7 @@ implements java.lang.Cloneable, java.lang.Comparable&lt;<a href="../../../../com
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../com/chrismin13/moreminecraft/items/CustomItem.html#CustomItem-org.bukkit.Material-int-short-java.lang.String-">CustomItem</a></span>(org.bukkit.Material&nbsp;material,
           int&nbsp;amount,
           short&nbsp;durability,
-          java.lang.String&nbsp;customItemIdName)</code>
+          java.lang.String&nbsp;idName)</code>
 <div class="block">Create a new Custom Item.</div>
 </td>
 </tr>
@@ -166,7 +166,7 @@ implements java.lang.Cloneable, java.lang.Comparable&lt;<a href="../../../../com
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../com/chrismin13/moreminecraft/items/CustomItem.html#CustomItem-org.bukkit.Material-int-short-java.lang.String-com.chrismin13.moreminecraft.durability.ItemDurability-">CustomItem</a></span>(org.bukkit.Material&nbsp;material,
           int&nbsp;amount,
           short&nbsp;durability,
-          java.lang.String&nbsp;customItemIdName,
+          java.lang.String&nbsp;idName,
           <a href="../../../../com/chrismin13/moreminecraft/durability/ItemDurability.html" title="class in com.chrismin13.moreminecraft.durability">ItemDurability</a>&nbsp;itemDurability)</code>
 <div class="block">Create a new Custom Item.</div>
 </td>
@@ -391,7 +391,7 @@ implements java.lang.Cloneable, java.lang.Comparable&lt;<a href="../../../../com
 </tr>
 <tr id="i40" class="altColor">
 <td class="colFirst"><code><a href="../../../../com/chrismin13/moreminecraft/items/CustomItem.html" title="class in com.chrismin13.moreminecraft.items">CustomItem</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/chrismin13/moreminecraft/items/CustomItem.html#setCustomItemIdName-java.lang.String-">setCustomItemIdName</a></span>(java.lang.String&nbsp;customItemIdName)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../com/chrismin13/moreminecraft/items/CustomItem.html#setidName-java.lang.String-">setidName</a></span>(java.lang.String&nbsp;idName)</code>
 <div class="block">Set the CustomItem's IdName.</div>
 </td>
 </tr>
@@ -480,7 +480,7 @@ implements java.lang.Cloneable, java.lang.Comparable&lt;<a href="../../../../com
 <pre>public&nbsp;CustomItem(org.bukkit.Material&nbsp;material,
                   int&nbsp;amount,
                   short&nbsp;durability,
-                  java.lang.String&nbsp;customItemIdName)</pre>
+                  java.lang.String&nbsp;idName)</pre>
 <div class="block">Create a new Custom Item.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -499,7 +499,7 @@ implements java.lang.Cloneable, java.lang.Comparable&lt;<a href="../../../../com
 <pre>public&nbsp;CustomItem(org.bukkit.Material&nbsp;material,
                   int&nbsp;amount,
                   short&nbsp;durability,
-                  java.lang.String&nbsp;customItemIdName,
+                  java.lang.String&nbsp;idName,
                   <a href="../../../../com/chrismin13/moreminecraft/durability/ItemDurability.html" title="class in com.chrismin13.moreminecraft.durability">ItemDurability</a>&nbsp;itemDurability)</pre>
 <div class="block">Create a new Custom Item.</div>
 <dl>
@@ -703,13 +703,13 @@ implements java.lang.Cloneable, java.lang.Comparable&lt;<a href="../../../../com
 </dl>
 </li>
 </ul>
-<a name="setCustomItemIdName-java.lang.String-">
+<a name="setidName-java.lang.String-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setCustomItemIdName</h4>
-<pre>public&nbsp;<a href="../../../../com/chrismin13/moreminecraft/items/CustomItem.html" title="class in com.chrismin13.moreminecraft.items">CustomItem</a>&nbsp;setCustomItemIdName(java.lang.String&nbsp;customItemIdName)</pre>
+<h4>setidName</h4>
+<pre>public&nbsp;<a href="../../../../com/chrismin13/moreminecraft/items/CustomItem.html" title="class in com.chrismin13.moreminecraft.items">CustomItem</a>&nbsp;setidName(java.lang.String&nbsp;idName)</pre>
 <div class="block">Set the CustomItem's IdName. This has a similar format to the ones found
  in vanila, e.g. vanilla_additions:emerald_sword, and are saved using an
  nbt tag in the ItemStack. You can get the IdName from any itemstack by

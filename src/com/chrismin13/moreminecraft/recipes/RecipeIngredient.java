@@ -44,18 +44,18 @@ public class RecipeIngredient implements Cloneable {
 	//}
 
 	///**
-	// * @return the customItemIdName - null if it's NOT a CustomItem.
+	// * @return the idName - null if it's NOT a CustomItem.
 	// */
 	//public String getIdName() {
 	//	return customIdName;
 	//}
 
 	///**
-	// * @param customItemIdName
-	// *            the customItemIdName to set - null if it's NOT a CustomItem.
+	// * @param idName
+	// *            the idName to set - null if it's NOT a CustomItem.
 	// */
-	//public void setCustomItemIdName(String customItemIdName) {
-	//	this.customIdName = customItemIdName;
+	//public void setidName(String idName) {
+	//	this.customIdName = idName;
 	//}
 
 	@Override
@@ -79,7 +79,7 @@ public class RecipeIngredient implements Cloneable {
 		}
 		final RecipeIngredient that = (RecipeIngredient) obj;
 		return materialEquals(that);
-		//return (materialEquals(that) && durabilityEquals(that) && customItemIdNameEquals(that));
+		//return (materialEquals(that) && durabilityEquals(that) && idNameEquals(that));
 	}
 
 	public boolean materialEquals(RecipeIngredient that) {
@@ -110,7 +110,7 @@ public class RecipeIngredient implements Cloneable {
 	//	return false;
 	//}
 
-	//public boolean customItemIdNameEquals(RecipeIngredient that) {
+	//public boolean idNameEquals(RecipeIngredient that) {
 	//	if (this.customIdName == null || that.customIdName == null) {
 	//		if (this.customIdName == that.customIdName) {
 	//			Debug.saySuper("IdName == !" + customIdName);

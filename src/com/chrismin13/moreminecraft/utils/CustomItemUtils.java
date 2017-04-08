@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -23,7 +21,8 @@ import com.chrismin13.moreminecraft.recipes.CustomFurnaceRecipe;
 import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
 import com.chrismin13.moreminecraft.recipes.CustomShapelessRecipe;
 import com.chrismin13.moreminecraft.recipes.RecipeIngredient;
-import com.comphenix.attribute.AttributeStorage;
+import com.comphenix.attribute.NbtFactory;
+import com.comphenix.attribute.NbtFactory.NbtCompound;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.DataFile;
 
@@ -134,10 +133,10 @@ public class CustomItemUtils implements Listener {
 
 	// === STORAGE === //
 
-	public static boolean isValidCustomItem(String customItemIdName) {
+	public static boolean isValidCustomItem(String idName) {
 		try {
 			for (CustomItemStack cStack : customItemStacks)
-				if (cStack.getCustomItem().getIdName().equals(customItemIdName))
+				if (cStack.getCustomItem().getIdName().equals(idName))
 					return true;
 		} catch (Exception e) {
 			return false;
@@ -167,16 +166,16 @@ public class CustomItemUtils implements Listener {
 
 	// === ITEMSTACKS === //
 
-	private static UUID attributeStorageUUID = UUID.fromString("8c16d72b-d950-410c-b7d1-eeed86e734c7");
-
 	public static String getIdName(ItemStack item) {
-		if (item.getType() != Material.AIR)
-			return AttributeStorage.newTarget(item, attributeStorageUUID).getData(null);
-		return null;
+		if (item.getType() == Material.AIR)
+			return null;
+		ItemStack stack = NbtFactory.getCraftItemStack(item);
+		NbtCompound nbt = NbtFactory.fromItemTag(stack);
+		return nbt.getString("CustomItemIdName", null);
 	}
 
 	public static boolean isCustomItem(ItemStack item) {
-		if (item.getType() != Material.AIR && getIdName(item) != null)
+		if (getIdName(item) != null)
 			return true;
 		return false;
 	}

@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 
 import com.chrismin13.moreminecraft.durability.ItemDurability;
 import com.chrismin13.moreminecraft.recipes.CustomFurnaceRecipe;
@@ -93,9 +92,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @param durability
 	 *            the durability of the CustomItem
 	 * @param idName
-	 *            the Custom Item's ID Name. This has a format similar to
+	 *            the Custom Item's ID Name. This MUST BE SIMILAR to
 	 *            "vanilla_additions:emerald_sword" and is saved in the
-	 *            ItemStack so you can easily what Custom Item it is.
+	 *            ItemStack so you can easily detect which Custom Item it is.
 	 */
 	public CustomItem(final Material material, final int amount, final short durability, final String idName) {
 		this(material, amount, durability, idName, ItemType.getItemType(material).getItemDurability());
@@ -116,9 +115,10 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *            for the Custom Item. All Classes under package
 	 *            com.chrismin13.moreminecraft.durability are valid.
 	 * @param idName
-	 *            the Custom Item's ID Name. This has a format similar to
+	 *            the Custom Item's ID Name. This MUST BE SIMILAR to
 	 *            "vanilla_additions:emerald_sword" and is saved in the
-	 *            ItemStack so you can easily what Custom Item it is.	 */
+	 *            ItemStack so you can easily detect which Custom Item it is.
+	 */            
 	public CustomItem(final Material material, final int amount, final short durability, final String idName,
 			final ItemDurability itemDurability) {
 		this.material = material;
@@ -214,15 +214,15 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *         HIDE_UNBREAKABLE
 	 */
 	public boolean getUnbreakableVisibility() {
-		return !itemFlags.add(ItemFlag.HIDE_UNBREAKABLE);
+		return !itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE);
 	}
 
 	/**
 	 * Set whether the unbreakable tag in the item lore will be visible or not.
-	 * If it is set true, then the tag will visible. If it is set to be hidden
+	 * If it is set true, then the tag will be visible. If it is set to be hidden
 	 * then the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
 	 */
-	public CustomItem setUnbreakableVisibility(Boolean unbreakableVisibility) {
+	public CustomItem setUnbreakableVisibility(boolean unbreakableVisibility) {
 		if (unbreakableVisibility) {
 			if (!itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE)) {
 				itemFlags.add(ItemFlag.HIDE_UNBREAKABLE);
@@ -447,6 +447,33 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	// === ATTRIBUTES === //
+	
+	/**
+	 * 
+	 * @return Boolean of whether the attribute text in the item lore is
+	 *         visible or not. If it is true, then the text is visible. If it is
+	 *         invisible then the CustomItem includes the ItemFlag
+	 *         HIDE_Attribute
+	 */
+	public boolean getAttributeVisibility() {
+		return !itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES);
+	}
+
+	/**
+	 * Set whether the attribute text in the item lore will be visible or not.
+	 * If it is set true, then the text will be visible. If it is set to be hidden
+	 * then the CustomItem includes the ItemFlag HIDE_ATTRIBUTES
+	 */
+	public CustomItem setAttributeVisibility(boolean attributeVisibility) {
+		if (attributeVisibility) {
+			if (!itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES)) {
+				itemFlags.add(ItemFlag.HIDE_ATTRIBUTES);
+			}
+		} else if (itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES)) {
+			itemFlags.remove(ItemFlag.HIDE_ATTRIBUTES);
+		}
+		return this;
+	}
 
 	/**
 	 * Adds an Attribute to the CustomItem. If you don't know what they do or
@@ -659,25 +686,13 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 		// Fake Damage Lore
 
-		if (this instanceof CustomTool && ((CustomTool) this).hasFakeDamageLore()) {
-
-			CustomTool cTool = ((CustomTool) this);
+		if (this instanceof CustomTool && ((CustomTool) this).hasFakeAttackLore()) {
 
 			Double attackSpeed = 0D;
 			Double attackDamage = 0D;
 
 			Boolean hasSpeed = false;
 			Boolean hasDamage = false;
-
-			if (cTool.getAttackSpeed() != null) {
-				attackSpeed = cTool.getAttackSpeed();
-				hasSpeed = true;
-			}
-
-			if (cTool.getAttackDamage() != null) {
-				attackDamage = cTool.getAttackDamage();
-				hasDamage = true;
-			}
 
 			for (Attribute attribute : attributes) {
 				if (attribute.getAttributeType() != null) {
@@ -695,12 +710,10 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 				}
 			}
 
-			ItemStack fromMaterial = new ItemStack(this.getMaterial());
-
 			if (!hasSpeed)
-				attackSpeed = MaterialUtils.getBaseSpeed(fromMaterial);
+				attackSpeed = MaterialUtils.getBaseSpeed(material);
 			if (!hasDamage)
-				attackDamage = MaterialUtils.getBaseDamage(fromMaterial);
+				attackDamage = MaterialUtils.getBaseDamage(material);
 
 			loreToAdd.add("");
 			loreToAdd.add(ChatColor.GRAY + LangFileUtils.get("attack_main_hand"));
@@ -776,7 +789,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * @return ItemDurability - The ItemDurability mechanics. These determine
-	 *         how the durability of the CustomItem. both for Fake and real
+	 *         how the durability of the CustomItem, both for Fake and real
 	 *         durability, will drop.
 	 */
 	public ItemDurability getDurabilityMechanics() {
@@ -784,7 +797,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * These determine how the durability of the CustomItem. both for Fake and
+	 * These determine how the durability of the CustomItem, both for Fake and
 	 * real durability, will drop.
 	 * 
 	 * @param itemDurability

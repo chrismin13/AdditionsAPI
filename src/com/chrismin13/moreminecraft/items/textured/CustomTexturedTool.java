@@ -15,8 +15,8 @@ public class CustomTexturedTool extends CustomTool implements ModelInjector{
 
 	private String defaultTexture;
 	
-	public CustomTexturedTool(DamageableItem dItem, String customItemIdName, String defaultTexture) {
-		super(dItem.getMaterial(), 1, (short) 0, customItemIdName);
+	public CustomTexturedTool(DamageableItem dItem, String idName, String defaultTexture) {
+		super(dItem.getMaterial(), 1, (short) 0, idName);
 		this.defaultTexture = defaultTexture;
 		this.addTexture(defaultTexture);
 	}

@@ -376,7 +376,7 @@ public class NbtFactory {
     		return name;
     	} else {
     		// Fallback
-    		return "org.bukkit.craftbukkit.v1_7_R3"; 
+    		return "org.bukkit.craftbukkit.v1_11_R1"; 
     	}
     } 
     

@@ -76,7 +76,7 @@ public class Anvil implements Listener {
 		 */
 		if (cItem instanceof CustomTool) {
 			CustomTool cTool = (CustomTool) cItem;
-			if (cTool.hasFakeDamageLore() && resultItem.getEnchantments() != null
+			if (cTool.hasFakeAttackLore() && resultItem.getEnchantments() != null
 					&& resultItem.getEnchantments().containsKey(Enchantment.DAMAGE_ALL)) {
 				cStack.updateLore();
 			}
