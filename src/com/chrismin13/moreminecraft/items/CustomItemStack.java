@@ -142,7 +142,7 @@ public class CustomItemStack implements Cloneable {
 		
 		// Store data in the nbt data of the ItemStack about the CustomItem's ID
 		NbtCompound nbt = NbtFactory.fromItemTag(item);
-		nbt.put("custom_item_id_name", cItem.getIdName());
+		nbt.put("CustomItemIdName", cItem.getIdName());
 		
 		ItemMeta meta = item.getItemMeta();
 
