@@ -17,68 +17,33 @@ import us.fihgu.toolbox.resourcepack.model.Predicate;
  * Used for identifying {@link CustomTexturedItem}<br>
  */
 public enum DamageableItem {
-	WOOD_HOE,
-	STONE_HOE,
-	IRON_HOE,
-	GOLD_HOE,
-	DIAMOND_HOE,
-	
-	WOOD_AXE,
-	STONE_AXE,
-	IRON_AXE,
-	GOLD_AXE,
-	DIAMOND_AXE,
-	
-	WOOD_SWORD,
-	STONE_SWORD,
-	IRON_SWORD,
-	GOLD_SWORD,
-	DIAMOND_SWORD,
-	
-	WOOD_PICKAXE,
-	STONE_PICKAXE,
-	IRON_PICKAXE,
-	GOLD_PICKAXE,
-	DIAMOND_PICKAXE,
-	
-	WOOD_SHOVEL(Material.WOOD_SPADE),
-	STONE_SHOVEL(Material.STONE_SPADE),
-	IRON_SHOVEL(Material.IRON_SPADE),
-	GOLD_SHOVEL(Material.GOLD_SPADE),
-	DIAMOND_SHOVEL(Material.DIAMOND_SPADE),
-	
-	LEATHER_HELMET,
-	GOLD_HELMET,
-	CHAINMAIL_HELMET,
-	IRON_HELMET,
-	DIAMOND_HELMET,
-	
-	LEATHER_CHESTPLATE,
-	GOLD_CHESTPLATE,
-	CHAINMAIL_CHESTPLATE,
-	IRON_CHESTPLATE,
-	DIAMOND_CHESTPLATE,
-	
-	LEATHER_LEGGINGS,
-	GOLD_LEGGINGS,
-	CHAINMAIL_LEGGINGS,
-	IRON_LEGGINGS,
-	DIAMOND_LEGGINGS,
-	
-	LEATHER_BOOTS,
-	GOLD_BOOTS,
-	CHAINMAIL_BOOTS,
-	IRON_BOOTS,
-	DIAMOND_BOOTS,
-	
-	SHEARS,
-	FISHING_ROD,
-	CARROT_ON_A_STICK(Material.CARROT_STICK),
-	FLINT_AND_STEEL,
-	BOW,
-	ELYTRA;
+	WOODEN_HOE(Material.WOOD_HOE, true), STONE_HOE, IRON_HOE, GOLDEN_HOE(Material.GOLD_HOE, true), DIAMOND_HOE,
+
+	WOODEN_AXE(Material.WOOD_AXE, true), STONE_AXE, IRON_AXE, GOLDEN_AXE(Material.GOLD_AXE, true), DIAMOND_AXE,
+
+	WOODEN_SWORD(Material.WOOD_SWORD, true), STONE_SWORD, IRON_SWORD, GOLDEN_SWORD(Material.GOLD_SWORD,
+			true), DIAMOND_SWORD,
+
+	WOODEN_PICKAXE(Material.WOOD_PICKAXE, true), STONE_PICKAXE, IRON_PICKAXE, GOLDEN_PICKAXE(Material.GOLD_PICKAXE,
+			true), DIAMOND_PICKAXE,
+
+	WOODEN_SHOVEL(Material.WOOD_SPADE, true), STONE_SHOVEL(Material.STONE_SPADE), IRON_SHOVEL(
+			Material.IRON_SPADE), GOLDEN_SHOVEL(Material.GOLD_SPADE, true), DIAMOND_SHOVEL(Material.DIAMOND_SPADE),
+
+	LEATHER_HELMET, GOLDEN_HELMET(Material.GOLD_HELMET, true), CHAINMAIL_HELMET, IRON_HELMET, DIAMOND_HELMET,
+
+	LEATHER_CHESTPLATE, GOLDEN_CHESTPLATE(Material.GOLD_CHESTPLATE,
+			true), CHAINMAIL_CHESTPLATE, IRON_CHESTPLATE, DIAMOND_CHESTPLATE,
+
+	LEATHER_LEGGINGS, GOLDEN_LEGGINGS(Material.GOLD_LEGGINGS,
+			true), CHAINMAIL_LEGGINGS, IRON_LEGGINGS, DIAMOND_LEGGINGS,
+
+	LEATHER_BOOTS, GOLDEN_BOOTS(Material.GOLD_BOOTS, true), CHAINMAIL_BOOTS, IRON_BOOTS, DIAMOND_BOOTS,
+
+	SHEARS, FISHING_ROD, CARROT_ON_A_STICK(Material.CARROT_STICK), FLINT_AND_STEEL, BOW, ELYTRA;
 
 	private Material material;
+	private boolean textureFromMaterial;
 
 	DamageableItem() {
 		this.material = Material.valueOf(this.toString());
@@ -88,13 +53,18 @@ public enum DamageableItem {
 		this.material = material;
 	}
 
+	DamageableItem(Material material, boolean textureFromMaterial) {
+		this.material = material;
+		this.textureFromMaterial = textureFromMaterial;
+	}
+
 	/**
 	 * Damageable items that inherit from the handheld model.
 	 */
-	public static EnumSet<DamageableItem> handHeldItems = EnumSet.of(WOOD_HOE, STONE_HOE, IRON_HOE, GOLD_HOE,
-			DIAMOND_HOE, WOOD_AXE, STONE_AXE, IRON_AXE, GOLD_AXE, DIAMOND_AXE, WOOD_SWORD, STONE_SWORD, IRON_SWORD,
-			GOLD_SWORD, DIAMOND_SWORD, WOOD_PICKAXE, STONE_PICKAXE, IRON_PICKAXE, GOLD_PICKAXE, DIAMOND_PICKAXE,
-			WOOD_SHOVEL, STONE_SHOVEL, IRON_SHOVEL, GOLD_SHOVEL, DIAMOND_SHOVEL);
+	public static EnumSet<DamageableItem> handHeldItems = EnumSet.of(WOODEN_HOE, STONE_HOE, IRON_HOE, GOLDEN_HOE,
+			DIAMOND_HOE, WOODEN_AXE, STONE_AXE, IRON_AXE, GOLDEN_AXE, DIAMOND_AXE, WOODEN_SWORD, STONE_SWORD,
+			IRON_SWORD, GOLDEN_SWORD, DIAMOND_SWORD, WOODEN_PICKAXE, STONE_PICKAXE, IRON_PICKAXE, GOLDEN_PICKAXE,
+			DIAMOND_PICKAXE, WOODEN_SHOVEL, STONE_SHOVEL, IRON_SHOVEL, GOLDEN_SHOVEL, DIAMOND_SHOVEL);
 
 	/**
 	 * get the default item model of this damageable item.
@@ -136,9 +106,9 @@ public enum DamageableItem {
 			return elytraRodModel;
 		default:
 			if (DamageableItem.handHeldItems.contains(this)) {
-				return ItemModel.createSimpleItemModel("item/handheld", "items/" + this.getModelName());
+				return ItemModel.createSimpleItemModel("item/handheld", "items/" + this.getTextureName());
 			} else {
-				return ItemModel.createSimpleItemModel("item/generated", "items/" + this.getModelName());
+				return ItemModel.createSimpleItemModel("item/generated", "items/" + this.getTextureName());
 			}
 		}
 	}
@@ -153,6 +123,12 @@ public enum DamageableItem {
 
 	public String getModelName() {
 		return this.name().toLowerCase();
+	}
+	
+	public String getTextureName() {
+		if (textureFromMaterial)
+			return material.toString().toLowerCase();
+		return getModelName();
 	}
 
 	public static DamageableItem getDamageableItem(Material material) {

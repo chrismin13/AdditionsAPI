@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 
 import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
+import com.chrismin13.moreminecraft.recipes.RecipeIngredient;
 import com.chrismin13.moreminecraft.utils.Debug;
 import com.chrismin13.moreminecraft.utils.LangFileUtils;
 
@@ -113,11 +114,15 @@ public enum ArmorType {
 	}
 
 	public List<CustomShapedRecipe> getCustomShapedRecipe(Material craftingMaterial) {
+		return getCustomShapedRecipe(new RecipeIngredient(craftingMaterial));
+	}
+	
+	public List<CustomShapedRecipe> getCustomShapedRecipe(RecipeIngredient craftingIngredient) {
 		List<CustomShapedRecipe> recipes = new ArrayList<CustomShapedRecipe>();
 
 		CustomShapedRecipe itemRecipe = new CustomShapedRecipe();
 
-		itemRecipe.setIngredient('1', craftingMaterial);
+		itemRecipe.setIngredient('1', craftingIngredient);
 
 		switch (this) {
 		case HELMET:

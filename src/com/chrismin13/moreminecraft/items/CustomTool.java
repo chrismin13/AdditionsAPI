@@ -86,7 +86,7 @@ public class CustomTool extends CustomItem {
 	 *            The Attack Speed you want the Tool to have.
 	 */
 	public void addAttackSpeed(double attackSpeed) {
-		addAttribute(AttributeType.GENERIC_ATTACK_SPEED, attackSpeed - 4, EquipmentSlot.HAND, Operation.ADD_NUMBER);
+		addAttribute(AttributeType.GENERIC_ATTACK_SPEED, attackSpeed - 4.0, EquipmentSlot.HAND, Operation.ADD_NUMBER);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class CustomTool extends CustomItem {
 	 *            The Attack Damage you want the Tool to have.
 	 */
 	public void addAttackDamage(double attackDamage) {
-		addAttribute(AttributeType.GENERIC_ATTACK_SPEED, attackDamage - 1, EquipmentSlot.HAND, Operation.ADD_NUMBER);
+		addAttribute(AttributeType.GENERIC_ATTACK_DAMAGE, attackDamage - 1.0, EquipmentSlot.HAND, Operation.ADD_NUMBER);
 	}
 
 	// === DAMAGE LORE === //

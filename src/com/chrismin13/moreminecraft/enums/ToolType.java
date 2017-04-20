@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
-
 import com.chrismin13.moreminecraft.durability.AxeDurability;
 import com.chrismin13.moreminecraft.durability.HoeDurability;
 import com.chrismin13.moreminecraft.durability.ItemDurability;
@@ -12,6 +11,7 @@ import com.chrismin13.moreminecraft.durability.PickaxeDurability;
 import com.chrismin13.moreminecraft.durability.SpadeDurability;
 import com.chrismin13.moreminecraft.durability.SwordDurability;
 import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
+import com.chrismin13.moreminecraft.recipes.RecipeIngredient;
 import com.chrismin13.moreminecraft.utils.Debug;
 import com.chrismin13.moreminecraft.utils.LangFileUtils;
 
@@ -35,14 +35,18 @@ public enum ToolType {
 			return new ItemDurability();
 		}
 	}
-
+	
 	public List<CustomShapedRecipe> getCustomShapedRecipe(Material itemMaterial, Material stickMaterial) {
+		return getCustomShapedRecipe(new RecipeIngredient(itemMaterial), new RecipeIngredient(stickMaterial));
+	}
+	
+	public List<CustomShapedRecipe> getCustomShapedRecipe(RecipeIngredient itemIngredient, RecipeIngredient stickIngredient) {
 		List<CustomShapedRecipe> recipes = new ArrayList<CustomShapedRecipe>();
 
 		CustomShapedRecipe itemRecipe = new CustomShapedRecipe();
 
-		itemRecipe.setIngredient('1', itemMaterial);
-		itemRecipe.setIngredient('2', stickMaterial);
+		itemRecipe.setIngredient('1', itemIngredient);
+		itemRecipe.setIngredient('2', stickIngredient);
 
 		switch (this) {
 		case SWORD:

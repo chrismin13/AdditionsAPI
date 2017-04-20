@@ -21,6 +21,7 @@ import com.chrismin13.moreminecraft.items.textured.CustomTexturedItem;
 import com.chrismin13.moreminecraft.utils.Debug;
 import com.chrismin13.moreminecraft.utils.LangFileUtils;
 import com.chrismin13.moreminecraft.utils.MaterialUtils;
+import com.chrismin13.moreminecraft.utils.MathUtils;
 import com.comphenix.attribute.Attributes.Attribute;
 import com.comphenix.attribute.Attributes.AttributeType;
 import com.comphenix.attribute.Attributes.Operation;
@@ -118,7 +119,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *            the Custom Item's ID Name. This MUST BE SIMILAR to
 	 *            "vanilla_additions:emerald_sword" and is saved in the
 	 *            ItemStack so you can easily detect which Custom Item it is.
-	 */            
+	 */
 	public CustomItem(final Material material, final int amount, final short durability, final String idName,
 			final ItemDurability itemDurability) {
 		this.material = material;
@@ -219,11 +220,11 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * Set whether the unbreakable tag in the item lore will be visible or not.
-	 * If it is set true, then the tag will be visible. If it is set to be hidden
-	 * then the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
+	 * If it is set true, then the tag will be visible. If it is set to be
+	 * hidden then the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
 	 */
 	public CustomItem setUnbreakableVisibility(boolean unbreakableVisibility) {
-		if (unbreakableVisibility) {
+		if (!unbreakableVisibility) {
 			if (!itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE)) {
 				itemFlags.add(ItemFlag.HIDE_UNBREAKABLE);
 			}
@@ -447,11 +448,11 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	// === ATTRIBUTES === //
-	
+
 	/**
 	 * 
-	 * @return Boolean of whether the attribute text in the item lore is
-	 *         visible or not. If it is true, then the text is visible. If it is
+	 * @return Boolean of whether the attribute text in the item lore is visible
+	 *         or not. If it is true, then the text is visible. If it is
 	 *         invisible then the CustomItem includes the ItemFlag
 	 *         HIDE_Attribute
 	 */
@@ -461,11 +462,11 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * Set whether the attribute text in the item lore will be visible or not.
-	 * If it is set true, then the text will be visible. If it is set to be hidden
-	 * then the CustomItem includes the ItemFlag HIDE_ATTRIBUTES
+	 * If it is set true, then the text will be visible. If it is set to be
+	 * hidden then the CustomItem includes the ItemFlag HIDE_ATTRIBUTES
 	 */
 	public CustomItem setAttributeVisibility(boolean attributeVisibility) {
-		if (attributeVisibility) {
+		if (!attributeVisibility) {
 			if (!itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES)) {
 				itemFlags.add(ItemFlag.HIDE_ATTRIBUTES);
 			}
@@ -492,7 +493,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @param operation
 	 *            The math operation that will be used for the amount specified.
 	 */
-	public CustomItem addAttribute(AttributeType type, Double amount, EquipmentSlot slot, Operation operation) {
+	public CustomItem addAttribute(AttributeType type, double amount, EquipmentSlot slot, Operation operation) {
 		switch (slot) {
 		case HEAD:
 			addAttribute(type, amount, slot, operation, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
@@ -532,7 +533,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *            The UUID that the Attribute will be saved with in the
 	 *            ItemStack.
 	 */
-	public CustomItem addAttribute(AttributeType type, Double amount, EquipmentSlot slot, Operation operation,
+	public CustomItem addAttribute(AttributeType type, double amount, EquipmentSlot slot, Operation operation,
 			UUID uuid) {
 		// TODO: Remove the name TBD
 		attributes.add(Attribute.newBuilder().name("TBD").amount(amount).uuid(uuid).operation(operation).type(type)
@@ -688,8 +689,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 		if (this instanceof CustomTool && ((CustomTool) this).hasFakeAttackLore()) {
 
-			Double attackSpeed = 0D;
-			Double attackDamage = 0D;
+			double attackSpeed = 0D;
+			double attackDamage = 0D;
 
 			Boolean hasSpeed = false;
 			Boolean hasDamage = false;
@@ -698,13 +699,13 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 				if (attribute.getAttributeType() != null) {
 
 					AttributeType type = attribute.getAttributeType();
-					Double amount = attribute.getAmount();
+					double amount = attribute.getAmount();
 
 					if (type == AttributeType.GENERIC_ATTACK_SPEED && !hasSpeed) {
-						attackSpeed = amount + 4;
+						attackSpeed += amount;
 						hasSpeed = true;
 					} else if (type == AttributeType.GENERIC_ATTACK_DAMAGE && !hasDamage) {
-						attackDamage = amount + 1;
+						attackDamage += amount;
 						hasDamage = true;
 					}
 				}
@@ -712,8 +713,12 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 			if (!hasSpeed)
 				attackSpeed = MaterialUtils.getBaseSpeed(material);
+			else
+				attackSpeed += 4.0;
 			if (!hasDamage)
 				attackDamage = MaterialUtils.getBaseDamage(material);
+			else
+				attackDamage += 1.0;
 
 			loreToAdd.add("");
 			loreToAdd.add(ChatColor.GRAY + LangFileUtils.get("attack_main_hand"));
@@ -729,18 +734,31 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 				}
 			}
 
+			/*
+			 * Needed because this is how it's done for attributes in Vanilla.
+			 * That being said, this hides an accuracy bug that occures with the
+			 * attributes from, what I can tell to be, a conversion from double
+			 * to float in game. This is not something that can be fixed easily
+			 * as it is not caused by this API. Confirmed with Minecraft code
+			 * that it's expected behaviour. For example, this is the amount of
+			 * Attack Speed for the Swords: -2.4000000953674316D
+			 */
+			attackSpeed = MathUtils.round(attackSpeed, 2);
+			attackDamage = MathUtils.round(attackDamage, 2);
+
 			if ((attackSpeed == Math.floor(attackSpeed)) && !Double.isInfinite(attackSpeed)) {
-				loreToAdd.add(ChatColor.GRAY + " " + Integer.toString(attackSpeed.intValue()) + " "
+				loreToAdd.add(ChatColor.GRAY + " " + Integer.toString((int) attackSpeed) + " "
 						+ LangFileUtils.get("attack_speed"));
 			} else {
-				loreToAdd.add(ChatColor.GRAY + " " + attackSpeed.toString() + " " + LangFileUtils.get("attack_speed"));
+				loreToAdd.add(
+						ChatColor.GRAY + " " + Double.toString(attackSpeed) + " " + LangFileUtils.get("attack_speed"));
 			}
 			if ((attackDamage == Math.floor(attackDamage)) && !Double.isInfinite(attackDamage)) {
-				loreToAdd.add(ChatColor.GRAY + " " + Integer.toString(attackDamage.intValue()) + " "
+				loreToAdd.add(ChatColor.GRAY + " " + Integer.toString((int) attackDamage) + " "
 						+ LangFileUtils.get("attack_damage"));
 			} else {
-				loreToAdd
-						.add(ChatColor.GRAY + " " + attackDamage.toString() + " " + LangFileUtils.get("attack_damage"));
+				loreToAdd.add(ChatColor.GRAY + " " + Double.toString(attackDamage) + " "
+						+ LangFileUtils.get("attack_damage"));
 			}
 		}
 		if (hasFakeDurability()) {

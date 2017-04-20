@@ -47,7 +47,7 @@ public class MaterialUtils {
 	 *            - the stack.
 	 * @return The base damage.
 	 */
-	public static double getBaseDamage(ItemStack stack) {
+	public static float getBaseDamage(ItemStack stack) {
 		return getBaseDamage(stack.getType());
 	}
 
@@ -58,67 +58,67 @@ public class MaterialUtils {
 	 *            - the material that you want the base damage for.
 	 * @return The base damage.
 	 */
-	public static double getBaseDamage(Material material) {
+	public static float getBaseDamage(Material material) {
 		// Yes - we have to hard code these values. Cannot use
 		// Operation.ADD_PERCENTAGE either.
 		switch (material) {
 		// Swords
 		case WOOD_SWORD:
-			return 4;
+			return 4F;
 		case GOLD_SWORD:
-			return 4;
+			return 4F;
 		case STONE_SWORD:
-			return 5;
+			return 5F;
 		case IRON_SWORD:
-			return 6;
+			return 6F;
 		case DIAMOND_SWORD:
-			return 7;
+			return 7F;
 		// Axe
 		case WOOD_AXE:
-			return 7;
+			return 7F;
 		case GOLD_AXE:
-			return 7;
+			return 7F;
 		case STONE_AXE:
-			return 9;
+			return 9F;
 		case IRON_AXE:
-			return 9;
+			return 9F;
 		case DIAMOND_AXE:
-			return 9;
+			return 9F;
 		// Pickaxe
 		case WOOD_PICKAXE:
-			return 2;
+			return 2F;
 		case STONE_PICKAXE:
-			return 3;
+			return 3F;
 		case IRON_PICKAXE:
-			return 4;
+			return 4F;
 		case GOLD_PICKAXE:
-			return 2;
+			return 2F;
 		case DIAMOND_PICKAXE:
-			return 5;
+			return 5F;
 		// Spades
 		case WOOD_SPADE:
-			return 2.5;
+			return 2.5F;
 		case STONE_SPADE:
-			return 3.5;
+			return 3.5F;
 		case IRON_SPADE:
-			return 4.5;
+			return 4.5F;
 		case GOLD_SPADE:
-			return 2.5;
+			return 2.5F;
 		case DIAMOND_SPADE:
-			return 5.5;
+			return 5.5F;
 		// Hoes
 		case WOOD_HOE:
-			return 1;
+			return 1F;
 		case STONE_HOE:
-			return 1;
+			return 1F;
 		case IRON_HOE:
-			return 1;
+			return 1F;
 		case GOLD_HOE:
-			return 1;
+			return 1F;
 		case DIAMOND_HOE:
-			return 1;
+			return 1F;
 		default:
-			return 1;
+			return 1F;
 
 		}
 	}
@@ -130,7 +130,7 @@ public class MaterialUtils {
 	 *            - the stack.
 	 * @return The base damage.
 	 */
-	public static double getBaseSpeed(ItemStack stack) {
+	public static float getBaseSpeed(ItemStack stack) {
 		return getBaseSpeed(stack.getType());
 	}
 
@@ -141,67 +141,67 @@ public class MaterialUtils {
 	 *            - the material.
 	 * @return The base damage.
 	 */
-	public static double getBaseSpeed(Material material) {
+	public static float getBaseSpeed(Material material) {
 		// Yes - we have to hard code these values. Cannot use
 		// Operation.ADD_PERCENTAGE either.
 		switch (material) {
 		// Swords
 		case WOOD_SWORD:
-			return 1.6;
+			return 1.6F;
 		case GOLD_SWORD:
-			return 1.6;
+			return 1.6F;
 		case STONE_SWORD:
-			return 1.6;
+			return 1.6F;
 		case IRON_SWORD:
-			return 1.6;
+			return 1.6F;
 		case DIAMOND_SWORD:
-			return 1.6;
+			return 1.6F;
 		// Axe
 		case WOOD_AXE:
-			return 0.8;
+			return 0.8F;
 		case GOLD_AXE:
-			return 0.8;
+			return 0.8F;
 		case STONE_AXE:
-			return 0.9;
+			return 0.9F;
 		case IRON_AXE:
-			return 1;
+			return 1F;
 		case DIAMOND_AXE:
-			return 1;
+			return 1F;
 		// Pickaxe
 		case WOOD_PICKAXE:
-			return 1.2;
+			return 1.2F;
 		case STONE_PICKAXE:
-			return 1.2;
+			return 1.2F;
 		case IRON_PICKAXE:
-			return 1.2;
+			return 1.2F;
 		case GOLD_PICKAXE:
-			return 1.2;
+			return 1.2F;
 		case DIAMOND_PICKAXE:
-			return 1.2;
+			return 1.2F;
 		// Spades
 		case WOOD_SPADE:
-			return 1;
+			return 1F;
 		case STONE_SPADE:
-			return 1;
+			return 1F;
 		case IRON_SPADE:
-			return 1;
+			return 1F;
 		case GOLD_SPADE:
-			return 1;
+			return 1F;
 		case DIAMOND_SPADE:
-			return 1;
+			return 1F;
 		// Hoes
 		case WOOD_HOE:
-			return 1;
+			return 1F;
 		case STONE_HOE:
-			return 2;
+			return 2F;
 		case IRON_HOE:
-			return 3;
+			return 3F;
 		case GOLD_HOE:
-			return 1;
+			return 1F;
 		case DIAMOND_HOE:
-			return 4;
+			return 4F;
 		default:
-			return 4;
+			return 4F;
 
 		}
 	}
@@ -213,7 +213,7 @@ public class MaterialUtils {
 	 *            - the stack.
 	 * @return The base damage.
 	 */
-	public static double getBaseArmor(ItemStack stack) {
+	public static float getBaseArmor(ItemStack stack) {
 		return getBaseArmor(stack.getType());
 	}
 
@@ -224,57 +224,57 @@ public class MaterialUtils {
 	 *            - the material.
 	 * @return The base damage.
 	 */
-	public static double getBaseArmor(Material material) {
+	public static float getBaseArmor(Material material) {
 		// Yes - we have to hard code these values. Cannot use
 		// Operation.ADD_PERCENTAGE either.
 		switch (material) {
 		// Leather Armor
 		case LEATHER_HELMET:
-			return 1;
+			return 1F;
 		case LEATHER_CHESTPLATE:
-			return 3;
+			return 3F;
 		case LEATHER_LEGGINGS:
-			return 2;
+			return 2F;
 		case LEATHER_BOOTS:
-			return 1;
+			return 1F;
 		// Chainmail Armor
 		case CHAINMAIL_HELMET:
-			return 2;
+			return 2F;
 		case CHAINMAIL_CHESTPLATE:
-			return 5;
+			return 5F;
 		case CHAINMAIL_LEGGINGS:
-			return 4;
+			return 4F;
 		case CHAINMAIL_BOOTS:
-			return 1;
+			return 1F;
 		// Iron Armor
 		case IRON_HELMET:
-			return 2;
+			return 2F;
 		case IRON_CHESTPLATE:
-			return 6;
+			return 6F;
 		case IRON_LEGGINGS:
-			return 5;
+			return 5F;
 		case IRON_BOOTS:
-			return 2;
+			return 2F;
 		// Golden Armor
 		case GOLD_HELMET:
-			return 2;
+			return 2F;
 		case GOLD_CHESTPLATE:
-			return 5;
+			return 5F;
 		case GOLD_LEGGINGS:
-			return 4;
+			return 4F;
 		case GOLD_BOOTS:
-			return 1;
+			return 1F;
 		// Diamond Armor
 		case DIAMOND_HELMET:
-			return 3;
+			return 3F;
 		case DIAMOND_CHESTPLATE:
-			return 8;
+			return 8F;
 		case DIAMOND_LEGGINGS:
-			return 6;
+			return 6F;
 		case DIAMOND_BOOTS:
-			return 3;
+			return 3F;
 		default:
-			return 0;
+			return 0F;
 
 		}
 	}
@@ -286,7 +286,7 @@ public class MaterialUtils {
 	 *            - the stack.
 	 * @return The base damage.
 	 */
-	public static double getBaseArmorToughness(ItemStack stack) {
+	public static float getBaseArmorToughness(ItemStack stack) {
 		return getBaseArmorToughness(stack.getType());
 	}
 
@@ -298,21 +298,21 @@ public class MaterialUtils {
 	 * @return The base damage.
 	 */
 	// TODO: Disable for under 1.9.1
-	public static double getBaseArmorToughness(Material material) {
+	public static float getBaseArmorToughness(Material material) {
 		// Yes - we have to hard code these values. Cannot use
 		// Operation.ADD_PERCENTAGE either.
 		switch (material) {
 		// Swords
 		case DIAMOND_HELMET:
-			return 2;
+			return 2F;
 		case DIAMOND_CHESTPLATE:
-			return 2;
+			return 2F;
 		case DIAMOND_LEGGINGS:
-			return 2;
+			return 2F;
 		case DIAMOND_BOOTS:
-			return 2;
+			return 2F;
 		default:
-			return 0;
+			return 0F;
 
 		}
 	}

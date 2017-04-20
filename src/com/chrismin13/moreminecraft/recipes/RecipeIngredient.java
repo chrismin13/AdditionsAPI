@@ -6,11 +6,18 @@ import com.chrismin13.moreminecraft.utils.Debug;
 public class RecipeIngredient implements Cloneable {
 
 	private Material material;
+	private Byte blockData;
 	//private Short durability;
 	//private String customIdName;
 
 	public RecipeIngredient(Material material) {
 		setMaterial(material);
+		setBlockData((byte) 0);
+	}
+	
+	public RecipeIngredient(Material material, byte blockData) {
+		setMaterial(material);
+		setBlockData(blockData);
 	}
 
 	/**
@@ -26,6 +33,20 @@ public class RecipeIngredient implements Cloneable {
 	 */
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	/**
+	 * @return the blockData
+	 */
+	public byte getBlockData() {
+		return blockData;
+	}
+
+	/**
+	 * @param blockData the blockData to set
+	 */
+	public void setBlockData(byte blockData) {
+		this.blockData = blockData;
 	}
 	
 	///**
@@ -78,8 +99,7 @@ public class RecipeIngredient implements Cloneable {
 			return false;
 		}
 		final RecipeIngredient that = (RecipeIngredient) obj;
-		return materialEquals(that);
-		//return (materialEquals(that) && durabilityEquals(that) && idNameEquals(that));
+		return materialEquals(that) && blockDataEquals(that);
 	}
 
 	public boolean materialEquals(RecipeIngredient that) {
@@ -89,6 +109,19 @@ public class RecipeIngredient implements Cloneable {
 			}
 		} else {
 			if (this.material.equals(that.material)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean blockDataEquals(RecipeIngredient that) {
+		if (this.blockData == null || that.blockData == null) {
+			if (this.blockData == that.blockData) {
+				return true;
+			}
+		} else {
+			if (this.blockData.equals(that.blockData)) {
 				return true;
 			}
 		}
@@ -129,6 +162,7 @@ public class RecipeIngredient implements Cloneable {
 	public int hashCode() {
 		int hash = 3;
 		hash = 53 * hash + (this.material != null ? this.material.hashCode() : 0);
+		hash = 53 * hash + (this.blockData != null ? this.blockData.hashCode() : 0);
 		//hash = 53 * hash + (this.durability != null ? this.durability.hashCode() : 0);
 		//hash = 53 * hash + (this.customIdName != null ? this.customIdName.hashCode() : 0);
 		return hash;

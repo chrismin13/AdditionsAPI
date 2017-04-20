@@ -37,6 +37,7 @@ public class CustomItemUtils implements Listener {
 
 	// === INITIALIZATION === //
 
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onInitialization(MoreMinecraftAPIInitializationEvent event) {
 		CustomItem[] cItems = event.getCustomItems();
@@ -95,7 +96,7 @@ public class CustomItemUtils implements Listener {
 				for (char key : map.keySet()) {
 					Debug.saySuper("Processing Character: " + key);
 					Debug.saySuper("Material: " + map.get(key).getMaterial());
-					recipe.setIngredient(key, map.get(key).getMaterial());
+					recipe.setIngredient(key, map.get(key).getMaterial(), map.get(key).getBlockData());
 				}
 
 				Bukkit.addRecipe(recipe);
@@ -143,21 +144,21 @@ public class CustomItemUtils implements Listener {
 		}
 		return false;
 	}
-	
+
 	public static CustomItemStack[] getAllCustomItemStacks() {
 		CustomItemStack[] cStacks = new CustomItemStack[customItemStacks.size()];
 		int i = 0;
-		for (CustomItemStack cStack : customItemStacks){
+		for (CustomItemStack cStack : customItemStacks) {
 			cStacks[i] = cStack.clone();
 			i++;
 		}
 		return cStacks;
 	}
-	
+
 	public static CustomItem[] getAllCustomItems() {
 		CustomItem[] cItems = new CustomItem[customItemStacks.size()];
 		int i = 0;
-		for (CustomItemStack cStack : customItemStacks){
+		for (CustomItemStack cStack : customItemStacks) {
 			cItems[i] = cStack.getCustomItem();
 			i++;
 		}

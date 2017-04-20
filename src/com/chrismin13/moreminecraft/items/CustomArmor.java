@@ -69,7 +69,7 @@ public class CustomArmor extends CustomItem {
 	 * @param operation
 	 *            The math operation that will be used for the amount specified.
 	 */
-	public void addAttribute(AttributeType type, Double amount, Operation operation) {
+	public void addAttribute(AttributeType type, double amount, Operation operation) {
 		super.addAttribute(type, amount, getArmorType().getEquipmentSlot(), operation);
 	}
 
