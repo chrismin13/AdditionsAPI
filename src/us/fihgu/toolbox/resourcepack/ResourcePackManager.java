@@ -60,12 +60,12 @@ public class ResourcePackManager {
 	/**
 	 * The file location for saving resource pack.
 	 */
-	private static File saveFile = new File(MoreMinecraft.getInstance().getDataFolder() + "resource-pack/resourceUsers.json");
+	private static File saveFile = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resourceUsers.json");
 
 	/**
 	 * The file path for saving the final resource pack.
 	 */
-	private static File resourceFile = new File(MoreMinecraft.getInstance().getDataFolder() + "resource-pack/resource.zip");
+	private static File resourceFile = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resource.zip");
 
 	/**
 	 * A list of resources that needs to be merged to the final resource pack.
@@ -175,7 +175,7 @@ public class ResourcePackManager {
 			File work = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource/work/");
 			FileUtils.deleteFolder(work);
 			// a temporary file used for downloading resource pack files.
-			File temp = new File(MoreMinecraft.getInstance().getDataFolder() + "resource-pack/download/temp.zip");
+			File temp = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/download/temp.zip");
 			FileUtils.createFileAndPath(temp);
 			// check and download server's original resource pack.
 			downloadResourcePack(work, temp);

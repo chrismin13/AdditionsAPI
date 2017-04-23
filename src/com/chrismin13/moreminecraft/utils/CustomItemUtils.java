@@ -1,28 +1,20 @@
 package com.chrismin13.moreminecraft.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
-
 import com.chrismin13.moreminecraft.items.CustomItem;
 import com.chrismin13.moreminecraft.items.CustomItemStack;
 import com.chrismin13.moreminecraft.items.StorageCustomItem;
-import com.chrismin13.moreminecraft.recipes.CustomFurnaceRecipe;
-import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
-import com.chrismin13.moreminecraft.recipes.CustomShapelessRecipe;
-import com.chrismin13.moreminecraft.recipes.RecipeIngredient;
+import com.chrismin13.moreminecraft.recipes.CustomRecipe;
 import com.comphenix.attribute.NbtFactory;
 import com.comphenix.attribute.NbtFactory.NbtCompound;
+import com.google.common.collect.ImmutableList;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.DataFile;
 
@@ -31,17 +23,19 @@ import us.fihgu.toolbox.item.ModelInjector;
 public class CustomItemUtils implements Listener {
 
 	// === VARIABLES === //
-	// private static HashMap<String, CustomItem> customItems = new
-	// HashMap<String, CustomItem>();
-	private static List<CustomItemStack> customItemStacks = new ArrayList<CustomItemStack>();
-
+	
+	private static ImmutableList<CustomItemStack> cStacks;
+	private static ImmutableList<CustomItem> cItems;
+	
 	// === INITIALIZATION === //
 
-	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onInitialization(MoreMinecraftAPIInitializationEvent event) {
 		CustomItem[] cItems = event.getCustomItems();
 		Debug.say("Recieved in total " + Integer.toString(cItems.length) + " Custom Items!");
+		if (cItems.length == 0)
+			return;
+		List<CustomItemStack> cStacks = new ArrayList<CustomItemStack>();
 		for (CustomItem cItem : cItems) {
 			Debug.saySuper("Currently Processing: " + cItem.getIdName());
 			/*
@@ -79,56 +73,19 @@ public class CustomItemUtils implements Listener {
 			 */
 			CustomItemStack cStack = new CustomItemStack(cItem, durability, texture);
 			ItemStack item = cStack.getItemStack();
-			// customItems.put(idName, cItem);
-			customItemStacks.add(cStack);
-			/*
-			 * Shaped Recipes
-			 */
-			for (CustomShapedRecipe cRecipe : cItem.getCustomShapedRecipes()) {
-				ShapedRecipe recipe = new ShapedRecipe(item);
-				Debug.saySuper("Adding shaped recipe");
-
-				recipe.shape(cRecipe.getShape());
-				Debug.saySuper("Added shape:");
-				for (String s : cRecipe.getShape())
-					Debug.saySuper(s);
-				HashMap<Character, RecipeIngredient> map = cRecipe.getIngredients();
-				for (char key : map.keySet()) {
-					Debug.saySuper("Processing Character: " + key);
-					Debug.saySuper("Material: " + map.get(key).getMaterial());
-					recipe.setIngredient(key, map.get(key).getMaterial(), map.get(key).getBlockData());
-				}
-
-				Bukkit.addRecipe(recipe);
-			}
-			/*
-			 * Shapeless Recipes
-			 */
-			for (CustomShapelessRecipe cRecipe : cItem.getCustomShapelessRecipes()) {
-				ShapelessRecipe recipe = new ShapelessRecipe(item);
-
-				Debug.saySuper("Adding shapeless recipe");
-
-				for (RecipeIngredient ingredient : cRecipe.getIngredients()) {
-					if (ingredient != null) {
-						recipe.addIngredient(ingredient.getMaterial());
-						Debug.saySuper("Added Material: " + ingredient.getMaterial());
-					}
-				}
-
-				Bukkit.addRecipe(recipe);
-			}
-			/*
-			 * Furnace Recipes
-			 */
-			for (CustomFurnaceRecipe cRecipe : cItem.getCustomFurnaceRecipes()) {
-				FurnaceRecipe recipe = new FurnaceRecipe(item, cRecipe.getInput().getMaterial());
-
-				recipe.setExperience(cRecipe.getExperience());
-
-				Bukkit.addRecipe(recipe);
+			// cItems.put(idName, cItem);
+			cStacks.add(cStack);
+			for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
+				cRecipe.registerBukkitRecipe(item);
 			}
 		}
+		CustomItemUtils.cStacks = ImmutableList.copyOf(cStacks);
+		
+		List<CustomItem> cItemsList = new ArrayList<CustomItem>();	
+		for (CustomItemStack cStack : cStacks)
+			cItemsList.add(cStack.getCustomItem());
+		CustomItemUtils.cItems = ImmutableList.copyOf(cItemsList);
+		
 		DataFile.getInstance().saveData();
 	}
 
@@ -136,7 +93,7 @@ public class CustomItemUtils implements Listener {
 
 	public static boolean isValidCustomItem(String idName) {
 		try {
-			for (CustomItemStack cStack : customItemStacks)
+			for (CustomItemStack cStack : cStacks)
 				if (cStack.getCustomItem().getIdName().equals(idName))
 					return true;
 		} catch (Exception e) {
@@ -145,23 +102,12 @@ public class CustomItemUtils implements Listener {
 		return false;
 	}
 
-	public static CustomItemStack[] getAllCustomItemStacks() {
-		CustomItemStack[] cStacks = new CustomItemStack[customItemStacks.size()];
-		int i = 0;
-		for (CustomItemStack cStack : customItemStacks) {
-			cStacks[i] = cStack.clone();
-			i++;
-		}
+	public static ImmutableList<CustomItemStack> getAllCustomItemStacks() {
+		// TODO: Test if it's immutable
 		return cStacks;
 	}
 
-	public static CustomItem[] getAllCustomItems() {
-		CustomItem[] cItems = new CustomItem[customItemStacks.size()];
-		int i = 0;
-		for (CustomItemStack cStack : customItemStacks) {
-			cItems[i] = cStack.getCustomItem();
-			i++;
-		}
+	public static ImmutableList<CustomItem> getAllCustomItems() {
 		return cItems;
 	}
 

@@ -13,9 +13,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 
 import com.chrismin13.moreminecraft.durability.ItemDurability;
-import com.chrismin13.moreminecraft.recipes.CustomFurnaceRecipe;
+import com.chrismin13.moreminecraft.recipes.CustomRecipe;
 import com.chrismin13.moreminecraft.recipes.CustomShapedRecipe;
-import com.chrismin13.moreminecraft.recipes.CustomShapelessRecipe;
 import com.chrismin13.moreminecraft.enums.ItemType;
 import com.chrismin13.moreminecraft.items.textured.CustomTexturedItem;
 import com.chrismin13.moreminecraft.utils.Debug;
@@ -65,9 +64,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	// Recipes
 	private boolean canBeCombinedInCrafting = false;
-	private List<CustomShapedRecipe> shapedRecipes = new ArrayList<CustomShapedRecipe>();
-	private List<CustomShapelessRecipe> shapelessRecipes = new ArrayList<CustomShapelessRecipe>();
-	private List<CustomFurnaceRecipe> furnaceRecipes = new ArrayList<CustomFurnaceRecipe>();
+	private List<CustomRecipe> recipes = new ArrayList<CustomRecipe>();
 
 	// Attributes
 	private List<Attribute> attributes = new ArrayList<Attribute>();
@@ -357,8 +354,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *         Bukkit and are converted to that format upon initialization. See
 	 *         {@link CustomShapedRecipe}.
 	 */
-	public List<CustomShapedRecipe> getCustomShapedRecipes() {
-		return shapedRecipes;
+	public List<CustomRecipe> getCustomRecipes() {
+		return recipes;
 	}
 
 	/**
@@ -367,8 +364,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * are converted to that format upon initialization. See
 	 * {@link CustomShapedRecipe}.
 	 */
-	public CustomItem addCustomShapedRecipe(CustomShapedRecipe recipe) {
-		this.shapedRecipes.add(recipe);
+	public CustomItem addCustomRecipe(CustomRecipe recipe) {
+		this.recipes.add(recipe);
 		return this;
 	}
 
@@ -377,73 +374,10 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * These recipes behave a lot like the Custom Recipes already found in
 	 * Bukkit and are converted to that format upon initialization. See
 	 * {@link CustomShapedRecipe}.
+	 * @param <T>
 	 */
-	public CustomItem addAllCustomShapedRecipe(List<CustomShapedRecipe> recipes) {
-		this.shapedRecipes.addAll(recipes);
-		return this;
-	}
-
-	/**
-	 * @return {@link List} - Returns a List of CustomShapelessRecipes. These
-	 *         recipes behave a lot like the Custom Recipes already found in
-	 *         Bukkit and are converted to that format upon initialization. See
-	 *         {@link CustomShapelessRecipe}.
-	 */
-	public List<CustomShapelessRecipe> getCustomShapelessRecipes() {
-		return shapelessRecipes;
-	}
-
-	/**
-	 * Adds the specified recipe to the list of CustomShapelessRecipes. These
-	 * recipes behave a lot like the Custom Recipes already found in Bukkit and
-	 * are converted to that format upon initialization. See
-	 * {@link CustomShapelessRecipe}.
-	 */
-	public CustomItem addCustomShapelessRecipe(CustomShapelessRecipe recipe) {
-		this.shapelessRecipes.add(recipe);
-		return this;
-	}
-
-	/**
-	 * Adds all of the specified recipes to the list of CustomShapelessRecipes.
-	 * These recipes behave a lot like the Custom Recipes already found in
-	 * Bukkit and are converted to that format upon initialization. See
-	 * {@link CustomShapelessRecipe}.
-	 */
-	public CustomItem addAllCustomShapelessRecipe(List<CustomShapelessRecipe> recipes) {
-		this.shapelessRecipes.addAll(recipes);
-		return this;
-	}
-
-	/**
-	 * @return {@link List} - Returns a List of CustomFurnaceRecipes. These
-	 *         recipes behave a lot like the Custom Recipes already found in
-	 *         Bukkit and are converted to that format upon initialization. See
-	 *         {@link CustomFurnaceRecipe}.
-	 */
-	public List<CustomFurnaceRecipe> getCustomFurnaceRecipes() {
-		return furnaceRecipes;
-	}
-
-	/**
-	 * Adds the specified recipe to the list of CustomFurnaceRecipes. These
-	 * recipes behave a lot like the Custom Recipes already found in Bukkit and
-	 * are converted to that format upon initialization. See
-	 * {@link CustomFurnaceRecipe}.
-	 */
-	public CustomItem addCustomFurnaceRecipe(CustomFurnaceRecipe recipe) {
-		this.furnaceRecipes.add(recipe);
-		return this;
-	}
-
-	/**
-	 * Adds all of the specified recipes to the list of CustomFurnaceRecipes.
-	 * These recipes behave a lot like the Custom Recipes already found in
-	 * Bukkit and are converted to that format upon initialization. See
-	 * {@link CustomFurnaceRecipe}.
-	 */
-	public CustomItem addAllCustomFurnaceRecipe(List<CustomFurnaceRecipe> recipes) {
-		this.furnaceRecipes.addAll(recipes);
+	public CustomItem addAllCustomRecipes(List<? extends CustomRecipe> recipes) {
+		this.recipes.addAll(recipes);
 		return this;
 	}
 

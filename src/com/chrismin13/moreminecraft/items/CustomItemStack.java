@@ -134,16 +134,18 @@ public class CustomItemStack implements Cloneable {
 
 	@SuppressWarnings("deprecation")
 	private static ItemStack getItemStack(CustomItem cItem, short durability) {
-		for (CustomItemStack cStack : CustomItemUtils.getAllCustomItemStacks())
-			if (cStack.getCustomItem().getIdName().equals(cItem.getIdName()))
-				return cStack.getItemStack();
+		if (CustomItemUtils.getAllCustomItemStacks() != null)
+			for (CustomItemStack cStack : CustomItemUtils.getAllCustomItemStacks())
+				if (cStack.getCustomItem().getIdName().equals(cItem.getIdName()))
+					return cStack.getItemStack();
 		// Material, amount and durability
-		ItemStack item = NbtFactory.getCraftItemStack(new ItemStack(cItem.getMaterial(), cItem.getAmount(), durability));
-		
+		ItemStack item = NbtFactory
+				.getCraftItemStack(new ItemStack(cItem.getMaterial(), cItem.getAmount(), durability));
+
 		// Store data in the nbt data of the ItemStack about the CustomItem's ID
 		NbtCompound nbt = NbtFactory.fromItemTag(item);
 		nbt.put("CustomItemIdName", cItem.getIdName());
-		
+
 		ItemMeta meta = item.getItemMeta();
 
 		// Unbreakable
@@ -172,7 +174,7 @@ public class CustomItemStack implements Cloneable {
 			attributes.add(attribute);
 			item = attributes.getStack();
 		}
-		
+
 		// Leather Armor stuff
 		if (cItem instanceof CustomLeatherArmor) {
 			LeatherArmorMeta leatherMeta = (LeatherArmorMeta) item.getItemMeta();
@@ -189,7 +191,7 @@ public class CustomItemStack implements Cloneable {
 	 *         {@link CustomItemStack}.
 	 */
 	public CustomItem getCustomItem() {
-		return cItem.clone();
+		return cItem;
 	}
 
 	/**

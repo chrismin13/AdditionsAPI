@@ -1,11 +1,11 @@
 package com.chrismin13.moreminecraft.recipes;
 
 import java.util.HashMap;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 
-public class CustomShapedRecipe {
+public class CustomShapedRecipe extends CustomRecipe {
 
 	private HashMap<Character, RecipeIngredient> ingredients = new HashMap<Character, RecipeIngredient>();
 	private String[] shape = new String[3];
@@ -36,20 +36,21 @@ public class CustomShapedRecipe {
 	}
 
 	public String[] getShape() {
-		return shape.clone();
+		return shape;
 	}
 
 	public CustomShapedRecipe setIngredient(char character, Material craftingMaterial) {
 		return setIngredient(character, new RecipeIngredient(craftingMaterial));
 	}
 
-	//public CustomShapedRecipe setIngredient(char character, ItemStack item) {
-	//	return setIngredient(character, new RecipeIngredient(item));
-	//}
+	// public CustomShapedRecipe setIngredient(char character, ItemStack item) {
+	// return setIngredient(character, new RecipeIngredient(item));
+	// }
 
-	//public CustomShapedRecipe setIngredient(char character, CustomItem cItem) {
-	//	return setIngredient(character, new RecipeIngredient(cItem));
-	//}
+	// public CustomShapedRecipe setIngredient(char character, CustomItem cItem)
+	// {
+	// return setIngredient(character, new RecipeIngredient(cItem));
+	// }
 
 	public CustomShapedRecipe setIngredient(char character, RecipeIngredient ingredient) {
 		ingredients.put(character, ingredient);
@@ -65,7 +66,7 @@ public class CustomShapedRecipe {
 		for (char character : this.ingredients.keySet()) {
 			int currentSpot = 0;
 			for (String string : shape) {
-				for (int charToCheck = 0; charToCheck < 3; charToCheck++) {
+				for (int charToCheck = 0; charToCheck < string.length(); charToCheck++) {
 					if (string.charAt(charToCheck) == character) {
 						ingredients[currentSpot] = this.ingredients.get(character);
 					}
@@ -74,5 +75,20 @@ public class CustomShapedRecipe {
 			}
 		}
 		return ingredients;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public ShapedRecipe toBukkitRecipe(ItemStack result) {
+		ShapedRecipe recipe = new ShapedRecipe(result);
+
+		recipe.shape(getShape());
+
+		HashMap<Character, RecipeIngredient> map = getIngredients();
+		for (char key : map.keySet()) {
+			recipe.setIngredient(key, map.get(key).getMaterial(), map.get(key).getBlockData());
+		}
+
+		return recipe;
 	}
 }

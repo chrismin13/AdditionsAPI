@@ -8,8 +8,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.chrismin13.moreminecraft.MoreMinecraft;
 import com.chrismin13.moreminecraft.utils.LangFileUtils;
 
@@ -21,20 +19,19 @@ public class ResourcePackListener implements Listener {
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
 		final Player player = event.getPlayer();
-
-		BukkitRunnable task = new BukkitRunnable() {
-
-			@Override
-			public void run() {
-				if (ResourcePackManager.hasResource()) {
-					String link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
+		Bukkit.getServer().getScheduler().runTask(MoreMinecraft.getInstance(), () -> {
+			if (ResourcePackManager.hasResource()) {
+				String link;
+				if (event.getAddress().getHostAddress().equals("127.0.0.1")) {
+					link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
 							+ ResourcePackServer.path;
-					player.setResourcePack(link);
+				} else {
+					link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
+							+ ResourcePackServer.path;
 				}
+				player.setResourcePack(link);
 			}
-
-		};
-		task.runTask(MoreMinecraft.getInstance());
+		});
 	}
 
 	@EventHandler
@@ -45,13 +42,8 @@ public class ResourcePackListener implements Listener {
 			case DECLINED:
 			case FAILED_DOWNLOAD:
 				final Player player = event.getPlayer();
-				BukkitRunnable task = new BukkitRunnable() {
-					@Override
-					public void run() {
-						player.kickPlayer(LangFileUtils.get("resource_pack_kick"));
-					}
-				};
-				task.runTask(MoreMinecraft.getInstance());
+				Bukkit.getServer().getScheduler().runTask(MoreMinecraft.getInstance(),
+						() -> player.kickPlayer(LangFileUtils.get("resource_pack_kick")));
 				break;
 			case ACCEPTED:
 			case SUCCESSFULLY_LOADED:

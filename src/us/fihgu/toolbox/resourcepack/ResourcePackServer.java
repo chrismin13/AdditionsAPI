@@ -33,7 +33,7 @@ public class ResourcePackServer
 		server = new HTTPServer(address);
 		server.numReadThread = numReadThread;
 		server.numWriteThread = numWriteThread;
-		server.putContextGenerator(path, new StaticContextGenerator(new FileContext(Paths.get(MoreMinecraft.getInstance().getDataFolder() + "resource-pack/resource.zip"))));
+		server.putContextGenerator(path, new StaticContextGenerator(new FileContext(Paths.get(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resource.zip"))));
 		server.startServer();
 	}
 	

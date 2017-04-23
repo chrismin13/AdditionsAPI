@@ -1,23 +1,36 @@
 package com.chrismin13.moreminecraft.recipes;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import com.chrismin13.moreminecraft.utils.Debug;
 
-public class RecipeIngredient implements Cloneable {
+public class RecipeIngredient implements Cloneable, Comparable<RecipeIngredient> {
 
 	private Material material;
 	private Byte blockData;
-	//private Short durability;
-	//private String customIdName;
+	// private Short durability;
+	// private String customIdName;
 
 	public RecipeIngredient(Material material) {
 		setMaterial(material);
 		setBlockData((byte) 0);
 	}
-	
+
 	public RecipeIngredient(Material material, byte blockData) {
 		setMaterial(material);
 		setBlockData(blockData);
+	}
+
+	@SuppressWarnings("deprecation")
+	public RecipeIngredient(ItemStack itemStack) {
+		if (itemStack != null) {
+			setMaterial(itemStack.getType());
+			setBlockData(itemStack.getData().getData());
+		} else {
+			setMaterial(null);
+			setBlockData(null);
+		}
+
 	}
 
 	/**
@@ -43,41 +56,42 @@ public class RecipeIngredient implements Cloneable {
 	}
 
 	/**
-	 * @param blockData the blockData to set
+	 * @param blockData
+	 *            the blockData to set
 	 */
-	public void setBlockData(byte blockData) {
+	public void setBlockData(Byte blockData) {
 		this.blockData = blockData;
 	}
-	
-	///**
+
+	/// **
 	// * @return the durability - null if it's a CustomItem.
 	// */
-	//public Short getDurability() {
-	//	return durability;
-	//}
+	// public Short getDurability() {
+	// return durability;
+	// }
 
-	///**
+	/// **
 	// * @param durability
-	// *            the durability to set - null if it's a CustomItem.
+	// * the durability to set - null if it's a CustomItem.
 	// */
-	//public void setDurability(Short durability) {
-	//	this.durability = durability;
-	//}
+	// public void setDurability(Short durability) {
+	// this.durability = durability;
+	// }
 
-	///**
+	/// **
 	// * @return the idName - null if it's NOT a CustomItem.
 	// */
-	//public String getIdName() {
-	//	return customIdName;
-	//}
+	// public String getIdName() {
+	// return customIdName;
+	// }
 
-	///**
+	/// **
 	// * @param idName
-	// *            the idName to set - null if it's NOT a CustomItem.
+	// * the idName to set - null if it's NOT a CustomItem.
 	// */
-	//public void setidName(String idName) {
-	//	this.customIdName = idName;
-	//}
+	// public void setidName(String idName) {
+	// this.customIdName = idName;
+	// }
 
 	@Override
 	public RecipeIngredient clone() {
@@ -114,7 +128,7 @@ public class RecipeIngredient implements Cloneable {
 		}
 		return false;
 	}
-	
+
 	public boolean blockDataEquals(RecipeIngredient that) {
 		if (this.blockData == null || that.blockData == null) {
 			if (this.blockData == that.blockData) {
@@ -128,44 +142,68 @@ public class RecipeIngredient implements Cloneable {
 		return false;
 	}
 
-	//public boolean durabilityEquals(RecipeIngredient that) {
-	//	if (this.durability == null || that.durability == null) {
-	//		if (this.durability == that.durability) {
-	//			Debug.saySuper("Durability == !" + durability);
-	//			return true;
-	//		}
-	//	} else {
-	//		if (this.durability.equals(that.durability)) {
-	//			Debug.saySuper("Durability equal!" + durability);
-	//			return true;
-	//		}
-	//	}
-	//	return false;
-	//}
+	// public boolean durabilityEquals(RecipeIngredient that) {
+	// if (this.durability == null || that.durability == null) {
+	// if (this.durability == that.durability) {
+	// Debug.saySuper("Durability == !" + durability);
+	// return true;
+	// }
+	// } else {
+	// if (this.durability.equals(that.durability)) {
+	// Debug.saySuper("Durability equal!" + durability);
+	// return true;
+	// }
+	// }
+	// return false;
+	// }
 
-	//public boolean idNameEquals(RecipeIngredient that) {
-	//	if (this.customIdName == null || that.customIdName == null) {
-	//		if (this.customIdName == that.customIdName) {
-	//			Debug.saySuper("IdName == !" + customIdName);
-	//			return true;
-	//		}
-	//	} else {
-	//		if (this.customIdName.equals(that.customIdName)) {
-	//			Debug.saySuper("IdName equal!" + customIdName);
-	//			return true;
-	//		}
-	//	}
-	//	return false;
-	//}
+	// public boolean idNameEquals(RecipeIngredient that) {
+	// if (this.customIdName == null || that.customIdName == null) {
+	// if (this.customIdName == that.customIdName) {
+	// Debug.saySuper("IdName == !" + customIdName);
+	// return true;
+	// }
+	// } else {
+	// if (this.customIdName.equals(that.customIdName)) {
+	// Debug.saySuper("IdName equal!" + customIdName);
+	// return true;
+	// }
+	// }
+	// return false;
+	// }
 
 	@Override
 	public int hashCode() {
 		int hash = 3;
 		hash = 53 * hash + (this.material != null ? this.material.hashCode() : 0);
 		hash = 53 * hash + (this.blockData != null ? this.blockData.hashCode() : 0);
-		//hash = 53 * hash + (this.durability != null ? this.durability.hashCode() : 0);
-		//hash = 53 * hash + (this.customIdName != null ? this.customIdName.hashCode() : 0);
+		// hash = 53 * hash + (this.durability != null ?
+		// this.durability.hashCode() : 0);
+		// hash = 53 * hash + (this.customIdName != null ?
+		// this.customIdName.hashCode() : 0);
 		return hash;
 	}
 
+	@SuppressWarnings("deprecation")
+	@Override
+	public int compareTo(RecipeIngredient ingredient) {
+		final int before = -1;
+		final int equal = 0;
+		final int after = 1;
+
+		if (this == ingredient)
+			return equal;
+
+		if (this.material.getId() < ingredient.material.getId())
+			return before;
+		if (this.material.getId() > ingredient.material.getId())
+			return after;
+
+		if (this.blockData < ingredient.blockData)
+			return before;
+		if (this.blockData > ingredient.blockData)
+			return after;
+
+		return equal;
+	}
 }
