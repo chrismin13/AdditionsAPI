@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import org.bukkit.Material;
 
 import com.chrismin13.moreminecraft.items.textured.CustomTexturedItem;
+import com.chrismin13.moreminecraft.utils.MaterialUtils;
 
 import us.fihgu.toolbox.resourcepack.model.DisplayEntry;
 import us.fihgu.toolbox.resourcepack.model.DisplayOptions;
@@ -139,4 +140,13 @@ public enum DamageableItem {
 		}
 		return null;
 	}
+	
+	public float getAttackSpeed() {
+		return MaterialUtils.getBaseSpeed(getMaterial());
+	}
+	
+	public float getAttackDamage() {
+		return MaterialUtils.getBaseDamage(getMaterial());
+	}
+	
 }

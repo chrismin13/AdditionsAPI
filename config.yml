@@ -3,7 +3,7 @@ enable-debug: false
 
 http:
  localhost: 
- port: 8124
+ port: 8125
  host: 
  numReadThread: 4
  numWriteThread: 4

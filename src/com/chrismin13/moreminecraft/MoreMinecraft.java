@@ -3,6 +3,8 @@ package com.chrismin13.moreminecraft;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
@@ -51,9 +53,9 @@ public class MoreMinecraft extends JavaPlugin {
 		config.setup();
 		if (config.getConfig().getBoolean("resource-pack.force-on-join"))
 			ResourcePackManager.setForceResourcePack();
-		
+
 		DataFile.getInstance().setup();
-		
+
 		LangFile lang = LangFile.getInstance();
 		lang.setup();
 		String pluginName = "more_minecraft";
@@ -75,7 +77,8 @@ public class MoreMinecraft extends JavaPlugin {
 		lang.addEntry(pluginName, "attack_damage", "Attack Damage");
 		lang.addEntry(pluginName, "durability", "Durability:");
 		lang.addEntry(pluginName, "death_message", " using [CustomItem]");
-		lang.addEntry(pluginName, "resource_pack_kick", "You must accept the resource pack in order to join the server! Click on the server once, then click edit and change Server Resource pack to True.");
+		lang.addEntry(pluginName, "resource_pack_kick",
+				"You must accept the resource pack in order to join the server! Click on the server once, then click edit and change Server Resource pack to True.");
 		lang.saveData();
 
 		for (Listener listener : Arrays.asList(new EnchantItem(), new Anvil(), new CraftingTable(), new BlockBreak(),
@@ -87,18 +90,34 @@ public class MoreMinecraft extends JavaPlugin {
 				new CustomItemUtils(), new ArrowFromCustomBowHit(), new PlayerDeath())) {
 			getServer().getPluginManager().registerEvents(listener, this);
 		}
-		
+
 		new ResourcePackListener().register(this);
 
 		// After all plugins have been enabled
 		getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
 			Debug.say("Starting MoreMinecraftAPI Intialization");
-			getServer().getPluginManager().callEvent(new MoreMinecraftAPIInitializationEvent());
+			MoreMinecraftAPIInitializationEvent event = new MoreMinecraftAPIInitializationEvent();
+			// TODO: Add to config
+			event.addResourcePackFromPlugin(this, "resource/smooth_armor.zip");
+			getServer().getPluginManager().callEvent(event);
 			Debug.say("Finished Initialization.");
 			Debug.saySuper("aaaaand chat spam too. :P");
 
 			if (ResourcePackManager.hasResource()) {
 				setupHTTPServer();
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					Bukkit.getServer().getScheduler().runTask(MoreMinecraft.getInstance(), () -> {
+						String link;
+						if (player.getAddress().getHostString().equals("127.0.0.1")) {
+							link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
+									+ ResourcePackServer.path;
+						} else {
+							link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
+									+ ResourcePackServer.path;
+						}
+						player.setResourcePack(link);
+					});
+				}
 			}
 		});
 	}

@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
-public class CustomShapedRecipe extends CustomRecipe {
+import com.chrismin13.moreminecraft.utils.Debug;
+
+public class CustomShapedRecipe extends CustomRecipe implements Cloneable {
 
 	private HashMap<Character, RecipeIngredient> ingredients = new HashMap<Character, RecipeIngredient>();
 	private String[] shape = new String[3];
@@ -13,9 +15,10 @@ public class CustomShapedRecipe extends CustomRecipe {
 	public CustomShapedRecipe() {
 	}
 
+	@SuppressWarnings("unchecked")
 	public CustomShapedRecipe(CustomShapedRecipe recipe) {
-		this.shape = recipe.getShape();
-		this.ingredients = recipe.getIngredients();
+		this.shape = recipe.getShape().clone();
+		this.ingredients = (HashMap<Character, RecipeIngredient>) recipe.getIngredients().clone();
 	}
 
 	public CustomShapedRecipe(ItemStack[] recipeMatrix) {
@@ -90,5 +93,16 @@ public class CustomShapedRecipe extends CustomRecipe {
 		}
 
 		return recipe;
+	}
+	
+	@Override
+	public CustomShapedRecipe clone() {
+		try {
+			return (CustomShapedRecipe) super.clone();
+		} catch (CloneNotSupportedException e) {
+			Debug.sayTrueError("Cloning not supported!");
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

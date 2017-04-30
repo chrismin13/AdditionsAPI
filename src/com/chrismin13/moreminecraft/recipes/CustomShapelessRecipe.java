@@ -16,7 +16,7 @@ public class CustomShapelessRecipe extends CustomRecipe {
 
 	public CustomShapelessRecipe(CustomShapelessRecipe recipe) {
 		for (RecipeIngredient ingredient : recipe.getIngredients())
-			this.addIngredient(ingredient);
+			this.addIngredient(ingredient.clone());
 	}
 
 	public CustomShapelessRecipe addIngredient(Material material) {

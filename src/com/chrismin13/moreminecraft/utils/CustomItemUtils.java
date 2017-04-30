@@ -118,7 +118,7 @@ public class CustomItemUtils implements Listener {
 			return null;
 		ItemStack stack = NbtFactory.getCraftItemStack(item);
 		NbtCompound nbt = NbtFactory.fromItemTag(stack);
-		return nbt.getString("CustomItemIdName", null);
+		return nbt.getString("CustomItem.IdName", null);
 	}
 
 	public static boolean isCustomItem(ItemStack item) {

@@ -1,13 +1,16 @@
 package com.chrismin13.moreminecraft.items;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
+import com.chrismin13.moreminecraft.events.item.PlayerCustomItemDamageEvent;
 import com.chrismin13.moreminecraft.files.DataFile;
 import com.chrismin13.moreminecraft.items.textured.CustomTexturedItem;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
@@ -144,7 +147,7 @@ public class CustomItemStack implements Cloneable {
 
 		// Store data in the nbt data of the ItemStack about the CustomItem's ID
 		NbtCompound nbt = NbtFactory.fromItemTag(item);
-		nbt.put("CustomItemIdName", cItem.getIdName());
+		nbt.put("CustomItem.IdName", cItem.getIdName());
 
 		ItemMeta meta = item.getItemMeta();
 
@@ -260,6 +263,20 @@ public class CustomItemStack implements Cloneable {
 
 			itemStack.setItemMeta(meta);
 		}
+		return this;
+	}
+
+	/**
+	 * Reduces the durability of the CustomItemStack, whether it's using Fake
+	 * Durability or not. It uses the {@link PlayerCustomItemDamageEvent}, so it could
+	 * be cancelled.
+	 * 
+	 * @param durabilityToReduce
+	 *            The amount of durability that will be reduced
+	 */
+	public CustomItemStack reduceDurability(Player player, int durabilityToReduce) {
+		Bukkit.getPluginManager()
+				.callEvent(new PlayerCustomItemDamageEvent(player, getItemStack(), durabilityToReduce, cItem));
 		return this;
 	}
 

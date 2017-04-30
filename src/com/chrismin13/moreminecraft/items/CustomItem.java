@@ -755,8 +755,10 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @param itemDurability
 	 *            the itemDurability to set. Every class under the package
 	 *            com.chrismin13.moreminecraft.durability is valid.
+	 * @return 
 	 */
-	public void setDurabilityMechanics(ItemDurability itemDurability) {
+	public CustomItem setDurabilityMechanics(ItemDurability itemDurability) {
 		this.itemDurability = itemDurability;
+		return this;
 	}
 }

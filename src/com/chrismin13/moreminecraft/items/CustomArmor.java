@@ -69,8 +69,9 @@ public class CustomArmor extends CustomItem {
 	 * @param operation
 	 *            The math operation that will be used for the amount specified.
 	 */
-	public void addAttribute(AttributeType type, double amount, Operation operation) {
+	public CustomArmor addAttribute(AttributeType type, double amount, Operation operation) {
 		super.addAttribute(type, amount, getArmorType().getEquipmentSlot(), operation);
+		return this;
 	}
 
 	// === DURABILITY MECHANICS === //
@@ -95,10 +96,11 @@ public class CustomArmor extends CustomItem {
 	 */
 	@Override
 	@Deprecated
-	public void setDurabilityMechanics(ItemDurability itemDurability) {
+	public CustomItem setDurabilityMechanics(ItemDurability itemDurability) {
 		if (!(itemDurability instanceof ArmorDurability))
 			throw new ClassCastException("Cannot cast the ItemDurability specified to ArmorDurability!");
 		super.setDurabilityMechanics(itemDurability);
+		return this;
 	}
 
 	/**
@@ -109,8 +111,33 @@ public class CustomArmor extends CustomItem {
 	 *            the armorDurbility to set. Every class that extends or is
 	 *            {@link ArmorDurability} is valid.
 	 */
-	public void setDurabilityMechanics(ArmorDurability armorDurability) {
+	public CustomArmor setDurabilityMechanics(ArmorDurability armorDurability) {
 		super.setDurabilityMechanics(armorDurability);
+		return this;
+	}
+
+	/**
+	 * Adds the {@link AttributeType} Armor with the amount specified using the
+	 * addition operation.
+	 * 
+	 * @param amount
+	 *            The amount of armor to be added.
+	 */
+	public void addArmor(double amount) {
+		addAttribute(AttributeType.ARMOR, amount, Operation.ADD_NUMBER);
+	}
+
+	/**
+	 * Adds the {@link AttributeType} Armor Toughness with the amount specified
+	 * using the addition operation. The Armor Toughness Attribute was added in
+	 * 1.9.1, so, just like this plugin, it won't work on earlier versions of
+	 * Minecraft. I haven't tested this feature on those old versions!
+	 * 
+	 * @param amount
+	 *            The amount of armor to be added.
+	 */
+	public void addArmorToughness(double amount) {
+		addAttribute(AttributeType.ARMOR_TOUGHNESS, amount, Operation.ADD_NUMBER);
 	}
 
 }

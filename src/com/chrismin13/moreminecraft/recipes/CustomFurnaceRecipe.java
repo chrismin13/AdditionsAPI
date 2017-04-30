@@ -19,8 +19,8 @@ public class CustomFurnaceRecipe extends CustomRecipe {
 	}
 
 	public CustomFurnaceRecipe(CustomFurnaceRecipe recipe) {
-		this.input = recipe.getInput();
-		this.experience = recipe.getExperience();
+		this.input = recipe.getInput().clone();
+		this.experience = new Float(recipe.getExperience());
 	}
 
 	/**
