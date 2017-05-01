@@ -37,6 +37,7 @@ public class CustomTool extends CustomItem {
 	// === VARIABLES === //
 
 	private boolean fakeDamageLore = false;
+	private boolean keepsHoeAbilities = true;
 
 	// === CREATING THE TOOL === //
 
@@ -134,5 +135,41 @@ public class CustomTool extends CustomItem {
 	 */
 	public boolean hasFakeAttackLore() {
 		return fakeDamageLore;
+	}
+
+	/**
+	 * <b>ONLY APPLICABLE FOR HOES</b> <br>
+	 * This is useful if you would like to create a Custom Item with no special
+	 * abilities. Most people use Diamond Hoes for Custom Items due to their
+	 * high durability count and their block breaking speed that is the same as
+	 * the player's hand. However, upon right click they hoe Grass and Dirt
+	 * along with playing a sound. So, what this does, is it removes both the
+	 * sound and the ability to hoe. <br>
+	 * Don't forget to also use {@link #addAttackDamage(1.0D)} to remove the
+	 * hoe's extra attack damage. Attack Speed will be reset as well.
+	 * 
+	 * @return Whether the CustomTool that is a hoe will keep its ability to hoe
+	 *         and its sounds.
+	 */
+	public boolean keepsHoeAbilities() {
+		return keepsHoeAbilities;
+	}
+
+	/**
+	 * <b>ONLY APPLICABLE FOR HOES</b> <br>
+	 * This is useful if you would like to create a Custom Item with no special
+	 * abilities. Most people use Diamond Hoes for Custom Items due to their
+	 * high durability count and their block breaking speed that is the same as
+	 * the player's hand. However, upon right click they hoe Grass and Dirt
+	 * along with playing a sound. So, what this does, is it removes both the
+	 * sound and the ability to hoe.<br>
+	 * Don't forget to also use {@link #addAttackDamage(1.0D)} to remove the
+	 * hoe's extra attack damage. Attack Speed will be reset as well.
+	 * 
+	 * @param keepsHoeAbilities
+	 *            Whether the Hoe should keep its abilities or not.
+	 */
+	public void setKeepsHoeAbilities(boolean keepsHoeAbilities) {
+		this.keepsHoeAbilities = keepsHoeAbilities;
 	}
 }

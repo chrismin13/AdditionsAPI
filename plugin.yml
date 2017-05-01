@@ -2,3 +2,11 @@ name: MoreMinecraft
 version: 0.1
 main: com.chrismin13.moreminecraft.MoreMinecraft
 author: chrismin13
+
+commands:
+  additions:
+    description: Main Command of the Additions API.
+    usage: /<command>
+    permission: additionsapi
+    permission-message: You don't have permission to use this command!
+    aliases: [reload]

@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.chrismin13.moreminecraft.commands.Additions;
 import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.ConfigFile;
 import com.chrismin13.moreminecraft.files.DataFile;
@@ -90,53 +92,58 @@ public class MoreMinecraft extends JavaPlugin {
 				new CustomItemUtils(), new ArrowFromCustomBowHit(), new PlayerDeath())) {
 			getServer().getPluginManager().registerEvents(listener, this);
 		}
+		
+		getCommand("additions").setExecutor(new Additions());
 
 		new ResourcePackListener().register(this);
 
 		// After all plugins have been enabled
-		getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-			Debug.say("Starting MoreMinecraftAPI Intialization");
-			MoreMinecraftAPIInitializationEvent event = new MoreMinecraftAPIInitializationEvent();
-			// TODO: Add to config
-			event.addResourcePackFromPlugin(this, "resource/smooth_armor.zip");
-			getServer().getPluginManager().callEvent(event);
-			Debug.say("Finished Initialization.");
-			Debug.saySuper("aaaaand chat spam too. :P");
-
-			if (ResourcePackManager.hasResource()) {
-				setupHTTPServer();
-				for (Player player : Bukkit.getOnlinePlayers()) {
-					Bukkit.getServer().getScheduler().runTask(MoreMinecraft.getInstance(), () -> {
-						String link;
-						if (player.getAddress().getHostString().equals("127.0.0.1")) {
-							link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
-									+ ResourcePackServer.path;
-						} else {
-							link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
-									+ ResourcePackServer.path;
-						}
-						player.setResourcePack(link);
-					});
-				}
-			}
-		});
+		getServer().getScheduler().scheduleSyncDelayedTask(this, () -> load());
 	}
 
 	public void onDisable() {
 		ResourcePackServer.stopServer();
 	}
 
-	private void setupHTTPServer() {
+	private static void setupHTTPServer() {
 		try {
 			ResourcePackManager.Load();
 			ResourcePackManager.buildResourcePack();
 			Debug.sayTrue("Starting an HTTP Server for hosting the Resource Pack.");
 			ResourcePackServer.startServer();
-			this.saveConfig();
+			instance.saveConfig();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static void load() {
+		Debug.say("Starting MoreMinecraftAPI Intialization");
+		MoreMinecraftAPIInitializationEvent event = new MoreMinecraftAPIInitializationEvent();
+		// TODO: Add to config
+		event.addResourcePackFromPlugin(instance, "resource/smooth_armor.zip");
+		event.addResourcePackFromPlugin(instance, "resource/no_hoe_sound.zip");
+		instance.getServer().getPluginManager().callEvent(event);
+		Debug.say("Finished Initialization.");
+		Debug.saySuper("aaaaand chat spam too. :P");
+
+		if (ResourcePackManager.hasResource()) {
+			setupHTTPServer();
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				Bukkit.getServer().getScheduler().runTask(MoreMinecraft.getInstance(), () -> {
+					String link;
+					if (player.getAddress().getHostString().equals("127.0.0.1")) {
+						link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
+								+ ResourcePackServer.path;
+					} else {
+						link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
+								+ ResourcePackServer.path;
+					}
+					player.setResourcePack(link);
+				});
+			}
+		}
 	}
 
 	public static JavaPlugin getInstance() {

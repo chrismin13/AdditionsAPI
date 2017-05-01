@@ -47,7 +47,7 @@ public abstract class WebServer {
 			} catch (IOException e) {
 				Debug.sayError("Could not start web server on: " + this.address.toString());
 				Debug.sayError(
-						"Please check if the Port you hae defined in the Config File is not in use and it has been forwarded in your router's settings. If you are running this plugin on a Server hosted by someone else, ask them which ports are open for plugins to use. Common ports are from 8123 and up as 8123 is used by the popular plugin Dynmap.");
+						"Please check if the Port you have defined in the Config File is not in use and it has been forwarded in your router's settings. If you are running this plugin on a Server hosted by someone else, ask them which ports are open for plugins to use. Common ports are from 8123 and up as 8123 is used by the popular plugin Dynmap.");
 				this.stopServer();
 				e.printStackTrace();
 			}

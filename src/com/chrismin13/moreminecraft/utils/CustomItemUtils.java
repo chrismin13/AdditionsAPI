@@ -110,11 +110,16 @@ public class CustomItemUtils implements Listener {
 	public static ImmutableList<CustomItem> getAllCustomItems() {
 		return cItems;
 	}
+	
+	public static void clearAll() {
+		cStacks = null;
+		cItems = null;
+	}
 
 	// === ITEMSTACKS === //
 
 	public static String getIdName(ItemStack item) {
-		if (item.getType() == Material.AIR)
+		if (item == null || item.getType().equals(Material.AIR))
 			return null;
 		ItemStack stack = NbtFactory.getCraftItemStack(item);
 		NbtCompound nbt = NbtFactory.fromItemTag(stack);
@@ -124,6 +129,13 @@ public class CustomItemUtils implements Listener {
 	public static boolean isCustomItem(ItemStack item) {
 		if (getIdName(item) != null)
 			return true;
+		return false;
+	}
+
+	public static boolean isValidCustomItem(ItemStack item) {
+		if (isCustomItem(item))
+			if (isValidCustomItem(getIdName(item)))
+				return true;
 		return false;
 	}
 }

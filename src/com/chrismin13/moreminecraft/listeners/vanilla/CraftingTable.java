@@ -28,7 +28,7 @@ public class CraftingTable implements Listener {
 			 * exists in-game
 			 */
 			for (ItemStack item : matrix) {
-				if (CustomItemUtils.isCustomItem(item)) {
+				if (CustomItemUtils.isValidCustomItem(item)) {
 					CustomItem cItem = new CustomItemStack(item).getCustomItem();
 					if (!cItem.isCombinableInCrafting()) {
 						event.getInventory().setResult(new ItemStack(Material.AIR));
@@ -42,7 +42,7 @@ public class CraftingTable implements Listener {
 			 */
 			List<ItemStack> items = new ArrayList<ItemStack>();
 			for (ItemStack item : matrix)
-				if (item.getType() != Material.AIR)
+				if (item != null && item.getType() != Material.AIR)
 					items.add(item);
 			if (items.size() == 2) {
 				ItemStack[] toCombine = new ItemStack[2];

@@ -60,12 +60,14 @@ public class ResourcePackManager {
 	/**
 	 * The file location for saving resource pack.
 	 */
-	private static File saveFile = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resourceUsers.json");
+	private static File saveFile = new File(
+			MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resourceUsers.json");
 
 	/**
 	 * The file path for saving the final resource pack.
 	 */
-	private static File resourceFile = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resource.zip");
+	private static File resourceFile = new File(
+			MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resource.zip");
 
 	/**
 	 * A list of resources that needs to be merged to the final resource pack.
@@ -157,7 +159,7 @@ public class ResourcePackManager {
 		}
 
 		// debug mode
-		if(ConfigFile.getDebug() == DebugType.SUPER) {
+		if (ConfigFile.getDebug() == DebugType.SUPER) {
 			return true;
 		}
 
@@ -256,11 +258,12 @@ public class ResourcePackManager {
 		ArrayList<CustomItem> tempList = new ArrayList<>();
 
 		// Adding to the temp list every Custom Item that has a Model
-		for (CustomItem item : CustomItemUtils.getAllCustomItems()) {
-			if (item instanceof ModelInjector) {
-				tempList.add(item);
+		if (CustomItemUtils.getAllCustomItems() != null)
+			for (CustomItem item : CustomItemUtils.getAllCustomItems()) {
+				if (item instanceof ModelInjector) {
+					tempList.add(item);
+				}
 			}
-		}
 
 		Collections.sort(tempList);
 

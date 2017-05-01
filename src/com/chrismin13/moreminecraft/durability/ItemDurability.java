@@ -3,6 +3,7 @@ package com.chrismin13.moreminecraft.durability;
 import java.util.HashMap;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 public class ItemDurability {
 
@@ -15,6 +16,15 @@ public class ItemDurability {
 	 * @return the blockBreak
 	 */
 	public int getBlockBreak() {
+		return blockBreak;
+	}
+
+	/**
+	 * @return the blockBreak
+	 */
+	public int getBlockBreak(Block block) {
+		if (specialBlockBreak.containsKey(block.getType()))
+			return specialBlockBreak.get(block.getType());
 		return blockBreak;
 	}
 
@@ -58,8 +68,7 @@ public class ItemDurability {
 
 	/**
 	 * 
-	 * Adds a Special Block.
-	 * <br>
+	 * Adds a Special Block. <br>
 	 * Special Blocks will override the BlockBreak and InstantBlockBreak and
 	 * damage the item.
 	 * 
