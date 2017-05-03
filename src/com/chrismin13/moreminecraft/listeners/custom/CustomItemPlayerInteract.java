@@ -48,7 +48,7 @@ public class CustomItemPlayerInteract implements Listener {
 				if (mechanics instanceof SpadeDurability && material == Material.GRASS) {
 					damageEvent.setDamage(((SpadeDurability) mechanics).getPathTile());
 				} else if ((material == Material.GRASS || (material == Material.DIRT && data != (byte) 2))) {
-					if (cItem.hasHoeAbilities())
+					if (!cItem.hasHoeAbilities())
 						event.setCancelled(true);
 					else if (mechanics instanceof HoeDurability)
 						damageEvent.setDamage(((HoeDurability) mechanics).getHoe());

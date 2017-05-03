@@ -54,8 +54,7 @@ public class PlayerCustomItemDamage implements Listener {
 			PlayerCustomItemBreakEvent breakEvent = new PlayerCustomItemBreakEvent(player, item, cItem);
 			Bukkit.getPluginManager().callEvent(breakEvent);
 			if (!event.isCancelled()) {
-				// TODO: Add support for Armor
-				player.getInventory().remove(item);
+				item.setAmount(0);
 				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1F, 1F);
 			}
 			return;
