@@ -17,7 +17,6 @@ import org.bukkit.inventory.PlayerInventory;
 import com.chrismin13.moreminecraft.enums.ToolType;
 import com.chrismin13.moreminecraft.events.item.CustomItemPlayerInteractEvent;
 import com.chrismin13.moreminecraft.items.CustomItemStack;
-import com.chrismin13.moreminecraft.items.CustomTool;
 import com.chrismin13.moreminecraft.utils.CustomItemUtils;
 
 public class PlayerInteract implements Listener {
@@ -72,15 +71,8 @@ public class PlayerInteract implements Listener {
 			if (!CustomItemUtils.isValidCustomItem(item))
 				return true;
 			CustomItemStack cStack = new CustomItemStack(item);
-			if (cStack.getCustomItem() instanceof CustomTool) {
-				CustomTool cTool = (CustomTool) cStack.getCustomItem();
-				if (cTool.keepsHoeAbilities())
-					return true;
-				else
-					return false;
-			} else {
+			if (cStack.getCustomItem().hasHoeAbilities())
 				return true;
-			}
 		}
 		return false;
 	}

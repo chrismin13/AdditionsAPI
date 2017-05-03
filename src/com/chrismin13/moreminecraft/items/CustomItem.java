@@ -80,6 +80,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// ItemFlags
 	private List<ItemFlag> itemFlags = new ArrayList<ItemFlag>();
 
+	// Abilities
+	private boolean hoeAbilities = true;
+
 	/**
 	 * Create a new Custom Item.
 	 * 
@@ -374,6 +377,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * These recipes behave a lot like the Custom Recipes already found in
 	 * Bukkit and are converted to that format upon initialization. See
 	 * {@link CustomShapedRecipe}.
+	 * 
 	 * @param <T>
 	 */
 	public CustomItem addAllCustomRecipes(List<? extends CustomRecipe> recipes) {
@@ -755,10 +759,52 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @param itemDurability
 	 *            the itemDurability to set. Every class under the package
 	 *            com.chrismin13.moreminecraft.durability is valid.
-	 * @return 
+	 * @return
 	 */
 	public CustomItem setDurabilityMechanics(ItemDurability itemDurability) {
 		this.itemDurability = itemDurability;
 		return this;
+	}
+
+	/**
+	 * <b>ONLY APPLICABLE FOR HOES</b> <br>
+	 * This is useful if you would like to create a Custom Item with no special
+	 * abilities. Most people use Diamond Hoes for Custom Items due to their
+	 * high durability count and their block breaking speed that is the same as
+	 * the player's hand. However, upon right click they hoe Grass and Dirt
+	 * along with playing a sound. So, what this does, is it removes both the
+	 * sound and the ability to hoe.<br>
+	 * Don't forget to also use
+	 * {@link #addAttribute(AttributeType.ATTACK_DAMAGE, 0.0D,
+	 * EquipmentSlot.HAND, Operation.ADD_NUMBER)} to remove the hoe's extra
+	 * attack damage and {@link #setAttributeVisibility(false)} to remove the
+	 * Attribute Lore. Attack Speed will be reset as well.
+	 * 
+	 * @return Whether the CustomItem that is a hoe will keep its ability to
+	 *         till grass and its sounds.
+	 */
+	public boolean hasHoeAbilities() {
+		return hoeAbilities;
+	}
+
+	/**
+	 * <b>ONLY APPLICABLE FOR HOES</b> <br>
+	 * This is useful if you would like to create a Custom Item with no special
+	 * abilities. Most people use Diamond Hoes for Custom Items due to their
+	 * high durability count and their block breaking speed that is the same as
+	 * the player's hand. However, upon right click they hoe Grass and Dirt
+	 * along with playing a sound. So, what this does, is it removes both the
+	 * sound and the ability to hoe.<br>
+	 * Don't forget to also use
+	 * {@link #addAttribute(AttributeType.ATTACK_DAMAGE, 0.0D,
+	 * EquipmentSlot.HAND, Operation.ADD_NUMBER)} to remove the hoe's extra
+	 * attack damage and {@link #setAttributeVisibility(false)} to remove the
+	 * Attribute Lore. Attack Speed will be reset as well.
+	 * 
+	 * @param hoeAbilities
+	 *            Whether the Hoe should keep its abilities or not.
+	 */
+	public void setHoeAbilities(boolean hoeAbilities) {
+		this.hoeAbilities = hoeAbilities;
 	}
 }

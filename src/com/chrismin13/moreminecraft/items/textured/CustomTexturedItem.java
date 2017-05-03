@@ -49,8 +49,8 @@ public class CustomTexturedItem extends CustomItem implements ModelInjector {
 	 *            PNG file (without the extension .png) whose texture will be
 	 *            used from the Resource Pack.
 	 */
-	public CustomTexturedItem(DamageableItem dItem, int amount, String idName, String defaultTexture) {
-		super(dItem.getMaterial(), amount, (short) 0, idName);
+	public CustomTexturedItem(DamageableItem dItem, String idName, String defaultTexture) {
+		super(dItem.getMaterial(), 1, (short) 0, idName);
 		this.defaultTexture = defaultTexture;
 		this.addTexture(defaultTexture);
 	}
