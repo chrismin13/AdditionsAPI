@@ -10,7 +10,7 @@ import com.chrismin13.moreminecraft.files.ConfigFile.DebugType;
 public class Debug {
 
 	private static Logger log = Bukkit.getLogger();
-	private static DebugType type = ConfigFile.getDebug();
+	private static DebugType type = ConfigFile.getInstance().getDebug();
 	
 	public static void say(String s) {
 		log.info(s);

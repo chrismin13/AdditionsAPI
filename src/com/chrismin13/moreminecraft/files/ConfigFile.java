@@ -42,7 +42,7 @@ public class ConfigFile {
 		FALSE, TRUE, SUPER;
 	}
 
-	public static DebugType getDebug() {
+	public DebugType getDebug() {
 		String debug = config.getString("enable-debug");
 		if (debug.equalsIgnoreCase("true"))
 			return DebugType.TRUE;
@@ -66,5 +66,9 @@ public class ConfigFile {
 
 	public PluginDescriptionFile getDesc() {
 		return plugin.getDescription();
+	}
+	
+	public BossBarConfig getBossBarConfig() {
+		return new BossBarConfig(config.getBoolean("bossbar.show"), config.getBoolean("bossbar.vanilla-items"), config.getBoolean("bossbar.custom-items"));
 	}
 }

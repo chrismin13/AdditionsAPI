@@ -13,6 +13,7 @@ import com.chrismin13.moreminecraft.events.MoreMinecraftAPIInitializationEvent;
 import com.chrismin13.moreminecraft.files.ConfigFile;
 import com.chrismin13.moreminecraft.files.DataFile;
 import com.chrismin13.moreminecraft.files.LangFile;
+import com.chrismin13.moreminecraft.listeners.DurabilityBar;
 import com.chrismin13.moreminecraft.listeners.custom.ArrowFromCustomBowHit;
 import com.chrismin13.moreminecraft.listeners.custom.CustomElytraPlayerToggleGlide;
 import com.chrismin13.moreminecraft.listeners.custom.CustomItemBlockBreak;
@@ -81,6 +82,8 @@ public class MoreMinecraft extends JavaPlugin {
 		lang.addEntry(pluginName, "death_message", " using [CustomItem]");
 		lang.addEntry(pluginName, "resource_pack_kick",
 				"You must accept the resource pack in order to join the server! Click on the server once, then click edit and change Server Resource pack to True.");
+		lang.addEntry(pluginName, "item_durability_main_hand", "Item Durability in Main Hand: ");
+		lang.addEntry(pluginName, "item_durability_off_hand", "Item Durability in Off Hand: ");
 		lang.saveData();
 
 		for (Listener listener : Arrays.asList(new EnchantItem(), new Anvil(), new CraftingTable(), new BlockBreak(),
@@ -89,7 +92,7 @@ public class MoreMinecraft extends JavaPlugin {
 				new PlayerShearEntity(), new CustomItemShearEntity(), new PlayerFish(), new CustomItemFish(),
 				new BlockIgnite(), new CustomItemBlockIgnite(), new EntityShootBow(), new EntityShootCustomBow(),
 				new CustomShieldEntityDamageByEntity(), new EntityToggleGlide(), new CustomElytraPlayerToggleGlide(),
-				new CustomItemUtils(), new ArrowFromCustomBowHit(), new PlayerDeath())) {
+				new CustomItemUtils(), new ArrowFromCustomBowHit(), new PlayerDeath(), new DurabilityBar())) {
 			getServer().getPluginManager().registerEvents(listener, this);
 		}
 		
@@ -103,6 +106,7 @@ public class MoreMinecraft extends JavaPlugin {
 
 	public void onDisable() {
 		ResourcePackServer.stopServer();
+		DurabilityBar.removeAllDurabilityBars();
 	}
 
 	private static void setupHTTPServer() {

@@ -11,3 +11,8 @@ http:
 resource-pack:
  force-on-join: true
  overwrite-files: true
+ 
+bossbar:
+ show: true
+ vanilla-items: true
+ custom-items: true

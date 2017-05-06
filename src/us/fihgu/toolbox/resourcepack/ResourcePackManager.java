@@ -159,7 +159,7 @@ public class ResourcePackManager {
 		}
 
 		// debug mode
-		if (ConfigFile.getDebug() == DebugType.SUPER) {
+		if (ConfigFile.getInstance().getDebug() == DebugType.SUPER) {
 			return true;
 		}
 
