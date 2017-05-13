@@ -4,8 +4,8 @@ import java.util.EnumSet;
 
 import org.bukkit.Material;
 
-import com.chrismin13.moreminecraft.items.textured.CustomTexturedItem;
-import com.chrismin13.moreminecraft.utils.MaterialUtils;
+import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
+import com.chrismin13.additionsapi.utils.MaterialUtils;
 
 import us.fihgu.toolbox.resourcepack.model.DisplayEntry;
 import us.fihgu.toolbox.resourcepack.model.DisplayOptions;

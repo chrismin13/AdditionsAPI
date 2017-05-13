@@ -11,7 +11,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.util.HashMap;
 
-import com.chrismin13.moreminecraft.utils.Debug;
+import com.chrismin13.additionsapi.utils.Debug;
 
 import us.fihgu.toolbox.web.SelectionHandler;
 import us.fihgu.toolbox.web.SelectorThreadPool;

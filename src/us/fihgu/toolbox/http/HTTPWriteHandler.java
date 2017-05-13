@@ -6,7 +6,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.CharacterCodingException;
 
-import com.chrismin13.moreminecraft.utils.Debug;
+import com.chrismin13.additionsapi.utils.Debug;
 
 import us.fihgu.toolbox.web.SelectionHandler;
 

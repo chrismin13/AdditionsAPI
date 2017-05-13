@@ -2,12 +2,12 @@ package us.fihgu.toolbox.resourcepack;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.items.CustomItem;
-import com.chrismin13.moreminecraft.files.ConfigFile;
-import com.chrismin13.moreminecraft.files.ConfigFile.DebugType;
-import com.chrismin13.moreminecraft.utils.CustomItemUtils;
-import com.chrismin13.moreminecraft.utils.Debug;
+import com.chrismin13.additionsapi.AdditionsAPI;
+import com.chrismin13.additionsapi.files.ConfigFile;
+import com.chrismin13.additionsapi.files.ConfigFile.DebugType;
+import com.chrismin13.additionsapi.items.CustomItem;
+
+import com.chrismin13.additionsapi.utils.Debug;
 
 import us.fihgu.toolbox.file.FileUtils;
 import us.fihgu.toolbox.item.DamageableItem;
@@ -61,13 +61,13 @@ public class ResourcePackManager {
 	 * The file location for saving resource pack.
 	 */
 	private static File saveFile = new File(
-			MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resourceUsers.json");
+			AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/resourceUsers.json");
 
 	/**
 	 * The file path for saving the final resource pack.
 	 */
 	private static File resourceFile = new File(
-			MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resource.zip");
+			AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/resource.zip");
 
 	/**
 	 * A list of resources that needs to be merged to the final resource pack.
@@ -126,7 +126,7 @@ public class ResourcePackManager {
 		String resourcePack = getServerResourcePack();
 
 		// get last user defined resource pack.
-		String oldResourcePack = MoreMinecraft.getInstance().getConfig()
+		String oldResourcePack = AdditionsAPI.getInstance().getConfig()
 				.getString("resource-pack.lastServerResourcePack");
 
 		if (oldResourcePack != null) {
@@ -170,14 +170,14 @@ public class ResourcePackManager {
 		if (needsRebuild()) {
 			Debug.say("Creating Resource Pack.");
 			Debug.sayTrue("Resource pack change detected, building new resource pack.");
-			int build = MoreMinecraft.getInstance().getConfig().getInt("resource-pack.build", 0);
+			int build = AdditionsAPI.getInstance().getConfig().getInt("resource-pack.build", 0);
 			build++;
-			MoreMinecraft.getInstance().getConfig().set("resource-pack.build", build);
+			AdditionsAPI.getInstance().getConfig().set("resource-pack.build", build);
 			// initialize work space
-			File work = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource/work/");
+			File work = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource/work/");
 			FileUtils.deleteFolder(work);
 			// a temporary file used for downloading resource pack files.
-			File temp = new File(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/download/temp.zip");
+			File temp = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/download/temp.zip");
 			FileUtils.createFileAndPath(temp);
 			// check and download server's original resource pack.
 			downloadResourcePack(work, temp);
@@ -186,8 +186,8 @@ public class ResourcePackManager {
 			// inject custom item model into work space
 			injectCustomItemModels(work);
 			// copy resource pack.meta and logo.png
-			FileUtils.copyResource(MoreMinecraft.getInstance(), "resource/pack.mcmeta", new File(work, "pack.mcmeta"));
-			FileUtils.copyResource(MoreMinecraft.getInstance(), "resource/pack.png", new File(work, "pack.png"));
+			FileUtils.copyResource(AdditionsAPI.getInstance(), "resource/pack.mcmeta", new File(work, "pack.mcmeta"));
+			FileUtils.copyResource(AdditionsAPI.getInstance(), "resource/pack.png", new File(work, "pack.png"));
 			// pack up result resource pack.
 			Debug.sayTrue("Packing complete resource pack.");
 			FileUtils.zip(work, resourceFile);
@@ -258,13 +258,11 @@ public class ResourcePackManager {
 		ArrayList<CustomItem> tempList = new ArrayList<>();
 
 		// Adding to the temp list every Custom Item that has a Model
-		if (CustomItemUtils.getAllCustomItems() != null)
-			for (CustomItem item : CustomItemUtils.getAllCustomItems()) {
-				if (item instanceof ModelInjector) {
+		if (AdditionsAPI.getAllCustomItems() != null)
+			for (CustomItem item : AdditionsAPI.getAllCustomItems())
+				if (item instanceof ModelInjector)
 					tempList.add(item);
-				}
-			}
-
+		
 		Collections.sort(tempList);
 
 		for (CustomItem item : tempList) {
@@ -371,7 +369,7 @@ public class ResourcePackManager {
 		}
 
 		// check if any custom item requires model injection
-		for (CustomItem item : CustomItemUtils.getAllCustomItems()) {
+		for (CustomItem item : AdditionsAPI.getAllCustomItems()) {
 			if (item instanceof ModelInjector) {
 				return true;
 			}

@@ -8,8 +8,9 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.chrismin13.moreminecraft.MoreMinecraft;
-import com.chrismin13.moreminecraft.utils.LangFileUtils;
+
+import com.chrismin13.additionsapi.AdditionsAPI;
+import com.chrismin13.additionsapi.utils.LangFileUtils;
 
 public class ResourcePackListener implements Listener {
 	public void register(JavaPlugin plugin) {
@@ -19,7 +20,7 @@ public class ResourcePackListener implements Listener {
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
 		final Player player = event.getPlayer();
-		Bukkit.getServer().getScheduler().runTask(MoreMinecraft.getInstance(), () -> {
+		Bukkit.getServer().getScheduler().runTask(AdditionsAPI.getInstance(), () -> {
 			if (ResourcePackManager.hasResource()) {
 				String link;
 				if (event.getAddress().getHostAddress().equals("127.0.0.1")) {
@@ -42,7 +43,7 @@ public class ResourcePackListener implements Listener {
 			case DECLINED:
 			case FAILED_DOWNLOAD:
 				final Player player = event.getPlayer();
-				Bukkit.getServer().getScheduler().runTask(MoreMinecraft.getInstance(),
+				Bukkit.getServer().getScheduler().runTask(AdditionsAPI.getInstance(),
 						() -> player.kickPlayer(LangFileUtils.get("resource_pack_kick")));
 				break;
 			case ACCEPTED:

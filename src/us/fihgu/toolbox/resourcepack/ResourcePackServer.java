@@ -2,7 +2,7 @@ package us.fihgu.toolbox.resourcepack;
 import java.net.InetSocketAddress;
 import java.nio.file.Paths;
 
-import com.chrismin13.moreminecraft.MoreMinecraft;
+import com.chrismin13.additionsapi.AdditionsAPI;
 
 import us.fihgu.toolbox.http.FileContext;
 import us.fihgu.toolbox.http.HTTPServer;
@@ -20,20 +20,20 @@ public class ResourcePackServer
 	private static HTTPServer server;
 	public static void startServer()
 	{
-		localhost = MoreMinecraft.getInstance().getConfig().getString("http.localhost", NetworkUtils.getLocalIP().getHostAddress());
-		host = MoreMinecraft.getInstance().getConfig().getString("http.host", NetworkUtils.getExternalIP());
-		port = MoreMinecraft.getInstance().getConfig().getInt("http.port");
-		int numReadThread = MoreMinecraft.getInstance().getConfig().getInt("http.numReadThread");
-		int numWriteThread = MoreMinecraft.getInstance().getConfig().getInt("http.numWriteThread");
+		localhost = AdditionsAPI.getInstance().getConfig().getString("http.localhost", NetworkUtils.getLocalIP().getHostAddress());
+		host = AdditionsAPI.getInstance().getConfig().getString("http.host", NetworkUtils.getExternalIP());
+		port = AdditionsAPI.getInstance().getConfig().getInt("http.port");
+		int numReadThread = AdditionsAPI.getInstance().getConfig().getInt("http.numReadThread");
+		int numWriteThread = AdditionsAPI.getInstance().getConfig().getInt("http.numWriteThread");
 		
-		int build = MoreMinecraft.getInstance().getConfig().getInt("resource-pack.build", 1);
+		int build = AdditionsAPI.getInstance().getConfig().getInt("resource-pack.build", 1);
 		path = "/resourcepack" + build + ".zip";
 
 		InetSocketAddress address = new InetSocketAddress(localhost , port);
 		server = new HTTPServer(address);
 		server.numReadThread = numReadThread;
 		server.numWriteThread = numWriteThread;
-		server.putContextGenerator(path, new StaticContextGenerator(new FileContext(Paths.get(MoreMinecraft.getInstance().getDataFolder() + "/resource-pack/resource.zip"))));
+		server.putContextGenerator(path, new StaticContextGenerator(new FileContext(Paths.get(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/resource.zip"))));
 		server.startServer();
 	}
 	

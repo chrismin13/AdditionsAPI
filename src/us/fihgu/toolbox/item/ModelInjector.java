@@ -10,7 +10,7 @@ import us.fihgu.toolbox.resourcepack.model.Predicate;
 import java.io.File;
 import java.util.Map;
 
-import com.chrismin13.moreminecraft.items.CustomItem;
+import com.chrismin13.additionsapi.items.CustomItem;
 
 /**
  * Can be implemented by a {@link CustomItem}<br>

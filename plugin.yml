@@ -1,6 +1,6 @@
-name: MoreMinecraft
+name: AdditionsAPI
 version: 0.1
-main: com.chrismin13.moreminecraft.MoreMinecraft
+main: com.chrismin13.additionsapi.AdditionsAPI
 author: chrismin13
 
 commands:

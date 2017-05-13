@@ -7,7 +7,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
-import com.chrismin13.moreminecraft.utils.Debug;
+import com.chrismin13.additionsapi.utils.Debug;
 
 /**
  * A non block web server that handles the input and output of data though the
