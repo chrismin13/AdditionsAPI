@@ -26,8 +26,9 @@ public class ArrowFromCustomBowHitEvent extends CustomBowStackEvent {
 	/**
 	 * @param projectileHitEvent the projectileHitEvent to set
 	 */
-	public void setProjectileHitEvent(ProjectileHitEvent projectileHitEvent) {
+	public ArrowFromCustomBowHitEvent setProjectileHitEvent(ProjectileHitEvent projectileHitEvent) {
 		this.projectileHitEvent = projectileHitEvent;
+		return this;
 	}
 
 	/**
@@ -40,7 +41,8 @@ public class ArrowFromCustomBowHitEvent extends CustomBowStackEvent {
 	/**
 	 * @param shooter the shooter to set
 	 */
-	public void setShooter(LivingEntity shooter) {
+	public ArrowFromCustomBowHitEvent setShooter(LivingEntity shooter) {
 		this.shooter = shooter;
+		return this;
 	}	
 }

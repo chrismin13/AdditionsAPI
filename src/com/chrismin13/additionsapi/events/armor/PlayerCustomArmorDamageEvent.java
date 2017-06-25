@@ -42,8 +42,9 @@ public class PlayerCustomArmorDamageEvent extends PlayerCustomItemDamageEvent {
 	 * @param damageCause
 	 *            the damageCause to set
 	 */
-	public void setDamageCause(DamageCause damageCause) {
+	public PlayerCustomArmorDamageEvent setDamageCause(DamageCause damageCause) {
 		this.damageCause = damageCause;
+		return this;
 	}
 
 }

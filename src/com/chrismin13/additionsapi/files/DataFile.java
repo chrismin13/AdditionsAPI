@@ -8,17 +8,26 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.items.CustomItemStack;
 import com.chrismin13.additionsapi.items.StorageCustomItem;
 import com.chrismin13.additionsapi.utils.Debug;
 
+/**
+ * Offers an easy way to access the data.yml without having to get the plugin's
+ * instance every time. Instead, most of the file's values can be received
+ * easily without having to know the value names.<br>
+ * <b>You must use {@link #getInstance()} to access the file and it's
+ * values.</b>
+ * 
+ * @author chrismin13
+ *
+ */
 public class DataFile {
 	private DataFile() {
 	}
 
-	static DataFile instance = new DataFile();
+	private static DataFile instance = new DataFile();
 
 	public static DataFile getInstance() {
 		return instance;
@@ -29,29 +38,63 @@ public class DataFile {
 	private static File file;
 	private static List<String> items;
 
-	public void setup() {
+	/**
+	 * This method is run when the plugin is enabled and when reloading. Not
+	 * meant to be used in any other occasion.
+	 */
+	public DataFile setup() {
 		file = new File(plugin.getDataFolder(), "data.yml");
 		YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
 		data.options().copyDefaults(true);
 		DataFile.data = data;
 		DataFile.items = data.getStringList("custom-items");
 		saveData();
+		return this;
 	}
 
-	public void addStorageCustomItem(StorageCustomItem sItem) {
+	/**
+	 * Add a new {@link StorageCustomItem} to be saved in the data.yml file.
+	 * <br>
+	 * <b>You must also use {@link #saveData()} to save the changes that you
+	 * made.</b>
+	 * 
+	 * @param sItem
+	 *            - The {@link StorageCustomItem} to store in the data.yml.
+	 */
+	public DataFile addStorageCustomItem(StorageCustomItem sItem) {
 		String string = sItem.getMaterial() + ";" + sItem.getDurability() + ";" + sItem.getIdName() + ";"
 				+ sItem.getTexture();
-		if (!items.contains(string))
-			items.add(string);
+		items.add(string);
+		return this;
 	}
 
-	public void addCustomItemStack(CustomItemStack cStack) {
+	/**
+	 * Converts a {@link CustomItemStack} to a {@link StorageCustomItem} to be
+	 * saved in the data.yml file. <br>
+	 * <b>You must also use {@link #saveData()} to save the changes that you
+	 * made.</b>
+	 * 
+	 * @param cStack
+	 *            - The {@link CustomItemStack} to convert and save.
+	 */
+	public DataFile addCustomItemStack(CustomItemStack cStack) {
 		String string = cStack.getCustomItem().getMaterial() + ";" + cStack.getItemStack().getDurability() + ";"
 				+ cStack.getCustomItem().getIdName() + ";" + cStack.getTexture();
-		if (!items.contains(string))
-			items.add(string);
+		items.add(string);
+		return this;
 	}
 
+	/**
+	 * Obtains a {@link StorageCustomItem} with the specified values. If the
+	 * {@link StorageCustomItem} does not exist, it will return null.
+	 * 
+	 * @param idName
+	 *            The ID Name of the {@link StorageCustomItem}.
+	 * @param texture
+	 *            The Texture of the {@link StorageCustomItem}
+	 * @return The {@link StorageCustomItem} with the above values, as well as
+	 *         its Material and durability.
+	 */
 	public StorageCustomItem getCustomItem(String idName, String texture) {
 		for (String string : items) {
 			String[] line = string.split(";");
@@ -61,17 +104,38 @@ public class DataFile {
 		return null;
 	}
 
+	/**
+	 * Obtains a {@link StorageCustomItem} with the specified values. If the
+	 * {@link StorageCustomItem} does not exist, it will return null.
+	 * 
+	 * @param material
+	 *            The Material of the {@link StorageCustomItem}.
+	 * @param durability
+	 *            The durability of the {@link StorageCustomItem}
+	 * @return The {@link StorageCustomItem} with the above values, as well as
+	 *         its ID Name and Texture Name.
+	 */
 	public StorageCustomItem getCustomItem(Material material, short durability) {
 		String m = material.toString();
 		String d = Short.toString(durability);
 		for (String string : items) {
 			String[] line = string.split(";");
-			if (line[0].equals(m)&& line[1].equals(d))
+			if (line[0].equals(m) && line[1].equals(d))
 				return new StorageCustomItem(material, durability, line[2], line[3]);
 		}
 		return null;
 	}
 
+	/**
+	 * Get a durability value that does not use a texture for the specified
+	 * Material. If there are no more durability points left, an error will be
+	 * printed.
+	 * 
+	 * @param material
+	 *            The Material for which you want a free durability point.
+	 * @return The durability value that is available for the specified
+	 *         Material.
+	 */
 	public short getFreeDurability(Material material) {
 		String m = material.toString();
 		List<Short> durabilitiesUsed = new ArrayList<Short>();
@@ -109,21 +173,33 @@ public class DataFile {
 		}
 	}
 
+	/**
+	 * @return A {@link YamlConfiguration} of the data.yml file.
+	 */
 	public YamlConfiguration getData() {
 		return data;
 	}
 
-	public void saveData() {
+	/**
+	 * Saves the Data File.
+	 */
+	public DataFile saveData() {
 		data.set("custom-items", items);
 		try {
 			data.save(file);
 		} catch (IOException e) {
-			Debug.sayError(ChatColor.RED + "Could not save data.yml! Is it in use by another program? Is there enough space?");
+			Debug.sayError(
+					ChatColor.RED + "Could not save data.yml! Is it in use by another program? Is there enough space?");
 			e.printStackTrace();
 		}
+		return this;
 	}
 
-	public void reloadData() {
+	/**
+	 * Reloads the Data File, updating any changes.
+	 */
+	public DataFile reloadData() {
 		data = YamlConfiguration.loadConfiguration(file);
+		return this;
 	}
 }

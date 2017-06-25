@@ -4,8 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 
 import com.chrismin13.additionsapi.enums.ToolType;
-import com.comphenix.attributes.Attributes.AttributeType;
-import com.comphenix.attributes.Attributes.Operation;
+import com.comphenix.attribute.Attributes.AttributeType;
+import com.comphenix.attribute.Attributes.Operation;
 
 /**
  * 
@@ -16,7 +16,7 @@ import com.comphenix.attributes.Attributes.Operation;
  * for Attack Speed and Attack Damage. <br>
  * {@link #addAttackSpeed(double)} and {@link #addAttackDamage(double)} don't
  * work like
- * {@link CustomItem#addAttribute(com.comphenix.attributes.Attributes.AttributeType, Double, org.bukkit.inventory.EquipmentSlot, com.comphenix.attributes.Attributes.Operation)}.
+ * {@link CustomItem#addAttribute(com.comphenix.attribute.Attributes.AttributeType, Double, org.bukkit.inventory.EquipmentSlot, com.comphenix.attribute.Attributes.Operation)}.
  * Instead the attributes are added after being calculated to match those who
  * are displayed under Swords, Axes, Pickaxes, Shovels or Hoes. For example, to
  * replicate a Diamond Sword you will set an Attack Speed of 1.6 and an Attack
@@ -76,7 +76,7 @@ public class CustomTool extends CustomItem {
 
 	/**
 	 * This does not work like
-	 * {@link CustomItem#addAttribute(com.comphenix.attributes.Attributes.AttributeType, Double, org.bukkit.inventory.EquipmentSlot, com.comphenix.attributes.Attributes.Operation)}.
+	 * {@link CustomItem#addAttribute(com.comphenix.attribute.Attributes.AttributeType, Double, org.bukkit.inventory.EquipmentSlot, com.comphenix.attribute.Attributes.Operation)}.
 	 * Instead the attributes are added after being calculated to match those
 	 * who are displayed under Swords, Axes, Pickaxes, Shovels or Hoes. For
 	 * example, to replicate a Diamond Sword you will set an Attack Speed of
@@ -85,13 +85,14 @@ public class CustomTool extends CustomItem {
 	 * @param attackSpeed
 	 *            The Attack Speed you want the Tool to have.
 	 */
-	public void addAttackSpeed(double attackSpeed) {
+	public CustomTool addAttackSpeed(double attackSpeed) {
 		addAttribute(AttributeType.GENERIC_ATTACK_SPEED, attackSpeed - 4.0, EquipmentSlot.HAND, Operation.ADD_NUMBER);
+		return this;
 	}
 
 	/**
 	 * This does not work like
-	 * {@link CustomItem#addAttribute(com.comphenix.attributes.Attributes.AttributeType, Double, org.bukkit.inventory.EquipmentSlot, com.comphenix.attributes.Attributes.Operation)}.
+	 * {@link CustomItem#addAttribute(com.comphenix.attribute.Attributes.AttributeType, Double, org.bukkit.inventory.EquipmentSlot, com.comphenix.attribute.Attributes.Operation)}.
 	 * Instead the attributes are added after being calculated to match those
 	 * who are displayed under Swords, Axes, Pickaxes, Shovels or Hoes. For
 	 * example, to replicate a Diamond Sword you will set an Attack Damage of 7.
@@ -99,8 +100,9 @@ public class CustomTool extends CustomItem {
 	 * @param attackDamage
 	 *            The Attack Damage you want the Tool to have.
 	 */
-	public void addAttackDamage(double attackDamage) {
+	public CustomTool addAttackDamage(double attackDamage) {
 		addAttribute(AttributeType.GENERIC_ATTACK_DAMAGE, attackDamage - 1.0, EquipmentSlot.HAND, Operation.ADD_NUMBER);
+		return this;
 	}
 
 	// === DAMAGE LORE === //
@@ -117,8 +119,9 @@ public class CustomTool extends CustomItem {
 	 * @param lore
 	 *            Whether you want the lore to be enabled or not.
 	 */
-	public void setFakeAttackLore(Boolean lore) {
+	public CustomTool setFakeAttackLore(Boolean lore) {
 		fakeDamageLore = lore;
+		return this;
 	}
 
 	/**

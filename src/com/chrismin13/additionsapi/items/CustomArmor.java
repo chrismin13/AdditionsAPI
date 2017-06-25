@@ -6,8 +6,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import com.chrismin13.additionsapi.durability.ArmorDurability;
 import com.chrismin13.additionsapi.durability.ItemDurability;
 import com.chrismin13.additionsapi.enums.ArmorType;
-import com.comphenix.attributes.Attributes.AttributeType;
-import com.comphenix.attributes.Attributes.Operation;
+import com.comphenix.attribute.Attributes.AttributeType;
+import com.comphenix.attribute.Attributes.Operation;
 
 /**
  * Creates a Custom Item with the ItemType ARMOR and the ArmorDurability
@@ -123,8 +123,9 @@ public class CustomArmor extends CustomItem {
 	 * @param amount
 	 *            The amount of armor to be added.
 	 */
-	public void addArmor(double amount) {
+	public CustomArmor addArmor(double amount) {
 		addAttribute(AttributeType.ARMOR, amount, Operation.ADD_NUMBER);
+		return this;
 	}
 
 	/**
@@ -136,8 +137,8 @@ public class CustomArmor extends CustomItem {
 	 * @param amount
 	 *            The amount of armor to be added.
 	 */
-	public void addArmorToughness(double amount) {
+	public CustomArmor addArmorToughness(double amount) {
 		addAttribute(AttributeType.ARMOR_TOUGHNESS, amount, Operation.ADD_NUMBER);
+		return this;
 	}
-
 }

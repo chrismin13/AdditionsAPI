@@ -1,8 +1,6 @@
 package com.chrismin13.additionsapi.items.textured;
 
 import java.util.HashMap;
-import java.util.Map;
-
 import com.chrismin13.additionsapi.events.AdditionsAPIInitializationEvent;
 import com.chrismin13.additionsapi.items.CustomArmor;
 import com.chrismin13.additionsapi.items.CustomItem;
@@ -67,16 +65,16 @@ public class CustomTexturedArmor extends CustomArmor implements ModelInjector {
 		this.addTexture(defaultTexture);
 	}
 
-	private Map<String, Short> overrideModels = new HashMap<String, Short>();
+	private final HashMap<String, Short> overrideModels = new HashMap<String, Short>();
 
 	@Override
-	public Map<String, Short> getAllTextures() {
+	public HashMap<String, Short> getAllTextures() {
 		return overrideModels;
 	}
 
 	@Override
-	public Map<ModelInjection, Short> getOverrideEntries() {
-		Map<ModelInjection, Short> map = new HashMap<ModelInjection, Short>();
+	public HashMap<ModelInjection, Short> getOverrideEntries() {
+		final HashMap<ModelInjection, Short> map = new HashMap<ModelInjection, Short>();
 		String name = this.getIdName().split(":")[0];
 		for (String texture : overrideModels.keySet()) {
 			map.put(new ModelInjection(new Predicate(), name + ":item/" + texture,

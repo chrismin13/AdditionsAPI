@@ -48,7 +48,7 @@ public class ResourcePackManager {
 	/**
 	 * It stores the name and version of plugin that uses this resource manager.
 	 */
-	public static HashMap<String, String> resourceUsers = new HashMap<>();
+	public static final HashMap<String, String> resourceUsers = new HashMap<>();
 
 	/**
 	 * A map that contains information about previously registered resource
@@ -252,7 +252,7 @@ public class ResourcePackManager {
 	 */
 	private static void injectCustomItemModels(File work) {
 		// the models that's going to be injected into the resource pack.
-		HashMap<DamageableItem, ItemModel> itemModels = new HashMap<>();
+		final HashMap<DamageableItem, ItemModel> itemModels = new HashMap<>();
 
 		// temporary list of custom items
 		ArrayList<CustomItem> tempList = new ArrayList<>();

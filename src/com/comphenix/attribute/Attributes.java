@@ -15,7 +15,7 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package com.comphenix.attributes;
+package com.comphenix.attribute;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -29,8 +29,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.chrismin13.additionsapi.utils.EquipmentSlotUtils;
-import com.comphenix.attributes.NbtFactory.NbtCompound;
-import com.comphenix.attributes.NbtFactory.NbtList;
+import com.comphenix.attribute.NbtFactory.NbtCompound;
+import com.comphenix.attribute.NbtFactory.NbtList;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -153,54 +153,60 @@ public class Attributes {
 			return data.getDouble("Amount", 0.0);
 		}
 
-		public void setAmount(double amount) {
+		public Attribute setAmount(double amount) {
 			data.put("Amount", amount);
+			return this;
 		}
 
 		public Operation getOperation() {
 			return Operation.fromId(data.getInteger("Operation", 0));
 		}
 
-		public void setOperation(@Nonnull Operation operation) {
+		public Attribute setOperation(@Nonnull Operation operation) {
 			Preconditions.checkNotNull(operation, "operation cannot be NULL.");
 			data.put("Operation", operation.getId());
+			return this;
 		}
 
 		public AttributeType getAttributeType() {
 			return AttributeType.fromId(data.getString("AttributeName", null));
 		}
 
-		public void setAttributeType(@Nonnull AttributeType type) {
+		public Attribute setAttributeType(@Nonnull AttributeType type) {
 			Preconditions.checkNotNull(type, "type cannot be NULL.");
 			data.put("AttributeName", type.getMinecraftId());
+			return this;
 		}
 
 		public String getName() {
 			return data.getString("Name", null);
 		}
 
-		public void setName(@Nonnull String name) {
+		public Attribute setName(@Nonnull String name) {
 			Preconditions.checkNotNull(name, "name cannot be NULL.");
 			data.put("Name", name);
+			return this;
 		}
 
 		public UUID getUUID() {
 			return new UUID(data.getLong("UUIDMost", null), data.getLong("UUIDLeast", null));
 		}
 
-		public void setUUID(@Nonnull UUID id) {
+		public Attribute setUUID(@Nonnull UUID id) {
 			Preconditions.checkNotNull("id", "id cannot be NULL.");
 			data.put("UUIDLeast", id.getLeastSignificantBits());
 			data.put("UUIDMost", id.getMostSignificantBits());
+			return this;
 		}
 
 		public String getSlot() {
 			return data.getString("Slot", null);
 		}
 
-		public void setSlot(@Nonnull EquipmentSlot slot) {
+		public Attribute setSlot(@Nonnull EquipmentSlot slot) {
 			Preconditions.checkNotNull(slot, "type cannot be NULL.");
 			data.put("Slot", EquipmentSlotUtils.toAttributeString(slot));
+			return this;
 		}
 
 		/**
@@ -318,10 +324,11 @@ public class Attributes {
 	 * @param attribute
 	 *            - the new attribute.
 	 */
-	public void add(Attribute attribute) {
+	public Attributes add(Attribute attribute) {
 		Preconditions.checkNotNull(attribute.getName(), "must specify an attribute name.");
 		loadAttributes(true);
 		attributes.add(attribute.data);
+		return this;
 	}
 
 	/**
@@ -355,8 +362,9 @@ public class Attributes {
 	/**
 	 * Remove every attribute.
 	 */
-	public void clear() {
+	public Attributes clear() {
 		removeAttributes();
+		return this;
 	}
 
 	/**

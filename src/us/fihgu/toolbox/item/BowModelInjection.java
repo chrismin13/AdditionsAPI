@@ -22,8 +22,9 @@ public class BowModelInjection extends ModelInjection {
 	/**
 	 * @param isStandby the isStandby to set
 	 */
-	public void setStandby(boolean isStandby) {
+	public BowModelInjection setStandby(boolean isStandby) {
 		this.isStandby = isStandby;
+		return this;
 	}
 
 }

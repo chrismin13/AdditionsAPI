@@ -9,8 +9,8 @@ public abstract class CustomRecipe {
 	public abstract Recipe toBukkitRecipe(ItemStack result);
 
 	public CustomRecipe registerBukkitRecipe(ItemStack result) {
-		Bukkit.addRecipe(toBukkitRecipe(result));
+		Recipe recipe = toBukkitRecipe(result);
+		Bukkit.addRecipe(recipe);
 		return this;
 	}
-
 }

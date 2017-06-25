@@ -45,8 +45,9 @@ public class RecipeIngredient implements Cloneable, Comparable<RecipeIngredient>
 	 * @param material
 	 *            the material to set
 	 */
-	public void setMaterial(Material material) {
+	public RecipeIngredient setMaterial(Material material) {
 		this.material = material;
+		return this;
 	}
 
 	/**
@@ -60,8 +61,9 @@ public class RecipeIngredient implements Cloneable, Comparable<RecipeIngredient>
 	 * @param blockData
 	 *            the blockData to set
 	 */
-	public void setBlockData(Byte blockData) {
+	public RecipeIngredient setBlockData(Byte blockData) {
 		this.blockData = blockData;
+		return this;
 	}
 
 	/// **

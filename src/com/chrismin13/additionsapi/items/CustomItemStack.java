@@ -1,5 +1,8 @@
 package com.chrismin13.additionsapi.items;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
@@ -16,9 +19,9 @@ import com.chrismin13.additionsapi.files.DataFile;
 import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
 import com.chrismin13.additionsapi.utils.Debug;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
-import com.comphenix.attributes.Attributes;
-import com.comphenix.attributes.NbtFactory;
-import com.comphenix.attributes.NbtFactory.NbtCompound;
+import com.comphenix.attribute.Attributes;
+import com.comphenix.attribute.NbtFactory;
+import com.comphenix.attribute.NbtFactory.NbtCompound;
 
 import us.fihgu.toolbox.item.ModelInjector;
 
@@ -42,8 +45,7 @@ public class CustomItemStack implements Cloneable {
 	 * 
 	 * @param idName
 	 *            The idName of the Custom Item. The Custom Item must be already
-	 *            Initialized using the
-	 *            {@link AdditionsAPIInitializationEvent}.
+	 *            Initialized using the {@link AdditionsAPIInitializationEvent}.
 	 */
 	public CustomItemStack(String idName) {
 		this(getCustomItem(idName));
@@ -54,8 +56,7 @@ public class CustomItemStack implements Cloneable {
 	 * 
 	 * @param idName
 	 *            The idName of the Custom Item. The Custom Item must be already
-	 *            Initialized using the
-	 *            {@link AdditionsAPIInitializationEvent}.
+	 *            Initialized using the {@link AdditionsAPIInitializationEvent}.
 	 * @param durability
 	 *            The durability of the {@link ItemStack}.
 	 * @param texture
@@ -70,8 +71,7 @@ public class CustomItemStack implements Cloneable {
 	 * 
 	 * @param idName
 	 *            The idName of the Custom Item. The Custom Item must be already
-	 *            Initialized using the
-	 *            {@link AdditionsAPIInitializationEvent}.
+	 *            Initialized using the {@link AdditionsAPIInitializationEvent}.
 	 */
 	private static CustomItem getCustomItem(String idName) {
 		for (CustomItem cItem : AdditionsAPI.getAllCustomItems())
@@ -238,8 +238,9 @@ public class CustomItemStack implements Cloneable {
 	public int getFakeDurability() {
 		if (cItem.hasFakeDurability()) {
 			for (String string : itemStack.getItemMeta().getLore()) {
-				if (string.startsWith(ChatColor.GRAY + "Durability: ")) {
-					String durability = string.replaceFirst(ChatColor.GRAY + LangFileUtils.get("durability") + " ", "");
+				if (string.startsWith(CustomItem.LORE_PREFIX + ChatColor.GRAY + "Durability: ")) {
+					String durability = string.replaceFirst(
+							CustomItem.LORE_PREFIX + ChatColor.GRAY + LangFileUtils.get("durability") + " ", "");
 					String segments[] = durability.split(" / ");
 					return Integer.parseInt(segments[0]);
 				}
@@ -258,9 +259,23 @@ public class CustomItemStack implements Cloneable {
 	public CustomItemStack setFakeDurability(int durability) {
 		if (cItem.hasFakeDurability()) {
 			ItemMeta meta = itemStack.getItemMeta();
+			List<String> oldLore = meta.getLore();
+			List<String> lore = new ArrayList<String>();
+			lore.addAll(meta.getLore());
+			
+			if (meta.getLore() != null && !meta.getLore().isEmpty()) {
+				Debug.saySuper("Aint empty");
+				for (String string : oldLore) {
+					Debug.saySuper(string);
+					if (string.startsWith(CustomItem.LORE_PREFIX) && string.endsWith(CustomItem.LORE_SUFFIX)) {
+						Debug.saySuper("Starts and ends with");
+						lore.remove(string);
+					}
+				}
+			}
+			lore.addAll(cItem.getFullLore(itemStack.getEnchantments(), durability));
 
-			meta.setLore(cItem.getFullLore(itemStack.getEnchantments(), durability));
-
+			meta.setLore(lore);
 			itemStack.setItemMeta(meta);
 		}
 		return this;
@@ -288,7 +303,15 @@ public class CustomItemStack implements Cloneable {
 	 */
 	public CustomItemStack updateLore() {
 		ItemMeta meta = itemStack.getItemMeta();
-		meta.setLore(cItem.getFullLore(itemStack.getEnchantments(), getFakeDurability()));
+		List<String> lore = meta.getLore();
+
+		if (meta.getLore() != null && !meta.getLore().isEmpty())
+			for (String string : lore)
+				if (string.startsWith(CustomItem.LORE_PREFIX) && string.endsWith(CustomItem.LORE_SUFFIX))
+					lore.remove(string);
+		lore.addAll(cItem.getFullLore(itemStack.getEnchantments(), getFakeDurability()));
+
+		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
 		return this;
 	}

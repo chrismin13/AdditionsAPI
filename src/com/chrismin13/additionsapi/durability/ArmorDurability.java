@@ -4,6 +4,18 @@ import java.util.Arrays;
 import java.util.List;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+/**
+ * This specifies how an armor piece will have its durability reduced when
+ * performing certain actions. Default values are set up exactly like in vanilla
+ * Minecraft.<br>
+ * thornsExtraDamage defaults to 1<br>
+ * thornsExtraDamage defautls to 2<br>
+ * Durability drop when an entity is hit is calculated according to the damage
+ * dealt to the player wearing the armor, just like in Vanilla Minecraft.<br>
+ * All other values of {@link ItemDurability} remain at their defaults.
+ * 
+ * @author chrismin13
+ */
 public class ArmorDurability extends ItemDurability {
 
 	private List<DamageCause> damageCuasesWithDurability = Arrays.asList(DamageCause.BLOCK_EXPLOSION,
@@ -13,27 +25,40 @@ public class ArmorDurability extends ItemDurability {
 	private int thornsExtraDamage = 1;
 	private int thornsExtraDamageOnHit = 2;
 
+	/**
+	 * @return The extra durability that will be reduced in case the Armor has
+	 *         the Thorns Enchantment.
+	 */
 	public int getThornsExtraDamage() {
 		return thornsExtraDamage;
 	}
 
-	public void setThornsExtraDamage(int thornsExtraDamage) {
+	/**
+	 * Set the extra durability that will be reduced in case the Armor has the
+	 * Thorns Enchantment.
+	 * 
+	 * @param thornsExtraDamage
+	 */
+	public ArmorDurability setThornsExtraDamage(int thornsExtraDamage) {
 		this.thornsExtraDamage = thornsExtraDamage;
+		return this;
 	}
 
 	/**
-	 * @return the damageCuasesWithDurability
+	 * @return The {@link DamageCause}s that will affect the Armor's Durability.
 	 */
 	public List<DamageCause> getDamageCuasesWithDurability() {
 		return damageCuasesWithDurability;
 	}
 
 	/**
+	 * Set the {@link DamageCause}s that will affect the Armor's Durability.
+	 * 
 	 * @param damageCuasesWithDurability
-	 *            the damageCuasesWithDurability to set
 	 */
-	public void setDamageCuasesWithDurability(List<DamageCause> damageCuasesWithDurability) {
+	public ArmorDurability setDamageCuasesWithDurability(List<DamageCause> damageCuasesWithDurability) {
 		this.damageCuasesWithDurability = damageCuasesWithDurability;
+		return this;
 	}
 
 	/**
@@ -44,15 +69,24 @@ public class ArmorDurability extends ItemDurability {
 	}
 
 	/**
+	 * Set the extra amount of damage that will be dealt in case the Thorn
+	 * enchantment hits back the entity that attacked the player that wears this
+	 * armor piece.
+	 * 
 	 * @param thornsExtraDamageOnHit
-	 *            the thornsExtraDamageOnHit to set
 	 */
-	public void setThornsExtraDamageOnHit(int thornsExtraDamageOnHit) {
+	public ArmorDurability setThornsExtraDamageOnHit(int thornsExtraDamageOnHit) {
 		this.thornsExtraDamageOnHit = thornsExtraDamageOnHit;
+		return this;
 	}
 
 	/**
-	 * Calculates the damage that the armor will take for the specified damage
+	 * Calculates the damage that the armor will take for the specified damage.
+	 * This is according to the Vanilla Minecraft code, which divides the damage
+	 * by 4, increases it to at least 1 if it was less, and rounds it to an int.
+	 * There are also extra checks to prevent an armor piece to be damaged by a
+	 * forbidden {@link DamageCause} as well as calculations for adding extra
+	 * damage if the armor piece had Thorns.
 	 */
 	public int getArmorDamage(DamageCause cause, float damage, boolean hadThorns) {
 		if (!damageCuasesWithDurability.contains(cause))

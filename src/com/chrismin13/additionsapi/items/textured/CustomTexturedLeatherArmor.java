@@ -1,7 +1,7 @@
 package com.chrismin13.additionsapi.items.textured;
 
 import java.util.HashMap;
-import java.util.Map;
+
 
 import org.bukkit.Color;
 
@@ -46,7 +46,7 @@ public class CustomTexturedLeatherArmor extends CustomLeatherArmor implements Mo
 	private String defaultTexture;
 
 	/**
-	 * Creates a {@link CustomTexturedTool}
+	 * Creates a {@link CustomTexturedLeatherArmor}
 	 * 
 	 * @param dItem
 	 *            The DamageableItem that the CustomItem will be based off. This
@@ -68,16 +68,16 @@ public class CustomTexturedLeatherArmor extends CustomLeatherArmor implements Mo
 		this.addTexture(defaultTexture);
 	}
 
-	private Map<String, Short> overrideModels = new HashMap<String, Short>();
+	private final HashMap<String, Short> overrideModels = new HashMap<String, Short>();
 
 	@Override
-	public Map<String, Short> getAllTextures() {
+	public HashMap<String, Short> getAllTextures() {
 		return overrideModels;
 	}
 
 	@Override
-	public Map<ModelInjection, Short> getOverrideEntries() {
-		Map<ModelInjection, Short> map = new HashMap<ModelInjection, Short>();
+	public HashMap<ModelInjection, Short> getOverrideEntries() {
+		final HashMap<ModelInjection, Short> map = new HashMap<ModelInjection, Short>();
 		String name = this.getIdName().split(":")[0];
 		for (String texture : overrideModels.keySet()) {
 			map.put(new ModelInjection(new Predicate(), name + ":item/" + texture,

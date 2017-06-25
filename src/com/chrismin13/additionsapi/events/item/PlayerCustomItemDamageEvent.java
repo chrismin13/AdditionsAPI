@@ -28,7 +28,8 @@ public class PlayerCustomItemDamageEvent extends PlayerItemDamageEvent {
 		return cItem;
 	}
 	
-	public void setCustomItem(CustomItem cItem) {
+	public PlayerCustomItemDamageEvent setCustomItem(CustomItem cItem) {
 		this.cItem = cItem;
+		return this;
 	}
 }

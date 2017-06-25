@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
@@ -35,15 +36,18 @@ import net.md_5.bungee.api.ChatColor;
 
 public class DurabilityBar implements Listener {
 
-	private static HashMap<UUID, BossBar> playersBarsMain = new HashMap<UUID, BossBar>();
-	private static HashMap<UUID, BossBar> playersBarsOff = new HashMap<UUID, BossBar>();
+	private static final HashMap<UUID, BossBar> playersBarsMain = new HashMap<UUID, BossBar>();
+	private static final HashMap<UUID, BossBar> playersBarsOff = new HashMap<UUID, BossBar>();
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onItemSwitch(PlayerItemHeldEvent event) {
 		if (event.isCancelled())
 			return;
-		sendDurabilityBossBar(event.getPlayer(), event.getPlayer().getInventory().getItem(event.getNewSlot()),
-				EquipmentSlot.HAND);
+		Player player = event.getPlayer();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(AdditionsAPI.getInstance(), () -> {
+			sendDurabilityBossBar(player, player.getInventory().getItemInMainHand(), EquipmentSlot.HAND);
+			sendDurabilityBossBar(player, player.getInventory().getItemInOffHand(), EquipmentSlot.OFF_HAND);
+		});
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -88,6 +92,16 @@ public class DurabilityBar implements Listener {
 		});
 	}
 
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onDeath(PlayerDeathEvent event) {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(AdditionsAPI.getInstance(), () -> {
+			sendDurabilityBossBar(event.getEntity(), event.getEntity().getInventory().getItemInMainHand(),
+					EquipmentSlot.HAND);
+			sendDurabilityBossBar(event.getEntity(), event.getEntity().getInventory().getItemInOffHand(),
+					EquipmentSlot.OFF_HAND);
+		});
+	}
+
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		removeAllDurabilityBars(event.getPlayer());
@@ -99,7 +113,7 @@ public class DurabilityBar implements Listener {
 		sendDurabilityBossBar(player, player.getInventory().getItemInMainHand(), EquipmentSlot.HAND);
 		sendDurabilityBossBar(player, player.getInventory().getItemInOffHand(), EquipmentSlot.OFF_HAND);
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		if (event.isCancelled())
@@ -227,10 +241,8 @@ public class DurabilityBar implements Listener {
 
 	public static void removeAllDurabilityBars(Player player) {
 		UUID uuid = player.getUniqueId();
-		if (playersBarsMain.containsKey(uuid))
-			playersBarsMain.remove(uuid);
-		if (playersBarsOff.containsKey(uuid))
-			playersBarsOff.remove(uuid);
+		playersBarsMain.remove(uuid);
+		playersBarsOff.remove(uuid);
 
 	}
 

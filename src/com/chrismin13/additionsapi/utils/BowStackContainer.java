@@ -24,8 +24,9 @@ public class BowStackContainer {
 	/**
 	 * @param cBowStack the cBowStack to set
 	 */
-	public void setBowStack(CustomItemStack cBowStack) {
+	public BowStackContainer setBowStack(CustomItemStack cBowStack) {
 		this.cBowStack = cBowStack;
+		return this;
 	}
 
 	/**
@@ -38,7 +39,8 @@ public class BowStackContainer {
 	/**
 	 * @param owner the owner to set
 	 */
-	public void setOwner(LivingEntity owner) {
+	public BowStackContainer setOwner(LivingEntity owner) {
 		this.owner = owner;
+		return this;
 	}
 }

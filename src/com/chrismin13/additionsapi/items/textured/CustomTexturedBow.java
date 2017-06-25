@@ -1,7 +1,7 @@
 package com.chrismin13.additionsapi.items.textured;
 
 import java.util.HashMap;
-import java.util.Map;
+
 
 import com.chrismin13.additionsapi.durability.ItemDurability;
 import com.chrismin13.additionsapi.events.AdditionsAPIInitializationEvent;
@@ -82,17 +82,17 @@ public class CustomTexturedBow extends CustomBow implements ModelInjector {
 		this.addTexture(defaultTexture);
 	}
 
-	private Map<String, Short> overrideModels = new HashMap<String, Short>();
+	private final HashMap<String, Short> overrideModels = new HashMap<String, Short>();
 	private String defaultTexture;
 
 	@Override
-	public Map<String, Short> getAllTextures() {
+	public HashMap<String, Short> getAllTextures() {
 		return overrideModels;
 	}
 
 	@Override
-	public Map<ModelInjection, Short> getOverrideEntries() {
-		Map<ModelInjection, Short> map = new HashMap<ModelInjection, Short>();
+	public HashMap<ModelInjection, Short> getOverrideEntries() {
+		final HashMap<ModelInjection, Short> map = new HashMap<ModelInjection, Short>();
 		String name = this.getIdName().split(":")[0];
 		Predicate standby = new Predicate();
 		standby.setPulling(0);

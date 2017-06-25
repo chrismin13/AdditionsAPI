@@ -5,6 +5,13 @@ import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+/**
+ * This specifies how an item will have its durability reduced when performing
+ * certain actions.<br>
+ * All values default to 0.
+ * 
+ * @author chrismin13
+ */
 public class ItemDurability {
 
 	private int blockBreak = 0;
@@ -13,14 +20,17 @@ public class ItemDurability {
 	private HashMap<Material, Integer> specialBlockBreak = null;
 
 	/**
-	 * @return the blockBreak
+	 * @return The amount of durability reduced when breaking a block.
 	 */
 	public int getBlockBreak() {
 		return blockBreak;
 	}
 
 	/**
-	 * @return the blockBreak
+	 * @param block
+	 *            The block that you want to know the durability for.
+	 * @return The amount of durability reduced when breaking the block
+	 *         specified.
 	 */
 	public int getBlockBreak(Block block) {
 		if (specialBlockBreak.containsKey(block.getType()))
@@ -29,41 +39,49 @@ public class ItemDurability {
 	}
 
 	/**
+	 * Set the amount of durability reduced when breaking a block.<br>
+	 * 
 	 * @param blockBreak
-	 *            the blockBreak to set
 	 */
-	public void setBlockBreak(int blockBreak) {
+	public ItemDurability setBlockBreak(int blockBreak) {
 		this.blockBreak = blockBreak;
+		return this;
 	}
 
 	/**
-	 * @return the instantBlockBreak
+	 * @return The amount of durability reduced when breaking a block that has
+	 *         an instant breaking speed, e.g. Tall Grass.
 	 */
 	public int getInstantBlockBreak() {
 		return instantBlockBreak;
 	}
 
 	/**
+	 * Set the amount of durability reduced when breaking a block that has an
+	 * instant breaking speed, e.g. Tall Grass.
+	 * 
 	 * @param instantBlockBreak
-	 *            the instantBlockBreak to set
 	 */
-	public void setInstantBlockBreak(int instantBlockBreak) {
+	public ItemDurability setInstantBlockBreak(int instantBlockBreak) {
 		this.instantBlockBreak = instantBlockBreak;
+		return this;
 	}
 
 	/**
-	 * @return the entityHit
+	 * @return The amount of durability reduced when hitting another entity.
 	 */
 	public int getEntityHit() {
 		return entityHit;
 	}
 
 	/**
+	 * Set the amount of durability reduced when hitting another entity.
+	 * 
 	 * @param entityHit
-	 *            the entityHit to set
 	 */
-	public void setEntityHit(int entityHit) {
+	public ItemDurability setEntityHit(int entityHit) {
 		this.entityHit = entityHit;
+		return this;
 	}
 
 	/**
@@ -73,14 +91,15 @@ public class ItemDurability {
 	 * damage the item.
 	 * 
 	 * @param material
-	 *            - the block
+	 *            the block
 	 * @param durability
-	 *            - the durability that will be cut
+	 *            the durability that will be cut
 	 */
-	public void addSpecialBlock(Material material, int durability) {
+	public ItemDurability addSpecialBlock(Material material, int durability) {
 		if (specialBlockBreak == null)
 			specialBlockBreak = new HashMap<Material, Integer>();
 		specialBlockBreak.put(material, durability);
+		return this;
 	}
 
 	/**
@@ -95,7 +114,7 @@ public class ItemDurability {
 	 * Get the Durability that will be cut for the Block Specified
 	 * 
 	 * @param material
-	 *            - the block
+	 *            the block
 	 * @return the durability that will be cut
 	 */
 	public Integer getSpecialBlockDurability(Material material) {

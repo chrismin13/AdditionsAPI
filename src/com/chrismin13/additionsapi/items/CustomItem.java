@@ -21,9 +21,9 @@ import com.chrismin13.additionsapi.utils.Debug;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 import com.chrismin13.additionsapi.utils.MaterialUtils;
 import com.chrismin13.additionsapi.utils.MathUtils;
-import com.comphenix.attributes.Attributes.Attribute;
-import com.comphenix.attributes.Attributes.AttributeType;
-import com.comphenix.attributes.Attributes.Operation;
+import com.comphenix.attribute.Attributes.Attribute;
+import com.comphenix.attribute.Attributes.AttributeType;
+import com.comphenix.attribute.Attributes.Operation;
 
 /**
  * A Custom Item with multiple values that can be changed. <br>
@@ -35,8 +35,8 @@ import com.comphenix.attributes.Attributes.Operation;
  * ItemTypes too, such as Leather Armor. <br>
  * <br>
  * In order to use the Custom Items in-game, you can register them using the
- * AdditionsAPIInitializationEvent. That way, Recipes and Custom Textures
- * will be functional. <br>
+ * AdditionsAPIInitializationEvent. That way, Recipes and Custom Textures will
+ * be functional. <br>
  * If you want to get an ItemStack for giving it to the player, make a new
  * {@link CustomItemStack} and get the ItemStack from there.
  * 
@@ -44,6 +44,45 @@ import com.comphenix.attributes.Attributes.Operation;
  *
  */
 public class CustomItem implements Cloneable, Comparable<CustomItem> {
+
+	// Constants
+	public static final String LORE_PREFIX = "§a§a§r";
+	public static final String LORE_SUFFIX = "§b§b§r";
+
+	/**
+	 * The UUID of the Attribute that will be applied to the Main Hand Slot.
+	 * This value is NOT taken from the Minecraft Source Code, but instead I
+	 * just set it as a random UUID, due to not being able to find what the UUID
+	 * is in Vanilla Minecraft.
+	 */
+	public static final UUID MAIN_HAND_UUID = UUID.fromString("8c16d72b-d950-410c-b7d1-eeed86e734c7");
+	/**
+	 * The UUID of the Attribute that will be applied to the Off Hand Slot. This
+	 * value is NOT taken from the Minecraft Source Code, but instead I just set
+	 * it as a random UUID, due to not being able to find what the UUID is in
+	 * Vanilla Minecraft.
+	 */
+	public static final UUID OFF_HAND_UUID = UUID.fromString("c1e66134-46f8-49b5-bf9c-0ba1fb61d7ce");
+	/**
+	 * The UUID of the Attribute that will be applied to the Head Slot. This
+	 * value is taken straight from the Minecraft Source Code.
+	 */
+	public static final UUID HEAD_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
+	/**
+	 * The UUID of the Attribute that will be applied to the Chestplate Slot.
+	 * This value is taken straight from the Minecraft Source Code.
+	 */
+	public static final UUID CHEST_UUID = UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E");
+	/**
+	 * The UUID of the Attribute that will be applied to the Leggings Slot. This
+	 * value is taken straight from the Minecraft Source Code.
+	 */
+	public static final UUID LEGS_UUID = UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D");
+	/**
+	 * The UUID of the Attribute that will be applied to the Boots Slot. This
+	 * value is taken straight from the Minecraft Source Code.
+	 */
+	public static final UUID FEET_UUID = UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B");
 
 	// Required variables
 	private Material material = Material.AIR;
@@ -59,7 +98,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	// Enchanting
 	private boolean canBeEnchanted = false;
-	private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+	private final HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
 	private List<Enchantment> forbiddenEnchantments = new ArrayList<Enchantment>();
 
 	// Recipes
@@ -68,7 +107,6 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	// Attributes
 	private List<Attribute> attributes = new ArrayList<Attribute>();
-	private final UUID attributeStorageUUID = UUID.fromString("8c16d72b-d950-410c-b7d1-eeed86e734c7");
 
 	// Lore
 	private List<String> lore = new ArrayList<String>();
@@ -204,33 +242,6 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 */
 	public CustomItem setUnbreakable(Boolean unbreakable) {
 		this.unbreakable = unbreakable;
-		return this;
-	}
-
-	/**
-	 * 
-	 * @return Boolean of whether the unbreakable tag in the item lore is
-	 *         visible or not. If it is true, then the tag is visible. If it is
-	 *         invisible then the CustomItem includes the ItemFlag
-	 *         HIDE_UNBREAKABLE
-	 */
-	public boolean getUnbreakableVisibility() {
-		return !itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE);
-	}
-
-	/**
-	 * Set whether the unbreakable tag in the item lore will be visible or not.
-	 * If it is set true, then the tag will be visible. If it is set to be
-	 * hidden then the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
-	 */
-	public CustomItem setUnbreakableVisibility(boolean unbreakableVisibility) {
-		if (!unbreakableVisibility) {
-			if (!itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE)) {
-				itemFlags.add(ItemFlag.HIDE_UNBREAKABLE);
-			}
-		} else if (itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE)) {
-			itemFlags.remove(ItemFlag.HIDE_UNBREAKABLE);
-		}
 		return this;
 	}
 
@@ -388,33 +399,6 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === ATTRIBUTES === //
 
 	/**
-	 * 
-	 * @return Boolean of whether the attribute text in the item lore is visible
-	 *         or not. If it is true, then the text is visible. If it is
-	 *         invisible then the CustomItem includes the ItemFlag
-	 *         HIDE_Attribute
-	 */
-	public boolean getAttributeVisibility() {
-		return !itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES);
-	}
-
-	/**
-	 * Set whether the attribute text in the item lore will be visible or not.
-	 * If it is set true, then the text will be visible. If it is set to be
-	 * hidden then the CustomItem includes the ItemFlag HIDE_ATTRIBUTES
-	 */
-	public CustomItem setAttributeVisibility(boolean attributeVisibility) {
-		if (!attributeVisibility) {
-			if (!itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES)) {
-				itemFlags.add(ItemFlag.HIDE_ATTRIBUTES);
-			}
-		} else if (itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES)) {
-			itemFlags.remove(ItemFlag.HIDE_ATTRIBUTES);
-		}
-		return this;
-	}
-
-	/**
 	 * Adds an Attribute to the CustomItem. If you don't know what they do or
 	 * how they work, check out the Minecraft wiki. The UUID will be the one
 	 * that is found by default in Minecraft for the specified Slot. The name
@@ -434,22 +418,25 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	public CustomItem addAttribute(AttributeType type, double amount, EquipmentSlot slot, Operation operation) {
 		switch (slot) {
 		case HEAD:
-			addAttribute(type, amount, slot, operation, UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150"));
+			addAttribute(type, amount, slot, operation, HEAD_UUID);
 			return this;
 		case CHEST:
-			addAttribute(type, amount, slot, operation, UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"));
+			addAttribute(type, amount, slot, operation, CHEST_UUID);
 			return this;
 		case LEGS:
-			addAttribute(type, amount, slot, operation, UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"));
+			addAttribute(type, amount, slot, operation, LEGS_UUID);
 			return this;
 		case FEET:
-			addAttribute(type, amount, slot, operation, UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"));
+			addAttribute(type, amount, slot, operation, FEET_UUID);
 			return this;
-		// TODO
-		default:
-			addAttribute(type, amount, slot, operation, attributeStorageUUID);
+		case HAND:
+			addAttribute(type, amount, slot, operation, MAIN_HAND_UUID);
+			return this;
+		case OFF_HAND:
+			addAttribute(type, amount, slot, operation, OFF_HAND_UUID);
 			return this;
 		}
+		return this;
 	}
 
 	/**
@@ -506,6 +493,151 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 		return itemFlags;
 	}
 
+	/**
+	 * 
+	 * @return Boolean of whether the attribute text in the item lore is visible
+	 *         or not. If it is true, then the text is visible. If it is
+	 *         invisible then the CustomItem includes the ItemFlag
+	 *         HIDE_Attribute
+	 */
+	public boolean getAttributeVisibility() {
+		return !itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES);
+	}
+
+	/**
+	 * Set whether the attribute text in the item lore will be visible or not.
+	 * If it is set true, then the text will be visible. If it is set to be
+	 * hidden then the CustomItem includes the ItemFlag HIDE_ATTRIBUTES
+	 */
+	public CustomItem setAttributeVisibility(boolean attributeVisibility) {
+		if (!attributeVisibility)
+			itemFlags.add(ItemFlag.HIDE_ATTRIBUTES);
+		else
+			itemFlags.remove(ItemFlag.HIDE_ATTRIBUTES);
+		return this;
+	}
+
+	/**
+	 * 
+	 * @return Boolean of whether the unbreakable tag in the item lore is
+	 *         visible or not. If it is true, then the tag is visible. If it is
+	 *         invisible then the CustomItem includes the ItemFlag
+	 *         HIDE_UNBREAKABLE
+	 */
+	public boolean getUnbreakableVisibility() {
+		return !itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE);
+	}
+
+	/**
+	 * Set whether the unbreakable tag in the item lore will be visible or not.
+	 * If it is set true, then the tag will be visible. If it is set to be
+	 * hidden then the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
+	 */
+	public CustomItem setUnbreakableVisibility(boolean unbreakableVisibility) {
+		if (!unbreakableVisibility)
+			itemFlags.add(ItemFlag.HIDE_UNBREAKABLE);
+		else
+			itemFlags.remove(ItemFlag.HIDE_UNBREAKABLE);
+		return this;
+	}
+
+	/**
+	 * 
+	 * @return Boolean of whether the text that shows which blocks this item can
+	 *         mine in the item lore is visible or not. If it is true, then the
+	 *         tag is visible. If it is invisible then the CustomItem includes
+	 *         the ItemFlag HIDE_DESTROYS
+	 */
+	public boolean getCanDestroyVisibility() {
+		return !itemFlags.contains(ItemFlag.HIDE_DESTROYS);
+	}
+
+	/**
+	 * Set whether the text that shows which blocks this item can mine in the
+	 * item lore is visible or not. If it is true, then the tag is visible. If
+	 * it is invisible then the CustomItem includes the ItemFlag HIDE_DESTROYS
+	 */
+	public CustomItem setCanDestroyVisibility(boolean canDestroyVisibility) {
+		if (!canDestroyVisibility)
+			itemFlags.add(ItemFlag.HIDE_DESTROYS);
+		else
+			itemFlags.remove(ItemFlag.HIDE_DESTROYS);
+		return this;
+	}
+
+	/**
+	 * 
+	 * @return Boolean of whether the enchantments in the item lore are visible
+	 *         or not. If it is true, then the tag is visible. If it is
+	 *         invisible then the CustomItem includes the ItemFlag HIDE_ENCHANTS
+	 */
+	public boolean getEnchantmentVisibility() {
+		return !itemFlags.contains(ItemFlag.HIDE_ENCHANTS);
+	}
+
+	/**
+	 * Set whether the enchantments in the item lore are visible or not. If it
+	 * is true, then the tag is visible. If it is invisible then the CustomItem
+	 * includes the ItemFlag HIDE_ENCHANTS
+	 */
+	public CustomItem setEnchantmentVisibility(boolean enchantmentVisibility) {
+		if (!enchantmentVisibility)
+			itemFlags.add(ItemFlag.HIDE_ENCHANTS);
+		else
+			itemFlags.remove(ItemFlag.HIDE_ENCHANTS);
+		return this;
+	}
+
+	/**
+	 * 
+	 * @return Boolean of whether the text that shows on which blocks this can
+	 *         be placed on in the item lore is visible or not. If it is true,
+	 *         then the tag is visible. If it is invisible then the CustomItem
+	 *         includes the ItemFlag HIDE_PLACED_ON
+	 */
+	public boolean getCanBePlacedVisibility() {
+		return !itemFlags.contains(ItemFlag.HIDE_PLACED_ON);
+	}
+
+	/**
+	 * Set whether the text that shows on which blocks this can be placed on in
+	 * the item lore is visible or not. If it is true, then the tag is visible.
+	 * If it is invisible then the CustomItem includes the ItemFlag
+	 * HIDE_PLACED_ON
+	 */
+	public CustomItem setCanBePlacedVisibility(boolean canBePlacedVisibility) {
+		if (!canBePlacedVisibility)
+			itemFlags.add(ItemFlag.HIDE_PLACED_ON);
+		else
+			itemFlags.remove(ItemFlag.HIDE_PLACED_ON);
+		return this;
+	}
+
+	/**
+	 * 
+	 * @return Boolean of whether the text that shows the potion effect this
+	 *         item will include when consumed in the item lore is visible or
+	 *         not. If it is true, then the tag is visible. If it is invisible
+	 *         then the CustomItem includes the ItemFlag HIDE_POTION_EFFECTS
+	 */
+	public boolean getPotionEffectsVisibility() {
+		return !itemFlags.contains(ItemFlag.HIDE_POTION_EFFECTS);
+	}
+
+	/**
+	 * Set whether the text that shows the potion effect this item will include
+	 * when consumed in the item lore is visible or not. If it is true, then the
+	 * tag is visible. If it is invisible then the CustomItem includes the
+	 * ItemFlag HIDE_POTION_EFFECTS
+	 */
+	public CustomItem setPotionEffectsVisibility(boolean potionEffectVisibility) {
+		if (!potionEffectVisibility)
+			itemFlags.add(ItemFlag.HIDE_POTION_EFFECTS);
+		else
+			itemFlags.remove(ItemFlag.HIDE_POTION_EFFECTS);
+		return this;
+	}
+
 	// === FAKE DURABILITY === //
 
 	/**
@@ -554,7 +686,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @return {@link Map} - A map of the Enchantments included in the
 	 *         CustomItem and their level.
 	 */
-	public Map<Enchantment, Integer> getEnchantmnets() {
+	public HashMap<Enchantment, Integer> getEnchantmnets() {
 		return enchantments;
 	}
 
@@ -604,7 +736,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * @param enchantments
+	 * @param map
 	 *            The Enchantments that will be taken into consideration when
 	 *            creating the lore. Currently, only the Sharpness Enchantment
 	 *            and its Level have to be taken into consideration.
@@ -616,7 +748,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *         CustomItem's Fake Durability lore that have been customized
 	 *         according to the specified parameters.
 	 */
-	public List<String> getFullLore(Map<Enchantment, Integer> enchantments, int durability) {
+	public List<String> getFullLore(Map<Enchantment, Integer> map, int durability) {
 		// Lore
 
 		List<String> loreToAdd = new ArrayList<String>();
@@ -661,9 +793,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 			loreToAdd.add("");
 			loreToAdd.add(ChatColor.GRAY + LangFileUtils.get("attack_main_hand"));
 
-			if (enchantments != null) {
-				if (enchantments.containsKey(Enchantment.DAMAGE_ALL)) {
-					int level = enchantments.get(Enchantment.DAMAGE_ALL);
+			if (map != null) {
+				if (map.containsKey(Enchantment.DAMAGE_ALL)) {
+					int level = map.get(Enchantment.DAMAGE_ALL);
 					if (level == 1) {
 						attackDamage += 1;
 					} else {
@@ -679,7 +811,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 			 * to float in game. This is not something that can be fixed easily
 			 * as it is not caused by this API. Confirmed with Minecraft code
 			 * that it's expected behaviour. For example, this is the amount of
-			 * Attack Speed for the Swords: -2.4000000953674316D
+			 * Attack Speed for the Swords: -2.4000000953674316D Full rant is
+			 * available here:
+			 * https://twitter.com/SupMushroomSoup/status/853292658298671106
 			 */
 			attackSpeed = MathUtils.round(attackSpeed, 2);
 			attackDamage = MathUtils.round(attackDamage, 2);
@@ -704,7 +838,13 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 					+ Integer.toString(fakeDurability));
 		}
 
-		return loreToAdd;
+		List<String> finalLore = new ArrayList<String>();
+
+		for (String string : loreToAdd) {
+			finalLore.add(LORE_PREFIX + string + LORE_SUFFIX);
+		}
+
+		return finalLore;
 	}
 
 	@Override
@@ -716,10 +856,6 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public UUID getAttributeStorageUUID() {
-		return attributeStorageUUID;
 	}
 
 	/**
@@ -804,7 +940,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @param hoeAbilities
 	 *            Whether the Hoe should keep its abilities or not.
 	 */
-	public void setHoeAbilities(boolean hoeAbilities) {
+	public CustomItem setHoeAbilities(boolean hoeAbilities) {
 		this.hoeAbilities = hoeAbilities;
+		return this;
 	}
 }

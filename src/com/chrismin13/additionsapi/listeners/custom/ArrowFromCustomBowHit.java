@@ -31,7 +31,6 @@ public class ArrowFromCustomBowHit implements Listener {
 	}
 
 	public static void removeArrow(Entity arrow) {
-		if (containsArrow(arrow))
 			arrowsShotFromCustomBow.remove(arrow);
 	}
 	

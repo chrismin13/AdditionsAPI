@@ -3,8 +3,8 @@ package com.chrismin13.additionsapi;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,6 +24,7 @@ import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
 import com.chrismin13.additionsapi.items.StorageCustomItem;
 import com.chrismin13.additionsapi.listeners.DurabilityBar;
+import com.chrismin13.additionsapi.listeners.mcMMO;
 import com.chrismin13.additionsapi.listeners.custom.ArrowFromCustomBowHit;
 import com.chrismin13.additionsapi.listeners.custom.CustomElytraPlayerToggleGlide;
 import com.chrismin13.additionsapi.listeners.custom.CustomItemBlockBreak;
@@ -49,8 +50,8 @@ import com.chrismin13.additionsapi.listeners.vanilla.PlayerInteract;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerShearEntity;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
-import com.comphenix.attributes.NbtFactory;
-import com.comphenix.attributes.NbtFactory.NbtCompound;
+import com.comphenix.attribute.NbtFactory;
+import com.comphenix.attribute.NbtFactory.NbtCompound;
 import com.google.common.collect.ImmutableList;
 
 import us.fihgu.toolbox.item.ModelInjector;
@@ -98,7 +99,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 				"You must accept the resource pack in order to join the server! Click on the server once, then click edit and change Server Resource pack to True.");
 		lang.addEntry(pluginName, "item_durability_main_hand", "Item Durability in Main Hand: ");
 		lang.addEntry(pluginName, "item_durability_off_hand", "Item Durability in Off Hand: ");
-		lang.saveData();
+		lang.saveLang();
 
 		for (Listener listener : Arrays.asList(new EnchantItem(), new Anvil(), new CraftingTable(), new BlockBreak(),
 				new CustomItemBlockBreak(), new EntityDamage(), new EntityDamageByPlayerUsingCustomItem(),
@@ -108,6 +109,12 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 				new CustomShieldEntityDamageByEntity(), new EntityToggleGlide(), new CustomElytraPlayerToggleGlide(),
 				this, new ArrowFromCustomBowHit(), new PlayerDeath(), new DurabilityBar())) {
 			getServer().getPluginManager().registerEvents(listener, this);
+		}
+
+		if (getServer().getPluginManager().getPlugin("mcMMO") != null) {
+			for (Listener listener : Arrays.asList(new mcMMO())) {
+				getServer().getPluginManager().registerEvents(listener, this);
+			}
 		}
 
 		getCommand("additions").setExecutor(new Additions());
@@ -192,7 +199,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 			String idName = cItem.getIdName();
 			if (cItem instanceof ModelInjector) {
 				ModelInjector model = (ModelInjector) cItem;
-				Map<String, Short> textures = model.getAllTextures();
+				final HashMap<String, Short> textures = model.getAllTextures();
 				for (String string : textures.keySet()) {
 					Debug.saySuper("Currently Processing Texure: " + string);
 					short freeDurability;

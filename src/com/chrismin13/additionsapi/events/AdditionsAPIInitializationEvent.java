@@ -22,11 +22,12 @@ public class AdditionsAPIInitializationEvent extends Event {
 	private List<CustomItem> cItems = new ArrayList<CustomItem>();
 	private static final HandlerList handlers = new HandlerList();
 
-	public void addCustomItem(CustomItem cItem) {
+	public AdditionsAPIInitializationEvent addCustomItem(CustomItem cItem) {
 		Debug.sayTrue("Added Custom Item to Processing List: " + cItem.getIdName());
 		Debug.saySuper("Properties: Material: " + cItem.getMaterial() + ", DisplayName: " + cItem.getDisplayName()
 				+ ", ItemType: " + cItem.getItemType() + ".");
 		cItems.add(cItem);
+		return this;
 	}
 
 	public CustomItem[] getCustomItems() {
@@ -39,25 +40,29 @@ public class AdditionsAPIInitializationEvent extends Event {
 		return cItems;
 	}
 
-	public void addResourcePack(JavaPlugin plugin, InputStream inputstream) {
+	public AdditionsAPIInitializationEvent addResourcePack(JavaPlugin plugin, InputStream inputstream) {
 		try {
 			ResourcePackManager.registerResource(plugin, inputstream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return this;
 	}
 
-	public void addResourcePack(JavaPlugin plugin, File file) {
+	public AdditionsAPIInitializationEvent addResourcePack(JavaPlugin plugin, File file) {
 		try {
 			addResourcePack(plugin, new FileInputStream(file));
 		} catch (FileNotFoundException e) {
-			Debug.sayError("Could not add Resource Pack! The file specified was not found in the following path: " + file.getPath());
+			Debug.sayError("Could not add Resource Pack! The file specified was not found in the following path: "
+					+ file.getPath());
 			e.printStackTrace();
 		}
+		return this;
 	}
 
-	public void addResourcePackFromPlugin(JavaPlugin plugin, String filename) {
+	public AdditionsAPIInitializationEvent addResourcePackFromPlugin(JavaPlugin plugin, String filename) {
 		addResourcePack(plugin, plugin.getResource(filename));
+		return this;
 	}
 
 	@Override
