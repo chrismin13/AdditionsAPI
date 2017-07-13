@@ -63,21 +63,22 @@ public class Attributes {
 
 	public static class AttributeType {
 		private static ConcurrentMap<String, AttributeType> LOOKUP = Maps.newConcurrentMap();
-		public static final AttributeType GENERIC_MAX_HEALTH = new AttributeType("generic.maxHealth").register();
-		public static final AttributeType GENERIC_FOLLOW_RANGE = new AttributeType("generic.followRange").register();
-		public static final AttributeType GENERIC_ATTACK_DAMAGE = new AttributeType("generic.attackDamage").register();
-		public static final AttributeType GENERIC_ATTACK_SPEED = new AttributeType("generic.attackSpeed").register();
-		public static final AttributeType GENERIC_MOVEMENT_SPEED = new AttributeType("generic.movementSpeed")
+		public static final AttributeType GENERIC_MAX_HEALTH = new AttributeType("generic.maxHealth", 20.0).register();
+		public static final AttributeType GENERIC_FOLLOW_RANGE = new AttributeType("generic.followRange", 32.0).register();
+		public static final AttributeType GENERIC_ATTACK_DAMAGE = new AttributeType("generic.attackDamage", 1.0).register();
+		public static final AttributeType GENERIC_ATTACK_SPEED = new AttributeType("generic.attackSpeed", 4.0).register();
+		public static final AttributeType GENERIC_MOVEMENT_SPEED = new AttributeType("generic.movementSpeed", 0.7)
 				.register();
 		public static final AttributeType GENERIC_KNOCKBACK_RESISTANCE = new AttributeType(
-				"generic.knockbackResistance").register();
-		public static final AttributeType ARMOR = new AttributeType("generic.armor").register();
-		public static final AttributeType ARMOR_TOUGHNESS = new AttributeType("generic.armorToughness").register();
-		public static final AttributeType GENERIC_LUCK = new AttributeType("generic.luck").register();
-		public static final AttributeType HORSE_JUMP_STRENGTH = new AttributeType("horse.jumpStrength").register();
-		public static final AttributeType ZOMBIE_SPAWN_REINFORCEMENTS = new AttributeType("zombie.spawnReinforcements").register();
+				"generic.knockbackResistance", 0.0).register();
+		public static final AttributeType ARMOR = new AttributeType("generic.armor", 0.0).register();
+		public static final AttributeType ARMOR_TOUGHNESS = new AttributeType("generic.armorToughness", 0.0).register();
+		public static final AttributeType GENERIC_LUCK = new AttributeType("generic.luck", 0.0).register();
+		public static final AttributeType HORSE_JUMP_STRENGTH = new AttributeType("horse.jumpStrength", 0.7).register();
+		public static final AttributeType ZOMBIE_SPAWN_REINFORCEMENTS = new AttributeType("zombie.spawnReinforcements", 0.0).register();
 
 		private final String minecraftId;
+		private final double baseValue;
 
 		/**
 		 * Construct a new attribute type.
@@ -87,8 +88,9 @@ public class Attributes {
 		 * @param minecraftId
 		 *            - the ID of the type.
 		 */
-		public AttributeType(String minecraftId) {
+		public AttributeType(String minecraftId, double baseValue) {
 			this.minecraftId = minecraftId;
+			this.baseValue = baseValue;
 		}
 
 		/**
@@ -98,6 +100,13 @@ public class Attributes {
 		 */
 		public String getMinecraftId() {
 			return minecraftId;
+		}
+
+		/**
+		 * @return the baseValue
+		 */
+		public double getBaseValue() {
+			return baseValue;
 		}
 
 		/**

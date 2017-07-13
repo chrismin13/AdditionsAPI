@@ -1,9 +1,19 @@
 package com.chrismin13.additionsapi.items;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 
 import com.chrismin13.additionsapi.enums.ToolType;
+import com.chrismin13.additionsapi.utils.EquipmentSlotUtils;
+import com.chrismin13.additionsapi.utils.LangFileUtils;
+import com.chrismin13.additionsapi.utils.MaterialUtils;
+import com.chrismin13.additionsapi.utils.NumberUtils;
+import com.comphenix.attribute.Attributes.Attribute;
 import com.comphenix.attribute.Attributes.AttributeType;
 import com.comphenix.attribute.Attributes.Operation;
 
@@ -21,9 +31,9 @@ import com.comphenix.attribute.Attributes.Operation;
  * are displayed under Swords, Axes, Pickaxes, Shovels or Hoes. For example, to
  * replicate a Diamond Sword you will set an Attack Speed of 1.6 and an Attack
  * Damage of 7.<br>
- * The Fake Attack Lore will add a lore that displays Attack Speed and Attack
- * Damage the same way that they are displayed in Items in Vanilla. This is
- * great if you want to change the Attack Speed or Attack Damage and not have
+ * The Tool Like Attributes will add a lore that displays Attack Speed and
+ * Attack Damage the same way that they are displayed in Items in Vanilla. This
+ * is great if you want to change the Attack Speed or Attack Damage and not have
  * the Attribute Style text. Do not forget to also use
  * {@link #setAttributeVisibility(Boolean)} to hide the Attribute Text from
  * displaying. The strings used in the lore are customizable in the lang.yml
@@ -36,7 +46,7 @@ public class CustomTool extends CustomItem {
 
 	// === VARIABLES === //
 
-	private boolean fakeDamageLore = false;
+	private boolean toolLikeAttributes = false;
 
 	// === CREATING THE TOOL === //
 
@@ -108,7 +118,7 @@ public class CustomTool extends CustomItem {
 	// === DAMAGE LORE === //
 
 	/**
-	 * The Fake Attack Lore will add a lore that displays Attack Speed and
+	 * The Tool Like Attributes will add a lore that displays Attack Speed and
 	 * Attack Damage the same way that they are displayed in Items in Vanilla.
 	 * This is great if you want to change the Attack Speed or Attack Damage and
 	 * not have the Attribute Style text. Do not forget to also use
@@ -119,13 +129,13 @@ public class CustomTool extends CustomItem {
 	 * @param lore
 	 *            Whether you want the lore to be enabled or not.
 	 */
-	public CustomTool setFakeAttackLore(Boolean lore) {
-		fakeDamageLore = lore;
+	public CustomTool setToolLikeAttributes(Boolean lore) {
+		toolLikeAttributes = lore;
 		return this;
 	}
 
 	/**
-	 * The Fake Attack Lore will add a lore that displays Attack Speed and
+	 * The Tool Like Attributes will add a lore that displays Attack Speed and
 	 * Attack Damage the same way that they are displayed in Items in Vanilla.
 	 * This is great if you want to change the Attack Speed or Attack Damage and
 	 * not have the Attribute Style text. Do not forget to also use
@@ -133,9 +143,127 @@ public class CustomTool extends CustomItem {
 	 * displaying. The strings used in the lore are customizable in the lang.yml
 	 * file.
 	 * 
-	 * @return A boolean of whether the Fake Attack Lore is enabled or not.
+	 * @return A boolean of whether the Tool Like Attributes is enabled or not.
 	 */
-	public boolean hasFakeAttackLore() {
-		return fakeDamageLore;
+	public boolean hasToolLikeAttributes() {
+		return toolLikeAttributes;
+	}
+
+	public ArrayList<String> getToolLikeAttributes() {
+		return getToolLikeAttributes(null);
+	}
+	
+	public ArrayList<String> getToolLikeAttributes(Map<Enchantment, Integer> enchants) {
+		final ArrayList<String> attributeLore = new ArrayList<String>();
+
+		if (!getAttributes().isEmpty()) {
+			for (EquipmentSlot slot : EquipmentSlot.values()) {
+				for (Attribute attribute : getAttributes()) {
+					if (attribute.getSlot().equals(EquipmentSlotUtils.toAttributeString(slot))) {
+						/*
+						 * Check if the lore already contains text for that
+						 * slot, if not add it.
+						 */
+						if (!attributeLore.contains(ChatColor.GRAY + EquipmentSlotUtils.valueFromLangFile(slot))) {
+							attributeLore.add(ChatColor.GRAY + EquipmentSlotUtils.valueFromLangFile(slot));
+						}
+						/*
+						 * Needed because this is how it's done for attributes
+						 * in Vanilla. That being said, this hides an accuracy
+						 * bug that occures with the attributes from, what I can
+						 * tell to be, a conversion from double to float in
+						 * game. This is not something that can be fixed easily
+						 * as it is not caused by this API. Confirmed with
+						 * Minecraft code that it's expected behaviour. For
+						 * example, this is the amount of Attack Speed for the
+						 * Swords: -2.4000000953674316D Full rant is available
+						 * here: https://twitter.com/SupMushroomSoup/status/
+						 * 853292658298671106
+						 */
+						double amount = NumberUtils.round(attribute.getAmount(), 2);
+
+						Operation operation = attribute.getOperation();
+						AttributeType type = attribute.getAttributeType();
+						String attributeName = LangFileUtils.get(type);
+
+						if (operation.equals(Operation.ADD_NUMBER)) {
+							// We must also consider the base values of each
+							// Attribute.
+							amount += type.getBaseValue();
+							amount = NumberUtils.round(amount, 2);
+
+							if (type.equals(AttributeType.GENERIC_ATTACK_DAMAGE) && enchants != null
+									&& !enchants.isEmpty() && enchants.containsKey(Enchantment.DAMAGE_ALL)) {
+								final int level = enchants.get(Enchantment.DAMAGE_ALL);
+								if (level == 1) {
+									amount += 1;
+								} else if (level > 1) {
+									amount = amount + 1 + (level - 1) * 0.5;
+								}
+							}
+							/*
+							 * Checking to remove the decimals at the end if the
+							 * number does not have any.
+							 */
+							if ((amount == Math.floor(amount)) && !Double.isInfinite(amount)) {
+								attributeLore.add(
+										ChatColor.GRAY + " " + Integer.toString((int) amount) + " " + attributeName);
+							} else {
+								attributeLore.add(ChatColor.GRAY + " " + Double.toString(amount) + " " + attributeName);
+							}
+						} else if (operation.equals(Operation.ADD_PERCENTAGE)) {
+							/*
+							 * Both Add Percentage and Multiply Percentage are
+							 * never seen in-game with this format, so I'm just
+							 * guessing here. You shouldn't be using these two
+							 * together IMO anyways, I can't be calculating the
+							 * Lore again and again once something has changed.
+							 */
+							amount *= 100;
+							if (amount >= 0)
+								attributeLore.add(
+										ChatColor.GRAY + " +" + Integer.toString((int) amount) + "% " + attributeName);
+							else
+								attributeLore.add(
+										ChatColor.GRAY + " " + Integer.toString((int) amount) + "% " + attributeName);
+						} else if (operation.equals(Operation.MULTIPLY_PERCENTAGE)) {
+							amount *= 100;
+							attributeLore
+									.add(ChatColor.GRAY + " " + Integer.toString((int) amount) + "% " + attributeName);
+						}
+					}
+				}
+			}
+		} else {
+
+			attributeLore.add(ChatColor.GRAY + EquipmentSlotUtils.valueFromLangFile(EquipmentSlot.HAND));
+
+			double speed = NumberUtils.round(MaterialUtils.getBaseSpeed(getMaterial()), 2);
+			/*
+			 * Checking to remove the decimals at the end if the number does not
+			 * have any.
+			 */
+			if ((speed == Math.floor(speed)) && !Double.isInfinite(speed)) {
+				attributeLore.add(ChatColor.GRAY + " " + Integer.toString((int) speed) + " "
+						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_SPEED));
+			} else {
+				attributeLore.add(ChatColor.GRAY + " " + Double.toString(speed) + " "
+						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_SPEED));
+			}
+
+			double damage = NumberUtils.round(MaterialUtils.getBaseDamage(getMaterial()), 2);
+			/*
+			 * Checking to remove the decimals at the end if the number does not
+			 * have any.
+			 */
+			if ((damage == Math.floor(damage)) && !Double.isInfinite(damage)) {
+				attributeLore.add(ChatColor.GRAY + " " + Integer.toString((int) damage) + " "
+						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_DAMAGE));
+			} else {
+				attributeLore.add(ChatColor.GRAY + " " + Double.toString(damage) + " "
+						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_DAMAGE));
+			}
+		}
+		return attributeLore;
 	}
 }

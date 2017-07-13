@@ -2,11 +2,14 @@ package com.chrismin13.additionsapi.items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -262,7 +265,7 @@ public class CustomItemStack implements Cloneable {
 			List<String> oldLore = meta.getLore();
 			List<String> lore = new ArrayList<String>();
 			lore.addAll(meta.getLore());
-			
+
 			if (meta.getLore() != null && !meta.getLore().isEmpty()) {
 				Debug.saySuper("Aint empty");
 				for (String string : oldLore) {
@@ -290,8 +293,13 @@ public class CustomItemStack implements Cloneable {
 	 *            The amount of durability that will be reduced
 	 */
 	public CustomItemStack reduceDurability(Player player, int durabilityToReduce) {
-		Bukkit.getPluginManager()
-				.callEvent(new PlayerCustomItemDamageEvent(player, getItemStack(), durabilityToReduce, cItem));
+		GameMode gm = player.getGameMode();
+		if ((gm.equals(GameMode.SURVIVAL) || gm.equals(GameMode.ADVENTURE)))
+			if (cItem.hasFakeDurability())
+				Bukkit.getPluginManager()
+						.callEvent(new PlayerCustomItemDamageEvent(player, getItemStack(), durabilityToReduce, cItem));
+			else if (!cItem.isUnbreakable())
+				Bukkit.getPluginManager().callEvent(new PlayerItemDamageEvent(player, itemStack, durabilityToReduce));
 		return this;
 	}
 
@@ -302,14 +310,36 @@ public class CustomItemStack implements Cloneable {
 	 * Item was enchanted in an enchantment table or had its durability changed.
 	 */
 	public CustomItemStack updateLore() {
+		return updateLore(itemStack.getEnchantments());
+	}
+	
+	/**
+	 * Updates the lore of the ItemStack using the
+	 * {@link CustomItem#getFullLore(java.util.Map, int)} method. This is
+	 * necessary if you added Enchantments and will be done automatically if the
+	 * Item was enchanted in an enchantment table or had its durability changed.
+	 */
+	public CustomItemStack updateLore(Map<Enchantment, Integer> enchantsToCheck) {
 		ItemMeta meta = itemStack.getItemMeta();
-		List<String> lore = meta.getLore();
+		final List<String> lore = meta.getLore();
+		final ArrayList<String> loreToRemove = new ArrayList<>();
 
 		if (meta.getLore() != null && !meta.getLore().isEmpty())
 			for (String string : lore)
+				/*
+				 * By adding Lore Prefix and Suffix we can identify the Lore of
+				 * the Custom Items part, thus making plugins like mcMMO which
+				 * store data on the lore still compatible
+				 */
 				if (string.startsWith(CustomItem.LORE_PREFIX) && string.endsWith(CustomItem.LORE_SUFFIX))
-					lore.remove(string);
-		lore.addAll(cItem.getFullLore(itemStack.getEnchantments(), getFakeDurability()));
+					/*
+					 * Must add it in another list and remove it later,
+					 * otherwise it will be a Concurrent Modification
+					 */
+					loreToRemove.add(string);
+		lore.removeAll(loreToRemove);
+
+		lore.addAll(cItem.getFullLore(enchantsToCheck, getFakeDurability()));
 
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);

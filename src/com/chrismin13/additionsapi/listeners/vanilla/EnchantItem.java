@@ -50,8 +50,6 @@ public class EnchantItem implements Listener {
 				}
 			}
 		}
-		if (item.containsEnchantment(Enchantment.DAMAGE_ALL)) {
-			cStack.updateLore();
-		}
+		cStack.updateLore(eToAdd);
 	}
 }

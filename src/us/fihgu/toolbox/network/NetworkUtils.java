@@ -11,70 +11,58 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-public class NetworkUtils
-{
+import com.chrismin13.additionsapi.utils.Debug;
+
+public class NetworkUtils {
 
 	/**
 	 * @return the non loop back LAN IP of this computer.
 	 */
-	public static InetAddress getLocalIP()
-	{
-		try
-		{
+	public static InetAddress getLocalIP() {
+		try {
 			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-			while (interfaces.hasMoreElements())
-			{
+			while (interfaces.hasMoreElements()) {
 				NetworkInterface networkInterface = interfaces.nextElement();
-				if(!networkInterface.isLoopback())
-				{
+				if (!networkInterface.isLoopback()) {
 					Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
-					while (addresses.hasMoreElements())
-					{
+					while (addresses.hasMoreElements()) {
 						InetAddress address = addresses.nextElement();
-						if(address.isSiteLocalAddress())
-						{
+						if (address.isSiteLocalAddress()) {
 							return address;
 						}
 					}
 				}
 			}
-		}
-		catch (SocketException e1)
-		{
+		} catch (SocketException e1) {
 			e1.printStackTrace();
 		}
 
-		try
-		{
+		try {
 			return InetAddress.getLocalHost();
-		}
-		catch (UnknownHostException e)
-		{
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		
+
 		return InetAddress.getLoopbackAddress();
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public static String getExternalIP()
-	{
+	public static String getExternalIP() {
 		String ip = null;
-		try
-		{
+		try {
 			URL whatismyip = new URL("http://agentgatech.appspot.com");
 			URLConnection connection = whatismyip.openConnection();
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			ip = in.readLine();
+		} catch (IOException e) {
+			Debug.sayError(
+					"A connection to agentgatech.appspot.com could not be achieved! Please check your internet connection and if the website is down!");
+			Debug.sayError("Localhost will be used instead.");
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
+
 		return ip;
 	}
 }

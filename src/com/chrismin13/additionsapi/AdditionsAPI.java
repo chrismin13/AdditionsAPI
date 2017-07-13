@@ -30,6 +30,7 @@ import com.chrismin13.additionsapi.listeners.custom.CustomElytraPlayerToggleGlid
 import com.chrismin13.additionsapi.listeners.custom.CustomItemBlockBreak;
 import com.chrismin13.additionsapi.listeners.custom.CustomItemBlockIgnite;
 import com.chrismin13.additionsapi.listeners.custom.CustomItemFish;
+import com.chrismin13.additionsapi.listeners.custom.CustomItemFurnaceBurn;
 import com.chrismin13.additionsapi.listeners.custom.CustomItemPlayerInteract;
 import com.chrismin13.additionsapi.listeners.custom.CustomItemShearEntity;
 import com.chrismin13.additionsapi.listeners.custom.CustomShieldEntityDamageByEntity;
@@ -44,6 +45,7 @@ import com.chrismin13.additionsapi.listeners.vanilla.EnchantItem;
 import com.chrismin13.additionsapi.listeners.vanilla.EntityDamage;
 import com.chrismin13.additionsapi.listeners.vanilla.EntityShootBow;
 import com.chrismin13.additionsapi.listeners.vanilla.EntityToggleGlide;
+import com.chrismin13.additionsapi.listeners.vanilla.FurnaceBurn;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerDeath;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerFish;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerInteract;
@@ -67,15 +69,19 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 
 		instance = this;
 
+		// Initializing Config
 		ConfigFile config = ConfigFile.getInstance();
 		config.setup();
 		if (config.getConfig().getBoolean("resource-pack.force-on-join"))
 			ResourcePackManager.setForceResourcePack();
 
+		// Initializing Data File
 		DataFile.getInstance().setup();
 
+		// Initializing Lang File and adding all entries
 		LangFile lang = LangFile.getInstance();
 		lang.setup();
+
 		String pluginName = "more_minecraft";
 		lang.addEntry(pluginName, "sword", "Sword");
 		lang.addEntry(pluginName, "axe", "Axe");
@@ -90,36 +96,54 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		lang.addEntry(pluginName, "leather_chestplate", "Tunic");
 		lang.addEntry(pluginName, "leather_leggings", "Pants");
 		lang.addEntry(pluginName, "leather_boots", "Boots");
-		lang.addEntry(pluginName, "attack_main_hand", "When in main hand:");
-		lang.addEntry(pluginName, "attack_speed", "Attack Speed");
-		lang.addEntry(pluginName, "attack_damage", "Attack Damage");
+		lang.addEntry(pluginName, "when_in_head", "When in head:");
+		lang.addEntry(pluginName, "when_in_body", "When in body:");
+		lang.addEntry(pluginName, "when_in_legs", "When in legs:");
+		lang.addEntry(pluginName, "when_in_feet", "When in feet:");
+		lang.addEntry(pluginName, "when_in_main_hand", "When in main hand:");
+		lang.addEntry(pluginName, "when_in_off_hand", "When in off hand:");
+		lang.addEntry(pluginName, "attribute_generic_attack_speed", "Attack Speed");
+		lang.addEntry(pluginName, "attribute_generic_attack_damage", "Attack Damage");
+		lang.addEntry(pluginName, "attribute_armor", "Armor");
+		lang.addEntry(pluginName, "attribute_armor_toughness", "Armor Toughness");
+		lang.addEntry(pluginName, "attribute_generic_follow_range", "Follow Range");
+		lang.addEntry(pluginName, "attribute_generic_knockback_resistance", "Knockback Resistance");
+		lang.addEntry(pluginName, "attribute_generic_luck", "Luck");
+		lang.addEntry(pluginName, "attribute_generic_max_health", "Max Health");
+		lang.addEntry(pluginName, "attribute_generic_movement_speed", "Speed");
+		lang.addEntry(pluginName, "attribute_horse_jump_strength", "Horse Jump Strength");
+		lang.addEntry(pluginName, "attribute_zombie_spawn_reinforcements", "Zombie Spawn Reinforcements");
 		lang.addEntry(pluginName, "durability", "Durability:");
 		lang.addEntry(pluginName, "death_message", " using [CustomItem]");
 		lang.addEntry(pluginName, "resource_pack_kick",
 				"You must accept the resource pack in order to join the server! Click on the server once, then click edit and change Server Resource pack to True.");
 		lang.addEntry(pluginName, "item_durability_main_hand", "Item Durability in Main Hand: ");
 		lang.addEntry(pluginName, "item_durability_off_hand", "Item Durability in Off Hand: ");
+
 		lang.saveLang();
 
+		// Registering listeners
 		for (Listener listener : Arrays.asList(new EnchantItem(), new Anvil(), new CraftingTable(), new BlockBreak(),
 				new CustomItemBlockBreak(), new EntityDamage(), new EntityDamageByPlayerUsingCustomItem(),
 				new PlayerCustomItemDamage(), new PlayerInteract(), new CustomItemPlayerInteract(),
 				new PlayerShearEntity(), new CustomItemShearEntity(), new PlayerFish(), new CustomItemFish(),
 				new BlockIgnite(), new CustomItemBlockIgnite(), new EntityShootBow(), new EntityShootCustomBow(),
 				new CustomShieldEntityDamageByEntity(), new EntityToggleGlide(), new CustomElytraPlayerToggleGlide(),
-				this, new ArrowFromCustomBowHit(), new PlayerDeath(), new DurabilityBar())) {
+				this, new ArrowFromCustomBowHit(), new PlayerDeath(), new DurabilityBar(), new FurnaceBurn(),
+				new CustomItemFurnaceBurn(), new ResourcePackListener())) {
 			getServer().getPluginManager().registerEvents(listener, this);
 		}
 
-		if (getServer().getPluginManager().getPlugin("mcMMO") != null) {
+		// Custom mcMMO version with support for the Additions API.
+		if (getServer().getPluginManager().getPlugin("mcMMO") != null
+				&& com.gmail.nossr50.events.items.ItemDurabilityChangeEvent.class != null) {
 			for (Listener listener : Arrays.asList(new mcMMO())) {
 				getServer().getPluginManager().registerEvents(listener, this);
 			}
 		}
 
+		// Commands
 		getCommand("additions").setExecutor(new Additions());
-
-		new ResourcePackListener().register(this);
 
 		// After all plugins have been enabled
 		getServer().getScheduler().scheduleSyncDelayedTask(this, () -> load());
@@ -147,7 +171,8 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		Debug.say("Starting AdditionsAPI Intialization");
 		AdditionsAPIInitializationEvent event = new AdditionsAPIInitializationEvent();
 		// TODO: Add to config
-		event.addResourcePackFromPlugin(instance, "resource/smooth_armor.zip");
+		if (ConfigFile.getInstance().getConfig().getBoolean("resource-pack.force-on-join"))
+			event.addResourcePackFromPlugin(instance, "resource/smooth_armor.zip");
 		event.addResourcePackFromPlugin(instance, "resource/no_hoe_sound.zip");
 		instance.getServer().getPluginManager().callEvent(event);
 		Debug.say("Finished Initialization.");
@@ -155,18 +180,20 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 
 		if (ResourcePackManager.hasResource()) {
 			setupHTTPServer();
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				Bukkit.getServer().getScheduler().runTask(getInstance(), () -> {
-					String link;
-					if (player.getAddress().getHostString().equals("127.0.0.1")) {
-						link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
-								+ ResourcePackServer.path;
-					} else {
-						link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
-								+ ResourcePackServer.path;
-					}
-					player.setResourcePack(link);
-				});
+			if (ResourcePackManager.neededRebuild) {
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					Bukkit.getScheduler().runTask(getInstance(), () -> {
+						String link;
+						if (player.getAddress().getHostString().equals("127.0.0.1")) {
+							link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
+									+ ResourcePackServer.path;
+						} else {
+							link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
+									+ ResourcePackServer.path;
+						}
+						player.setResourcePack(link);
+					});
+				}
 			}
 		}
 	}
@@ -226,7 +253,6 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 			 */
 			CustomItemStack cStack = new CustomItemStack(cItem, durability, texture);
 			ItemStack item = cStack.getItemStack();
-			// cItems.put(idName, cItem);
 			cStacks.add(cStack);
 			for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
 				cRecipe.registerBukkitRecipe(item);
@@ -244,7 +270,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 
 	// === STORAGE === //
 
-	public static boolean isValidCustomItem(String idName) {
+	public static boolean isCustomItem(String idName) {
 		try {
 			for (CustomItemStack cStack : cStacks)
 				if (cStack.getCustomItem().getIdName().equals(idName))
@@ -281,13 +307,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 
 	public static boolean isCustomItem(ItemStack item) {
 		if (getIdName(item) != null)
-			return true;
-		return false;
-	}
-
-	public static boolean isValidCustomItem(ItemStack item) {
-		if (isCustomItem(item))
-			if (isValidCustomItem(getIdName(item)))
+			if (isCustomItem(getIdName(item)))
 				return true;
 		return false;
 	}

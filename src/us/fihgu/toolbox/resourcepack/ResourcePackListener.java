@@ -7,15 +7,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 
 public class ResourcePackListener implements Listener {
-	public void register(JavaPlugin plugin) {
-		Bukkit.getPluginManager().registerEvents(this, plugin);
-	}
 
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {

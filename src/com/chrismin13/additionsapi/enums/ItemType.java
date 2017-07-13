@@ -124,7 +124,7 @@ public enum ItemType {
 			return PROJECTILE;
 		case ELYTRA:
 			return ELYTRA;
-		case EMERALD:
+		case OBSIDIAN:
 			return RAW_MATERIAL;
 		case EMPTY_MAP:
 			return UTILITY;

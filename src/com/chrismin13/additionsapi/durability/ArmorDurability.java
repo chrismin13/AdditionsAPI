@@ -18,12 +18,18 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
  */
 public class ArmorDurability extends ItemDurability {
 
-	private List<DamageCause> damageCuasesWithDurability = Arrays.asList(DamageCause.BLOCK_EXPLOSION,
-			DamageCause.CONTACT, DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION,
-			DamageCause.ENTITY_SWEEP_ATTACK, DamageCause.FIRE, DamageCause.HOT_FLOOR, DamageCause.LAVA,
-			DamageCause.LIGHTNING, DamageCause.PROJECTILE, DamageCause.THORNS, DamageCause.WITHER);
+	private List<DamageCause> damageCausesWithDurability = Arrays.asList(DamageCause.BLOCK_EXPLOSION,
+			DamageCause.CONTACT, DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION, DamageCause.FIRE,
+			DamageCause.LAVA, DamageCause.LIGHTNING, DamageCause.PROJECTILE, DamageCause.THORNS, DamageCause.WITHER);
 	private int thornsExtraDamage = 1;
 	private int thornsExtraDamageOnHit = 2;
+
+	public ArmorDurability() {
+		if (DamageCause.HOT_FLOOR != null)
+			damageCausesWithDurability.add(DamageCause.HOT_FLOOR);
+		if (DamageCause.ENTITY_SWEEP_ATTACK != null)
+			damageCausesWithDurability.add(DamageCause.ENTITY_SWEEP_ATTACK);
+	}
 
 	/**
 	 * @return The extra durability that will be reduced in case the Armor has
@@ -48,7 +54,7 @@ public class ArmorDurability extends ItemDurability {
 	 * @return The {@link DamageCause}s that will affect the Armor's Durability.
 	 */
 	public List<DamageCause> getDamageCuasesWithDurability() {
-		return damageCuasesWithDurability;
+		return damageCausesWithDurability;
 	}
 
 	/**
@@ -57,7 +63,7 @@ public class ArmorDurability extends ItemDurability {
 	 * @param damageCuasesWithDurability
 	 */
 	public ArmorDurability setDamageCuasesWithDurability(List<DamageCause> damageCuasesWithDurability) {
-		this.damageCuasesWithDurability = damageCuasesWithDurability;
+		this.damageCausesWithDurability = damageCuasesWithDurability;
 		return this;
 	}
 
@@ -89,7 +95,7 @@ public class ArmorDurability extends ItemDurability {
 	 * damage if the armor piece had Thorns.
 	 */
 	public int getArmorDamage(DamageCause cause, float damage, boolean hadThorns) {
-		if (!damageCuasesWithDurability.contains(cause))
+		if (!damageCausesWithDurability.contains(cause))
 			return 0;
 
 		damage = damage / 4.0F;

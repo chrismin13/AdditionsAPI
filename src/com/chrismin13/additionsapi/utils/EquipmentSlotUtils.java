@@ -30,5 +30,24 @@ public class EquipmentSlotUtils {
 			return EquipmentSlot.HAND;
 		}
 	}
+	
+	public static String valueFromLangFile(EquipmentSlot slot) {
+		switch(slot) {
+		case CHEST:
+			return LangFileUtils.get("when_in_body");
+		case FEET:
+			return LangFileUtils.get("when_in_feet");
+		case HAND:
+			return LangFileUtils.get("when_in_main_hand");
+		case HEAD:
+			return LangFileUtils.get("when_in_head");
+		case LEGS:
+			return LangFileUtils.get("when_in_legs");
+		case OFF_HAND:
+			return LangFileUtils.get("when_in_off_hand");
+		default:
+			return null;
+		}
+	}
 
 }

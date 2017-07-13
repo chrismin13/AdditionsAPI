@@ -47,7 +47,8 @@ public class CustomItemPlayerInteract implements Listener {
 					|| face == BlockFace.SOUTH || face == BlockFace.WEST)) {
 				if (mechanics instanceof SpadeDurability && material == Material.GRASS) {
 					damageEvent.setDamage(((SpadeDurability) mechanics).getPathTile());
-				} else if ((material == Material.GRASS || (material == Material.DIRT && data != (byte) 2))) {
+				} else if ((material == Material.GRASS || material == Material.GRASS_PATH
+						|| (material == Material.DIRT && data != (byte) 2))) {
 					if (!cItem.hasHoeAbilities())
 						event.setCancelled(true);
 					else if (mechanics instanceof HoeDurability)

@@ -78,6 +78,11 @@ public class ResourcePackManager {
 	private static LinkedList<InputStream> resources = new LinkedList<>();
 
 	/**
+	 * Whether the Resource Pack ended up being rebuilt or not.
+	 */
+	public static boolean neededRebuild = false;
+	
+	/**
 	 * Register a resource pack to be combined into server resource pack.<br>
 	 * <p>
 	 * You may only use this method inside your onEnable() method, else the
@@ -168,13 +173,14 @@ public class ResourcePackManager {
 
 	public static void buildResourcePack() throws IOException {
 		if (needsRebuild()) {
+			neededRebuild = true;
 			Debug.say("Creating Resource Pack.");
 			Debug.sayTrue("Resource pack change detected, building new resource pack.");
 			int build = AdditionsAPI.getInstance().getConfig().getInt("resource-pack.build", 0);
 			build++;
 			AdditionsAPI.getInstance().getConfig().set("resource-pack.build", build);
 			// initialize work space
-			File work = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource/work/");
+			File work = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/work/");
 			FileUtils.deleteFolder(work);
 			// a temporary file used for downloading resource pack files.
 			File temp = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/download/temp.zip");

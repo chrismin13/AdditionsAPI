@@ -33,7 +33,7 @@ public class PlayerCustomItemDamage implements Listener {
 		if (cItem.hasFakeDurability())
 			durability = cStack.getFakeDurability();
 		else
-			durability = item.getDurability();
+			durability = item.getType().getMaxDurability() - item.getDurability();
 		// TODO: Add support for mending.
 		// TODO: Check if you can modify the durability for items that are not
 		// unbreakable and with Fake Durability.
@@ -49,7 +49,7 @@ public class PlayerCustomItemDamage implements Listener {
 		if (cItem.hasFakeDurability()) {
 			cStack.setFakeDurability(durability);
 		} else if (!cItem.isUnbreakable()) {
-			item.setDurability((short) durability);
+			item.setDurability((short) (item.getType().getMaxDurability() - durability));
 		}
 		if (durability < 0) {
 			PlayerCustomItemBreakEvent breakEvent = new PlayerCustomItemBreakEvent(player, item, cItem);

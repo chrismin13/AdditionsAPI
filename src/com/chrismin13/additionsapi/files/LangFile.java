@@ -78,7 +78,7 @@ public class LangFile {
 	 *            The name of the entry.
 	 */
 	public String getEntry(String pluginName, String entryName) {
-		return data.getString(pluginName + "." + entryName);
+		return ChatColor.translateAlternateColorCodes('&', data.getString(pluginName + "." + entryName));
 	}
 
 	/**

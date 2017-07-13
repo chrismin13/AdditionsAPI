@@ -13,7 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
-import com.chrismin13.additionsapi.items.CustomTool;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -71,17 +70,10 @@ public class Anvil implements Listener {
 				 */
 			}
 		}
-		/*
-		 * A fix for the fake lore not updating when adding Sharpness
-		 */
-		if (cItem instanceof CustomTool) {
-			CustomTool cTool = (CustomTool) cItem;
-			if (cTool.hasFakeAttackLore() && resultItem.getEnchantments() != null
-					&& resultItem.getEnchantments().containsKey(Enchantment.DAMAGE_ALL)) {
-				cStack.updateLore();
-			}
-		}
 		resultItem.setItemMeta(resultMeta);
+		/*
+		 * A fix for the fake lore not updating when adding Sharpness.
+		 */
+		cStack.updateLore();
 	}
-
 }

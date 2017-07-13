@@ -156,7 +156,7 @@ public class DurabilityBar implements Listener {
 		}
 		int durability = 0;
 		int durabilityMax = 0;
-		if (AdditionsAPI.isValidCustomItem(item)) {
+		if (AdditionsAPI.isCustomItem(item)) {
 			if (!config.showCustomItems()) {
 				bar.setVisible(false);
 				bar.setProgress(1.0D);

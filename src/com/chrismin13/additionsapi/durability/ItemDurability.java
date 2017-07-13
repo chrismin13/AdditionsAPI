@@ -33,7 +33,7 @@ public class ItemDurability {
 	 *         specified.
 	 */
 	public int getBlockBreak(Block block) {
-		if (specialBlockBreak.containsKey(block.getType()))
+		if (specialBlockBreak != null && specialBlockBreak.containsKey(block.getType()))
 			return specialBlockBreak.get(block.getType());
 		return blockBreak;
 	}

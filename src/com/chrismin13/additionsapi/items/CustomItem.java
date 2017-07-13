@@ -19,8 +19,6 @@ import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.recipes.CustomShapedRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
-import com.chrismin13.additionsapi.utils.MaterialUtils;
-import com.chrismin13.additionsapi.utils.MathUtils;
 import com.comphenix.attribute.Attributes.Attribute;
 import com.comphenix.attribute.Attributes.AttributeType;
 import com.comphenix.attribute.Attributes.Operation;
@@ -120,6 +118,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	// Abilities
 	private boolean hoeAbilities = true;
+
+	// Other
+	private int burnTime = 0;
 
 	/**
 	 * Create a new Custom Item.
@@ -751,87 +752,17 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	public List<String> getFullLore(Map<Enchantment, Integer> map, int durability) {
 		// Lore
 
-		List<String> loreToAdd = new ArrayList<String>();
+		final ArrayList<String> loreToAdd = new ArrayList<String>();
 
 		loreToAdd.addAll(lore);
 
-		// Fake Damage Lore
+		// Tool Like Attributes
 
-		if (this instanceof CustomTool && ((CustomTool) this).hasFakeAttackLore()) {
+		if (this instanceof CustomTool && ((CustomTool) this).hasToolLikeAttributes()) {
+			// Need an empty line.
+			loreToAdd.add(" ");
+			loreToAdd.addAll(((CustomTool) this).getToolLikeAttributes(map));
 
-			double attackSpeed = 0D;
-			double attackDamage = 0D;
-
-			Boolean hasSpeed = false;
-			Boolean hasDamage = false;
-
-			for (Attribute attribute : attributes) {
-				if (attribute.getAttributeType() != null) {
-
-					AttributeType type = attribute.getAttributeType();
-					double amount = attribute.getAmount();
-
-					if (type == AttributeType.GENERIC_ATTACK_SPEED && !hasSpeed) {
-						attackSpeed += amount;
-						hasSpeed = true;
-					} else if (type == AttributeType.GENERIC_ATTACK_DAMAGE && !hasDamage) {
-						attackDamage += amount;
-						hasDamage = true;
-					}
-				}
-			}
-
-			if (!hasSpeed)
-				attackSpeed = MaterialUtils.getBaseSpeed(material);
-			else
-				attackSpeed += 4.0;
-			if (!hasDamage)
-				attackDamage = MaterialUtils.getBaseDamage(material);
-			else
-				attackDamage += 1.0;
-
-			loreToAdd.add("");
-			loreToAdd.add(ChatColor.GRAY + LangFileUtils.get("attack_main_hand"));
-
-			if (map != null) {
-				if (map.containsKey(Enchantment.DAMAGE_ALL)) {
-					int level = map.get(Enchantment.DAMAGE_ALL);
-					if (level == 1) {
-						attackDamage += 1;
-					} else {
-						attackDamage = attackDamage + 1 + ((level - 1) * 0.5);
-					}
-				}
-			}
-
-			/*
-			 * Needed because this is how it's done for attributes in Vanilla.
-			 * That being said, this hides an accuracy bug that occures with the
-			 * attributes from, what I can tell to be, a conversion from double
-			 * to float in game. This is not something that can be fixed easily
-			 * as it is not caused by this API. Confirmed with Minecraft code
-			 * that it's expected behaviour. For example, this is the amount of
-			 * Attack Speed for the Swords: -2.4000000953674316D Full rant is
-			 * available here:
-			 * https://twitter.com/SupMushroomSoup/status/853292658298671106
-			 */
-			attackSpeed = MathUtils.round(attackSpeed, 2);
-			attackDamage = MathUtils.round(attackDamage, 2);
-
-			if ((attackSpeed == Math.floor(attackSpeed)) && !Double.isInfinite(attackSpeed)) {
-				loreToAdd.add(ChatColor.GRAY + " " + Integer.toString((int) attackSpeed) + " "
-						+ LangFileUtils.get("attack_speed"));
-			} else {
-				loreToAdd.add(
-						ChatColor.GRAY + " " + Double.toString(attackSpeed) + " " + LangFileUtils.get("attack_speed"));
-			}
-			if ((attackDamage == Math.floor(attackDamage)) && !Double.isInfinite(attackDamage)) {
-				loreToAdd.add(ChatColor.GRAY + " " + Integer.toString((int) attackDamage) + " "
-						+ LangFileUtils.get("attack_damage"));
-			} else {
-				loreToAdd.add(ChatColor.GRAY + " " + Double.toString(attackDamage) + " "
-						+ LangFileUtils.get("attack_damage"));
-			}
 		}
 		if (hasFakeDurability()) {
 			loreToAdd.add(ChatColor.GRAY + LangFileUtils.get("durability") + " " + Integer.toString(durability) + " / "
@@ -942,6 +873,25 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 */
 	public CustomItem setHoeAbilities(boolean hoeAbilities) {
 		this.hoeAbilities = hoeAbilities;
+		return this;
+	}
+
+	/**
+	 * @return The burn time of a Custom Item in ticks when placed in a furnace.
+	 *         This is only compatible with items that can be burnt in a furnace
+	 *         already.
+	 */
+	public int getBurnTime() {
+		return burnTime;
+	}
+
+	/**
+	 * Set the burn time of a Custom Item in ticks when placed in a furnace.
+	 * This is only compatible with items that can be burnt in a furnace
+	 * already.
+	 */
+	public CustomItem setBurnTime(int ticks) {
+		this.burnTime = ticks;
 		return this;
 	}
 }

@@ -160,11 +160,11 @@ public class MaterialUtils {
 		case WOOD_AXE:
 			return 0.8F;
 		case GOLD_AXE:
-			return 0.8F;
-		case STONE_AXE:
-			return 0.9F;
-		case IRON_AXE:
 			return 1F;
+		case STONE_AXE:
+			return 0.8F;
+		case IRON_AXE:
+			return 0.9F;
 		case DIAMOND_AXE:
 			return 1F;
 		// Pickaxe

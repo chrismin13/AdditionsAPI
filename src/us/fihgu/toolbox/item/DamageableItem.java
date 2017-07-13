@@ -28,8 +28,8 @@ public enum DamageableItem {
 	WOODEN_PICKAXE(Material.WOOD_PICKAXE, true), STONE_PICKAXE, IRON_PICKAXE, GOLDEN_PICKAXE(Material.GOLD_PICKAXE,
 			true), DIAMOND_PICKAXE,
 
-	WOODEN_SHOVEL(Material.WOOD_SPADE, true), STONE_SHOVEL(Material.STONE_SPADE), IRON_SHOVEL(
-			Material.IRON_SPADE), GOLDEN_SHOVEL(Material.GOLD_SPADE, true), DIAMOND_SHOVEL(Material.DIAMOND_SPADE),
+	WOODEN_SHOVEL(Material.WOOD_SPADE, "wood_shovel"), STONE_SHOVEL(Material.STONE_SPADE), IRON_SHOVEL(
+			Material.IRON_SPADE), GOLDEN_SHOVEL(Material.GOLD_SPADE, "gold_shovel"), DIAMOND_SHOVEL(Material.DIAMOND_SPADE),
 
 	LEATHER_HELMET, GOLDEN_HELMET(Material.GOLD_HELMET, true), CHAINMAIL_HELMET, IRON_HELMET, DIAMOND_HELMET,
 
@@ -44,19 +44,29 @@ public enum DamageableItem {
 	SHEARS, FISHING_ROD, CARROT_ON_A_STICK(Material.CARROT_STICK), FLINT_AND_STEEL, BOW, ELYTRA;
 
 	private Material material;
-	private boolean textureFromMaterial;
+	private String textureName;
 
 	DamageableItem() {
 		this.material = Material.valueOf(this.toString());
+		this.textureName = this.toString();
 	}
 
 	DamageableItem(Material material) {
 		this.material = material;
+		this.textureName = this.toString();
+	}
+	
+	DamageableItem(Material material, String textureName) {
+		this.material = material;
+		this.textureName = textureName;
 	}
 
 	DamageableItem(Material material, boolean textureFromMaterial) {
 		this.material = material;
-		this.textureFromMaterial = textureFromMaterial;
+		if (textureFromMaterial)
+			this.textureName = material.toString().toLowerCase();
+		else
+			this.textureName = getModelName();
 	}
 
 	/**
@@ -125,28 +135,24 @@ public enum DamageableItem {
 	public String getModelName() {
 		return this.name().toLowerCase();
 	}
-	
+
 	public String getTextureName() {
-		if (textureFromMaterial)
-			return material.toString().toLowerCase();
-		return getModelName();
+		return textureName;
 	}
 
 	public static DamageableItem getDamageableItem(Material material) {
-		for (DamageableItem damageableItem : DamageableItem.values()) {
-			if (material == damageableItem.getMaterial()) {
+		for (DamageableItem damageableItem : DamageableItem.values())
+			if (material == damageableItem.getMaterial())
 				return damageableItem;
-			}
-		}
 		return null;
 	}
-	
+
 	public float getAttackSpeed() {
 		return MaterialUtils.getBaseSpeed(getMaterial());
 	}
-	
+
 	public float getAttackDamage() {
 		return MaterialUtils.getBaseDamage(getMaterial());
 	}
-	
+
 }
