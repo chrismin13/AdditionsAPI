@@ -3,13 +3,16 @@ package com.chrismin13.additionsapi.items;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,6 +26,9 @@ import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
 import com.chrismin13.additionsapi.utils.Debug;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 import com.comphenix.attribute.Attributes;
+import com.comphenix.attribute.Attributes.Attribute;
+import com.comphenix.attribute.Attributes.AttributeType;
+import com.comphenix.attribute.Attributes.Operation;
 import com.comphenix.attribute.NbtFactory;
 import com.comphenix.attribute.NbtFactory.NbtCompound;
 
@@ -165,7 +171,7 @@ public class CustomItemStack implements Cloneable {
 			meta.addEnchant(e, cItem.getEnchantmnets().get(e), true);
 
 		// Lore
-		meta.setLore(cItem.getFullLore(cItem.getEnchantmnets(), cItem.getFakeDurability()));
+		meta.setLore(cItem.getFullLore(cItem.getEnchantmnets(), cItem.getFakeDurability(), null));
 
 		// ItemFlags
 		for (ItemFlag flag : cItem.getItemFlags())
@@ -276,7 +282,7 @@ public class CustomItemStack implements Cloneable {
 					}
 				}
 			}
-			lore.addAll(cItem.getFullLore(itemStack.getEnchantments(), durability));
+			lore.addAll(cItem.getFullLore(itemStack.getEnchantments(), durability, getAttributes()));
 
 			meta.setLore(lore);
 			itemStack.setItemMeta(meta);
@@ -312,7 +318,7 @@ public class CustomItemStack implements Cloneable {
 	public CustomItemStack updateLore() {
 		return updateLore(itemStack.getEnchantments());
 	}
-	
+
 	/**
 	 * Updates the lore of the ItemStack using the
 	 * {@link CustomItem#getFullLore(java.util.Map, int)} method. This is
@@ -339,11 +345,115 @@ public class CustomItemStack implements Cloneable {
 					loreToRemove.add(string);
 		lore.removeAll(loreToRemove);
 
-		lore.addAll(cItem.getFullLore(enchantsToCheck, getFakeDurability()));
+		lore.addAll(cItem.getFullLore(enchantsToCheck, getFakeDurability(), getAttributes()));
 
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);
 		return this;
+	}
+
+	/**
+	 * Add an attribute to the ItemStack. If there are no already existing
+	 * Attributes, Attack Speed and Attack Damage will be overriden, so keep
+	 * that in mind.
+	 * 
+	 * @param type
+	 * @param name
+	 * @param amount
+	 * @param uuid
+	 * @param slot
+	 * @param operation
+	 */
+	public void addAttribute(AttributeType type, String name, double amount, UUID uuid, EquipmentSlot slot,
+			Operation operation) {
+		Attribute attribute = Attribute.newBuilder().amount(amount).operation(operation).type(type).name(name)
+				.uuid(uuid).slot(slot).build();
+		new Attributes(itemStack).add(attribute);
+		updateLore();
+	}
+
+	/**
+	 * @return The Attributes of the Custom Item.
+	 */
+	public Attributes getAttributes() {
+		return new Attributes(itemStack);
+	}
+
+	/**
+	 * Remove an Attribute from the Custom Item.
+	 * 
+	 * @param type
+	 * @param name
+	 * @param amount
+	 * @param uuid
+	 * @param slot
+	 * @param operation
+	 */
+	public void removeAttribute(AttributeType type, String name, double amount, UUID uuid, EquipmentSlot slot,
+			Operation operation) {
+		Attribute attribute = Attribute.newBuilder().amount(amount).operation(operation).type(type).name(name)
+				.uuid(uuid).slot(slot).build();
+		new Attributes(itemStack).remove(attribute);
+		updateLore();
+	}
+
+	/**
+	 * Add all NBT Data from a Map. The String is the NBT Key, the Object is the
+	 * data you wish to store. Valid types are: Void, byte, short, int, long,
+	 * float, double, byte[], int[], String, List and Map.
+	 * 
+	 * @param nbtData
+	 */
+	public void addAllNBTData(Map<? extends String, ? extends Object> nbtData) {
+		if (itemStack == null || itemStack.getType().equals(Material.AIR))
+			return;
+		ItemStack stack = NbtFactory.getCraftItemStack(itemStack);
+		NbtCompound nbt = NbtFactory.fromItemTag(stack);
+		nbt.putAll(nbtData);
+		updateLore();
+	}
+
+	/**
+	 * Add NBT Data. Valid types are: Void, byte, short, int, long, float,
+	 * double, byte[], int[], String, List and Map.
+	 * 
+	 * @param nbtKey
+	 * @param nbtData
+	 */
+	public void addNBTData(String nbtKey, Object nbtData) {
+		if (itemStack == null || itemStack.getType().equals(Material.AIR))
+			return;
+		ItemStack stack = NbtFactory.getCraftItemStack(itemStack);
+		NbtCompound nbt = NbtFactory.fromItemTag(stack);
+		nbt.put(nbtKey, nbtData);
+		updateLore();
+	}
+
+	/**
+	 * @return The NBT Data that the ItemStack contains. They are cloned, just
+	 *         in case there aren't any and empty data would be created, causing
+	 *         problems with stacking.
+	 */
+	public NbtCompound getNBTData() {
+		if (itemStack == null || itemStack.getType().equals(Material.AIR))
+			return null;
+		ItemStack stack = NbtFactory.getCraftItemStack(itemStack.clone());
+		NbtCompound nbt = NbtFactory.fromItemTag(stack);
+		return nbt;
+	}
+
+	/**
+	 * Remove NBT Data from the ItemStack.
+	 * 
+	 * @param nbtKey
+	 */
+	public void removeNBTData(String nbtKey) {
+		if (itemStack == null || itemStack.getType().equals(Material.AIR))
+			return;
+		ItemStack stack = NbtFactory.getCraftItemStack(itemStack);
+		NbtCompound nbt = NbtFactory.fromItemTag(stack);
+		nbt.remove(nbtKey);
+		updateLore();
 	}
 
 	@Override

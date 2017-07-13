@@ -1,18 +1,21 @@
 package com.chrismin13.additionsapi.items;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import com.chrismin13.additionsapi.enums.ToolType;
 import com.chrismin13.additionsapi.utils.EquipmentSlotUtils;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 import com.chrismin13.additionsapi.utils.MaterialUtils;
 import com.chrismin13.additionsapi.utils.NumberUtils;
+import com.comphenix.attribute.Attributes;
 import com.comphenix.attribute.Attributes.Attribute;
 import com.comphenix.attribute.Attributes.AttributeType;
 import com.comphenix.attribute.Attributes.Operation;
@@ -150,87 +153,104 @@ public class CustomTool extends CustomItem {
 	}
 
 	public ArrayList<String> getToolLikeAttributes() {
-		return getToolLikeAttributes(null);
+		return getToolLikeAttributes(null, null);
 	}
-	
-	public ArrayList<String> getToolLikeAttributes(Map<Enchantment, Integer> enchants) {
+
+	public ArrayList<String> getToolLikeAttributes(Map<Enchantment, Integer> enchants, Attributes attributes) {
 		final ArrayList<String> attributeLore = new ArrayList<String>();
 
-		if (!getAttributes().isEmpty()) {
-			for (EquipmentSlot slot : EquipmentSlot.values()) {
-				for (Attribute attribute : getAttributes()) {
-					if (attribute.getSlot().equals(EquipmentSlotUtils.toAttributeString(slot))) {
-						/*
-						 * Check if the lore already contains text for that
-						 * slot, if not add it.
-						 */
-						if (!attributeLore.contains(ChatColor.GRAY + EquipmentSlotUtils.valueFromLangFile(slot))) {
-							attributeLore.add(ChatColor.GRAY + EquipmentSlotUtils.valueFromLangFile(slot));
+		Attributes newAttributes = new Attributes(new ItemStack(getMaterial()));
+
+		if (attributes != null)
+			for (Attribute attribute : attributes.values())
+				newAttributes.add(attribute);
+		else
+			for (Attribute attribute : getAttributes())
+				newAttributes.add(attribute);
+
+		if (newAttributes.values().iterator().hasNext()) {
+			HashMap<EquipmentSlot, HashMap<AttributeType, Double>> finalAttributes = new HashMap<EquipmentSlot, HashMap<AttributeType, Double>>();
+			for (EquipmentSlot slot : EquipmentSlot.values())
+				finalAttributes.put(slot, new HashMap<AttributeType, Double>());
+
+			for (Attribute attribute : newAttributes.values()) {
+				EquipmentSlot slot = EquipmentSlotUtils.valueFromAttribute(attribute.getSlot());
+				HashMap<AttributeType, Double> map = finalAttributes.get(slot);
+				AttributeType type = attribute.getAttributeType();
+				if (map.containsKey(type)) {
+					switch (attribute.getOperation()) {
+					case ADD_NUMBER:
+						map.put(type, map.get(type) + attribute.getAmount());
+						break;
+					case ADD_PERCENTAGE:
+						map.put(type, map.get(type) * (1 + attribute.getAmount()));
+						break;
+					case MULTIPLY_PERCENTAGE:
+						map.put(type, map.get(type) * attribute.getAmount());
+						break;
+					}
+				} else {
+					switch (attribute.getOperation()) {
+					case ADD_NUMBER:
+						map.put(type, attribute.getAmount());
+						break;
+					case ADD_PERCENTAGE:
+						map.put(type, type.getBaseValue() * (1 + attribute.getAmount()));
+						break;
+					case MULTIPLY_PERCENTAGE:
+						map.put(type, type.getBaseValue() * attribute.getAmount());
+						break;
+					}
+				}
+				finalAttributes.put(slot, map);
+			}
+			for (EquipmentSlot slot : finalAttributes.keySet()) {
+				for (AttributeType type : finalAttributes.get(slot).keySet()) {
+					/*
+					 * Check if the lore already contains text for that slot, if
+					 * not add it.
+					 */
+					if (!attributeLore.contains(ChatColor.GRAY + EquipmentSlotUtils.valueFromLangFile(slot))) {
+						attributeLore.add(ChatColor.GRAY + EquipmentSlotUtils.valueFromLangFile(slot));
+					}
+					/*
+					 * Needed because this is how it's done for attributes in
+					 * Vanilla. That being said, this hides an accuracy bug that
+					 * occures with the attributes from, what I can tell to be,
+					 * a conversion from double to float in game. This is not
+					 * something that can be fixed easily as it is not caused by
+					 * this API. Confirmed with Minecraft code that it's
+					 * expected behaviour. For example, this is the amount of
+					 * Attack Speed for the Swords: -2.4000000953674316D Full
+					 * rant is available here:
+					 * https://twitter.com/SupMushroomSoup/status/
+					 * 853292658298671106
+					 */
+					double amount = NumberUtils.round(finalAttributes.get(slot).get(type), 2);
+					String attributeName = LangFileUtils.get(type);
+
+					// We must also consider the base values of each
+					// Attribute.
+					amount += type.getBaseValue();
+					amount = NumberUtils.round(amount, 2);
+
+					if (type.equals(AttributeType.GENERIC_ATTACK_DAMAGE) && enchants != null && !enchants.isEmpty()
+							&& enchants.containsKey(Enchantment.DAMAGE_ALL)) {
+						final int level = enchants.get(Enchantment.DAMAGE_ALL);
+						if (level == 1) {
+							amount += 1;
+						} else if (level > 1) {
+							amount = amount + 1 + (level - 1) * 0.5;
 						}
-						/*
-						 * Needed because this is how it's done for attributes
-						 * in Vanilla. That being said, this hides an accuracy
-						 * bug that occures with the attributes from, what I can
-						 * tell to be, a conversion from double to float in
-						 * game. This is not something that can be fixed easily
-						 * as it is not caused by this API. Confirmed with
-						 * Minecraft code that it's expected behaviour. For
-						 * example, this is the amount of Attack Speed for the
-						 * Swords: -2.4000000953674316D Full rant is available
-						 * here: https://twitter.com/SupMushroomSoup/status/
-						 * 853292658298671106
-						 */
-						double amount = NumberUtils.round(attribute.getAmount(), 2);
-
-						Operation operation = attribute.getOperation();
-						AttributeType type = attribute.getAttributeType();
-						String attributeName = LangFileUtils.get(type);
-
-						if (operation.equals(Operation.ADD_NUMBER)) {
-							// We must also consider the base values of each
-							// Attribute.
-							amount += type.getBaseValue();
-							amount = NumberUtils.round(amount, 2);
-
-							if (type.equals(AttributeType.GENERIC_ATTACK_DAMAGE) && enchants != null
-									&& !enchants.isEmpty() && enchants.containsKey(Enchantment.DAMAGE_ALL)) {
-								final int level = enchants.get(Enchantment.DAMAGE_ALL);
-								if (level == 1) {
-									amount += 1;
-								} else if (level > 1) {
-									amount = amount + 1 + (level - 1) * 0.5;
-								}
-							}
-							/*
-							 * Checking to remove the decimals at the end if the
-							 * number does not have any.
-							 */
-							if ((amount == Math.floor(amount)) && !Double.isInfinite(amount)) {
-								attributeLore.add(
-										ChatColor.GRAY + " " + Integer.toString((int) amount) + " " + attributeName);
-							} else {
-								attributeLore.add(ChatColor.GRAY + " " + Double.toString(amount) + " " + attributeName);
-							}
-						} else if (operation.equals(Operation.ADD_PERCENTAGE)) {
-							/*
-							 * Both Add Percentage and Multiply Percentage are
-							 * never seen in-game with this format, so I'm just
-							 * guessing here. You shouldn't be using these two
-							 * together IMO anyways, I can't be calculating the
-							 * Lore again and again once something has changed.
-							 */
-							amount *= 100;
-							if (amount >= 0)
-								attributeLore.add(
-										ChatColor.GRAY + " +" + Integer.toString((int) amount) + "% " + attributeName);
-							else
-								attributeLore.add(
-										ChatColor.GRAY + " " + Integer.toString((int) amount) + "% " + attributeName);
-						} else if (operation.equals(Operation.MULTIPLY_PERCENTAGE)) {
-							amount *= 100;
-							attributeLore
-									.add(ChatColor.GRAY + " " + Integer.toString((int) amount) + "% " + attributeName);
-						}
+					}
+					/*
+					 * Checking to remove the decimals at the end if the number
+					 * does not have any.
+					 */
+					if ((amount == Math.floor(amount)) && !Double.isInfinite(amount)) {
+						attributeLore.add(ChatColor.GRAY + " " + Integer.toString((int) amount) + " " + attributeName);
+					} else {
+						attributeLore.add(ChatColor.GRAY + " " + Double.toString(amount) + " " + attributeName);
 					}
 				}
 			}

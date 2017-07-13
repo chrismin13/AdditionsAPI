@@ -19,6 +19,7 @@ import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.recipes.CustomShapedRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
+import com.comphenix.attribute.Attributes;
 import com.comphenix.attribute.Attributes.Attribute;
 import com.comphenix.attribute.Attributes.AttributeType;
 import com.comphenix.attribute.Attributes.Operation;
@@ -100,7 +101,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	private List<Enchantment> forbiddenEnchantments = new ArrayList<Enchantment>();
 
 	// Recipes
-	private boolean canBeCombinedInCrafting = false;
+	private boolean canBeCombinedInCrafting = true;
 	private List<CustomRecipe> recipes = new ArrayList<CustomRecipe>();
 
 	// Attributes
@@ -749,7 +750,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *         CustomItem's Fake Durability lore that have been customized
 	 *         according to the specified parameters.
 	 */
-	public List<String> getFullLore(Map<Enchantment, Integer> map, int durability) {
+	public List<String> getFullLore(Map<Enchantment, Integer> map, int durability, Attributes attributes) {
 		// Lore
 
 		final ArrayList<String> loreToAdd = new ArrayList<String>();
@@ -761,7 +762,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 		if (this instanceof CustomTool && ((CustomTool) this).hasToolLikeAttributes()) {
 			// Need an empty line.
 			loreToAdd.add(" ");
-			loreToAdd.addAll(((CustomTool) this).getToolLikeAttributes(map));
+			loreToAdd.addAll(((CustomTool) this).getToolLikeAttributes(map, attributes));
 
 		}
 		if (hasFakeDurability()) {
