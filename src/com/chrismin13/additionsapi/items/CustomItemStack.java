@@ -259,6 +259,18 @@ public class CustomItemStack implements Cloneable {
 	}
 
 	/**
+	 * @return int - The maximum fake durability of the CustomItem. If this is
+	 *         above 0, then the Fake Durability lore is enabled. The fake
+	 *         durability lore offers a near perfect recreation of the Minecraft
+	 *         durability mechanics but hidden in the lore. This way, Textured
+	 *         Items that have to be unbreakable can still have durability
+	 *         mechanics.
+	 */
+	public int getMaxFakeDurability() {
+		return cItem.getFakeDurability();
+	}
+
+	/**
 	 * Sets the {@link ItemStack}'s Current Fake Durability. This is only valid
 	 * of the {@link CustomItem} has Fake Durability.
 	 * 

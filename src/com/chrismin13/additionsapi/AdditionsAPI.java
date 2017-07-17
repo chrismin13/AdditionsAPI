@@ -45,6 +45,7 @@ import com.chrismin13.additionsapi.listeners.vanilla.EnchantItem;
 import com.chrismin13.additionsapi.listeners.vanilla.EntityDamage;
 import com.chrismin13.additionsapi.listeners.vanilla.EntityShootBow;
 import com.chrismin13.additionsapi.listeners.vanilla.EntityToggleGlide;
+import com.chrismin13.additionsapi.listeners.vanilla.Experience;
 import com.chrismin13.additionsapi.listeners.vanilla.FurnaceBurn;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerDeath;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerFish;
@@ -130,7 +131,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 				new BlockIgnite(), new CustomItemBlockIgnite(), new EntityShootBow(), new EntityShootCustomBow(),
 				new CustomShieldEntityDamageByEntity(), new EntityToggleGlide(), new CustomElytraPlayerToggleGlide(),
 				this, new ArrowFromCustomBowHit(), new PlayerDeath(), new DurabilityBar(), new FurnaceBurn(),
-				new CustomItemFurnaceBurn(), new ResourcePackListener())) {
+				new CustomItemFurnaceBurn(), new ResourcePackListener(), new Experience())) {
 			getServer().getPluginManager().registerEvents(listener, this);
 		}
 
