@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -100,6 +101,14 @@ public class DurabilityBar implements Listener {
 			sendDurabilityBossBar(event.getEntity(), event.getEntity().getInventory().getItemInOffHand(),
 					EquipmentSlot.OFF_HAND);
 		});
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onXpChange(PlayerExpChangeEvent event) {
+		sendDurabilityBossBar(event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand(),
+				EquipmentSlot.HAND);
+		sendDurabilityBossBar(event.getPlayer(), event.getPlayer().getInventory().getItemInOffHand(),
+				EquipmentSlot.OFF_HAND);
 	}
 
 	@EventHandler
