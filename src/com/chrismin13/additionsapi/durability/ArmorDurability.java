@@ -1,7 +1,9 @@
 package com.chrismin13.additionsapi.durability;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 /**
@@ -18,13 +20,14 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
  */
 public class ArmorDurability extends ItemDurability {
 
-	private List<DamageCause> damageCausesWithDurability = Arrays.asList(DamageCause.BLOCK_EXPLOSION,
-			DamageCause.CONTACT, DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION, DamageCause.FIRE,
-			DamageCause.LAVA, DamageCause.LIGHTNING, DamageCause.PROJECTILE, DamageCause.THORNS, DamageCause.WITHER);
+	private ArrayList<DamageCause> damageCausesWithDurability = new ArrayList<DamageCause>();
 	private int thornsExtraDamage = 1;
 	private int thornsExtraDamageOnHit = 2;
 
 	public ArmorDurability() {
+		damageCausesWithDurability.addAll(Arrays.asList(DamageCause.BLOCK_EXPLOSION,
+			DamageCause.CONTACT, DamageCause.ENTITY_ATTACK, DamageCause.ENTITY_EXPLOSION, DamageCause.FIRE,
+			DamageCause.LAVA, DamageCause.LIGHTNING, DamageCause.PROJECTILE, DamageCause.THORNS, DamageCause.WITHER));
 		if (DamageCause.HOT_FLOOR != null)
 			damageCausesWithDurability.add(DamageCause.HOT_FLOOR);
 		if (DamageCause.ENTITY_SWEEP_ATTACK != null)
