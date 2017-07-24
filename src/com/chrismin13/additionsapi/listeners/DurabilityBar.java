@@ -200,6 +200,10 @@ public class DurabilityBar implements Listener {
 			progress = 0;
 		}
 		bar.setVisible(true);
+		if (progress < 0)
+			progress = 0;
+		else if (progress > 1)
+			progress = 1;
 		bar.setProgress(progress);
 		if (progress >= 0.5) {
 			bar.setColor(BarColor.GREEN);

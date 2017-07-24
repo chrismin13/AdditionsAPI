@@ -136,10 +136,16 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		}
 
 		// Custom mcMMO version with support for the Additions API.
-		if (getServer().getPluginManager().getPlugin("mcMMO") != null
-				&& com.gmail.nossr50.events.items.ItemDurabilityChangeEvent.class != null) {
-			for (Listener listener : Arrays.asList(new mcMMO())) {
-				getServer().getPluginManager().registerEvents(listener, this);
+		if (getServer().getPluginManager().getPlugin("mcMMO") != null) {
+			/*
+			 * Will try to register listener - might not work since mcMMO might
+			 * not have the changes yet.
+			 */
+			try {
+				for (Listener listener : Arrays.asList(new mcMMO())) {
+					getServer().getPluginManager().registerEvents(listener, this);
+				}
+			} catch (Exception ignore) {
 			}
 		}
 
@@ -151,6 +157,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	}
 
 	public void onDisable() {
+		// Useful when reloading!
 		ResourcePackServer.stopServer();
 		DurabilityBar.removeAllDurabilityBars();
 	}
@@ -171,7 +178,6 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	public static void load() {
 		Debug.say("Starting AdditionsAPI Intialization");
 		AdditionsAPIInitializationEvent event = new AdditionsAPIInitializationEvent();
-		// TODO: Add to config
 		if (ConfigFile.getInstance().getConfig().getBoolean("resource-pack.force-on-join"))
 			event.addResourcePackFromPlugin(instance, "resource/smooth_armor.zip");
 		event.addResourcePackFromPlugin(instance, "resource/no_hoe_sound.zip");

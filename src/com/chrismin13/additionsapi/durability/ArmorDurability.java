@@ -65,7 +65,7 @@ public class ArmorDurability extends ItemDurability {
 	 * 
 	 * @param damageCuasesWithDurability
 	 */
-	public ArmorDurability setDamageCuasesWithDurability(List<DamageCause> damageCuasesWithDurability) {
+	public ArmorDurability setDamageCuasesWithDurability(ArrayList<DamageCause> damageCuasesWithDurability) {
 		this.damageCausesWithDurability = damageCuasesWithDurability;
 		return this;
 	}

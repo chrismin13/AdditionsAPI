@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class MaterialUtils {
-
+	
 	private static List<Material> instantlyBreakable = Arrays.asList(Material.WATER_LILY, Material.CARROT,
 			Material.DEAD_BUSH, Material.FIRE, Material.FLOWER_POT, Material.LONG_GRASS, Material.MELON_STEM,
 			Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.NETHER_WARTS, Material.POTATO,

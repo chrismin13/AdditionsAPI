@@ -16,6 +16,14 @@ public class Additions implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (args.length == 0) {
+			sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");
+			sender.sendMessage(ChatColor.GREEN + "           ===---=== Commands ===---====");
+			sender.sendMessage("");
+			sender.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "/additions reload");
+			sender.sendMessage(ChatColor.WHITE + "  Reloads the Additions API and the Resource Pack if needed.");
+			return true;
+		}
 		if (args[0].equals("reload") && sender.hasPermission("additionsapi.reload")) {
 			ConfigFile.getInstance().reloadConfig();
 			DataFile.getInstance().reloadData();
