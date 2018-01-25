@@ -3,6 +3,7 @@ package com.chrismin13.additionsapi;
 import com.chrismin13.additionsapi.commands.AdditionsCmd;
 import com.chrismin13.additionsapi.commands.AdditionsTab;
 import com.chrismin13.additionsapi.events.AdditionsAPIInitializationEvent;
+import com.chrismin13.additionsapi.events.AdditionsAPIPostInitializationEvent;
 import com.chrismin13.additionsapi.files.ConfigFile;
 import com.chrismin13.additionsapi.files.CustomItemConfig;
 import com.chrismin13.additionsapi.files.DataFile;
@@ -161,6 +162,9 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
         Debug.say("Finished Initialization.");
         Debug.saySuper("aaaaand chat spam too. :P");
 
+        AdditionsAPIPostInitializationEvent postEvent = new AdditionsAPIPostInitializationEvent();
+        instance.getServer().getPluginManager().callEvent(postEvent);
+        
         if (ResourcePackManager.hasResource()) {
             setupHTTPServer();
             if (ResourcePackManager.neededRebuild
