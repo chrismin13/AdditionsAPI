@@ -44,6 +44,21 @@
 # = #
 # ------=======-------=======-------=======-------=======-------=======----- #
 
+# ------=======-------=======-------=======-------=======-------=======----- #
+# = #
+# Permissions:
+# # default-permission-type: Determines whether the default permission is
+# #                          allow or deny. If this is set to allow, all
+# #                          items that do not specify otherwise will be
+# #                          disabled and you will have to enable them
+# #                          using a permission node of the form:
+# #                          "plugin_name.item_name.allow.action"
+# #                          If this is set to deny, it will be the
+# #                          opposite. Reffer to plugin page for more
+# #                          info. Default is deny.
+# = #
+# ------=======-------=======-------=======-------=======-------=======----- #
+
 enable-debug: false
 
 http:
@@ -63,3 +78,6 @@ bossbar:
  show: true
  vanilla-items: true
  custom-items: true
+
+permissions:
+  default-permission-type: deny

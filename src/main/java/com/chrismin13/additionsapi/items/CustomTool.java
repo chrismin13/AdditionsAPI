@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chrismin13.additionsapi.files.ConfigFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -11,7 +12,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.chrismin13.additionsapi.enums.ToolType;
-import com.chrismin13.additionsapi.permissions.PermissionType;
 import com.chrismin13.additionsapi.utils.EquipmentSlotUtils;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 import com.chrismin13.additionsapi.utils.MaterialUtils;
@@ -72,7 +72,7 @@ public class CustomTool extends CustomItem {
 	 *            ItemStack so you can easily detect which Custom Tool it is.
 	 */
 	public CustomTool(Material material, int amount, short durability, String idName) {
-		super(material, amount, durability, idName, ToolType.getToolType(material).getDurabilityMechanics(), ToolType.getToolType(material).getItemPermissions(new String(idName).replaceAll(":", "."), PermissionType.DENY));
+		super(material, amount, durability, idName, ToolType.getToolType(material).getDurabilityMechanics(), ToolType.getToolType(material).getItemPermissions(new String(idName).replaceAll(":", "."), ConfigFile.getInstance().getPermissionConfig().getDefaultType()));
 	}
 
 	// === CONFIGURING THE TOOL === //

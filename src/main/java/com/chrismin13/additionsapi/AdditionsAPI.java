@@ -14,14 +14,12 @@ import com.chrismin13.additionsapi.listeners.DurabilityBar;
 import com.chrismin13.additionsapi.listeners.custom.*;
 import com.chrismin13.additionsapi.listeners.vanilla.*;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;
-import com.chrismin13.additionsapi.transformers.CraftItemStack_1_12_Transformer;
-import com.chrismin13.additionsapi.transformers.ItemStackTransformer;
 import com.chrismin13.additionsapi.utils.Debug;
 import com.codingforcookies.armorequip.ArmorListener;
 import com.comphenix.attribute.NbtFactory;
 import com.comphenix.attribute.NbtFactory.NbtCompound;
 import com.google.common.collect.ImmutableList;
-import me.yamakaja.runtimetransformer.RuntimeTransformer;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
@@ -31,7 +29,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import tk.ivybits.agent.Tools;
 import us.fihgu.toolbox.item.ModelInjector;
 import us.fihgu.toolbox.resourcepack.ResourcePackListener;
 import us.fihgu.toolbox.resourcepack.ResourcePackManager;
@@ -103,6 +100,9 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
         lang.addEntry(pluginName, "item_durability_off_hand", "Item Durability in Off Hand: ");
 
         lang.saveLang();
+
+        // Initialize Metrics
+        new Metrics(this);
 
         // Registering listeners
         for (Listener listener : Arrays.asList(new EnchantItem(), new Anvil(), new CraftingTable(), new BlockBreak(),
@@ -264,13 +264,24 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 
     public static boolean isCustomItem(String idName) {
         try {
-            for (CustomItemStack cStack : cStacks)
-                if (cStack.getCustomItem().getIdName().equalsIgnoreCase(idName))
+            for (CustomItem cItem : cItems)
+                if (cItem.getIdName().equals(idName))
                     return true;
         } catch (Exception e) {
             return false;
         }
         return false;
+    }
+
+    public static CustomItem getCustomItem(String idName) {
+        try {
+            for (CustomItem cItem : cItems)
+                if (cItem.getIdName().equals(idName))
+                    return cItem;
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
     }
 
     public static ImmutableList<CustomItemStack> getAllCustomItemStacks() {
@@ -298,10 +309,26 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
     }
 
     public static boolean isCustomItem(ItemStack item) {
-        if (getIdName(item) != null)
-            if (isCustomItem(getIdName(item)))
+        try {
+            String idName = getIdName(item);
+            if (idName != null && isCustomItem(idName))
                 return true;
+        } catch (NullPointerException e) {
+            return false;
+        }
         return false;
+    }
+
+    public static CustomItem getCustomItem(ItemStack item) {
+        try {
+            String idName = getIdName(item);
+            if (idName != null) {
+                return getCustomItem(idName);
+            }
+        } catch (NullPointerException e) {
+            return null;
+        }
+        return null;
     }
 
     public static List<String> getAllCustomItemIdNames() {

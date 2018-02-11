@@ -3,6 +3,7 @@ package com.chrismin13.additionsapi.files;
 import java.io.File;
 import java.io.IOException;
 
+import com.chrismin13.additionsapi.permissions.PermissionType;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -105,5 +106,12 @@ public class ConfigFile {
 	public BossBarConfig getBossBarConfig() {
 		return new BossBarConfig(config.getBoolean("bossbar.show"), config.getBoolean("bossbar.vanilla-items"),
 				config.getBoolean("bossbar.custom-items"));
+	}
+
+    /**
+     * @return The Config sub-section for the Permission System.
+     */
+	public PermissionConfig getPermissionConfig() {
+        return new PermissionConfig(PermissionType.valueOf(config.getString("permissions.default-permission-type").toUpperCase()));
 	}
 }

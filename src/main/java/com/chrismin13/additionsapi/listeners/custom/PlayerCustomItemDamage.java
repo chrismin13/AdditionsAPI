@@ -34,7 +34,6 @@ public class PlayerCustomItemDamage implements Listener {
 			durability = cStack.getFakeDurability();
 		else
 			durability = item.getType().getMaxDurability() - item.getDurability();
-		// TODO: Add support for mending.
 		// TODO: Check if you can modify the durability for items that are not
 		// unbreakable and with Fake Durability.
 		if (!item.containsEnchantment(Enchantment.DURABILITY)) {

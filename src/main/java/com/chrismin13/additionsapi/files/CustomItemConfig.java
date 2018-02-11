@@ -24,8 +24,19 @@ public class CustomItemConfig {
 			for (String string : config.getStringList(dir + ".lore"))
 				lore.add(ChatColor.translateAlternateColorCodes('&', string));
 			cItem.setLore(lore);
-			
+
 			setCanBeCreated(config.getBoolean(dir + ".can-be-created"));
+
+			if (cItem.hasFakeDurability()) {
+				if (!config.isBoolean(dir + ".change-fake-durability") || !config.getBoolean(dir + "" +
+						".change-fake-durability")) {
+					config.set(dir + ".change-fake-durability", false);
+					config.set(dir + ".fake-durability", cItem.getFakeDurability());
+				} else if (config.getBoolean(dir + ".change-fake-durability")) {
+					cItem.setFakeDurability(config.getInt(dir + ".fake-durability"));
+				}
+			}
+
 		} else {
 			config.set(dir + ".enabled", true);
 			enabled = true;
@@ -39,6 +50,11 @@ public class CustomItemConfig {
 			if (!cItem.getCustomRecipes().isEmpty()) {
 				config.set(dir + ".can-be-created", true);
 				canBeCreated = true;
+			}
+
+			if (cItem.hasFakeDurability()) {
+				config.set(dir + ".change-fake-durability", false);
+				config.set(dir + ".fake-durability", cItem.getFakeDurability());
 			}
 		}
 

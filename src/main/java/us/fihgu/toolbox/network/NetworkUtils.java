@@ -58,9 +58,18 @@ public class NetworkUtils {
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			ip = in.readLine();
 		} catch (IOException e) {
-			Debug.sayError(
-					"A connection to agentgatech.appspot.com could not be achieved! Please check your internet connection and if the website is down!");
-			Debug.sayError("Localhost will be used instead.");
+			try {
+				// appspot.com is blocked in China as it is from Google. The following is a good alternative.
+				URL whatismyip2 = new URL("http://checkip.amazonaws.com/");
+				URLConnection connection2 = whatismyip2.openConnection();
+				BufferedReader in2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
+				ip = in2.readLine();
+			} catch (IOException e2) {
+				Debug.sayError(
+						"A connection to agentgatech.appspot.com or checkip.amazonaws.com could not be achieved! Please check your internet connection and if the website is down!");
+				Debug.sayError("Localhost will be used instead.");
+			}
+
 		}
 
 		return ip;

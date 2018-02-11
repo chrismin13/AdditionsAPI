@@ -6,7 +6,7 @@
 
     <groupId>com.chrismin13</groupId>
     <artifactId>AdditionsAPI</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.8-SNAPSHOT</version>
     <name>Additions API</name>
     <description>Custom Items and Textures for Minecraft 1.9+ Spigot Servers! No Mods!</description>
 
@@ -14,6 +14,44 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>org.bstats:*</include>
+                        </includes>
+                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.chrismin13.additionsapi</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>bstats-repo</id>
+            <url>http://repo.bstats.org/content/repositories/releases/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
 
@@ -47,7 +85,13 @@
             <artifactId>org.spigotmc</artifactId>
             <version>1.12</version>
             <scope>system</scope>
-            <systemPath>E:/Chris' OneDrive/OneDrive/Eclipse Workspace/Test Server/spigot-1.12.jar</systemPath>
+            <systemPath>C:/Users/chris/OneDrive/Eclipse Workspace/Test Server/spigot-1.12.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.2</version>
         </dependency>
 
     </dependencies>

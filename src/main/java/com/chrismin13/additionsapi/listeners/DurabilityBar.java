@@ -204,7 +204,9 @@ public class DurabilityBar implements Listener {
 			progress = 0;
 		else if (progress > 1)
 			progress = 1;
-		bar.setProgress(progress);
+		try {
+			bar.setProgress(progress);
+		} catch (IllegalArgumentException event) {}
 		if (progress >= 0.5) {
 			bar.setColor(BarColor.GREEN);
 			bar.setTitle(title + ChatColor.GREEN + durability + " / " + durabilityMax);

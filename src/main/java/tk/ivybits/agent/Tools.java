@@ -3,10 +3,7 @@ package tk.ivybits.agent;
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.net.URL;
-
 import com.chrismin13.additionsapi.AdditionsAPI;
-import com.chrismin13.additionsapi.utils.Debug;
 
 /**
  * Various IO tools.

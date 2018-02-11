@@ -132,11 +132,11 @@ public class CustomItemStack implements Cloneable {
 	 */
 	public CustomItemStack(ItemStack item) {
 		this.itemStack = item;
-		if (AdditionsAPI.isCustomItem(item)) {
-			for (CustomItem cItem : AdditionsAPI.getAllCustomItems())
-				if (cItem.getIdName().equalsIgnoreCase(AdditionsAPI.getIdName(item)))
-					this.cItem = cItem;
-		} else {
+		try {
+			CustomItem cItem = AdditionsAPI.getCustomItem(item);
+			if (cItem != null)
+				this.cItem = cItem;
+		} catch (NullPointerException exception) {
 			new NullPointerException("The following ItemStack is not a CustomItem: Material: " + item.getType()
 					+ ", Durability: " + item.getDurability()
 					+ ". Please report this and the following Stacktrace to the developer of the Custom Item.")
@@ -249,7 +249,7 @@ public class CustomItemStack implements Cloneable {
 	public int getFakeDurability() {
 		if (cItem.hasFakeDurability()) {
 			for (String string : itemStack.getItemMeta().getLore()) {
-				if (string.startsWith(CustomItem.LORE_PREFIX + ChatColor.GRAY + "Durability: ")) {
+				if (string.startsWith(CustomItem.LORE_PREFIX + ChatColor.GRAY + LangFileUtils.get("durability"))) {
 					String durability = string.replaceFirst(
 							CustomItem.LORE_PREFIX + ChatColor.GRAY + LangFileUtils.get("durability") + " ", "");
 					String segments[] = durability.split(" / ");
@@ -325,7 +325,7 @@ public class CustomItemStack implements Cloneable {
 
 	/**
 	 * Updates the lore of the ItemStack using the
-	 * {@link CustomItem#getFullLore(java.util.Map, int)} method. This is
+	 * {@link CustomItem#getFullLore(Map, int, Attributes)} method. This is
 	 * necessary if you added Enchantments and will be done automatically if the
 	 * Item was enchanted in an enchantment table or had its durability changed.
 	 */
@@ -335,7 +335,7 @@ public class CustomItemStack implements Cloneable {
 
 	/**
 	 * Updates the lore of the ItemStack using the
-	 * {@link CustomItem#getFullLore(java.util.Map, int)} method. This is
+	 * {@link CustomItem#getFullLore(Map, int, Attributes)} method. This is
 	 * necessary if you added Enchantments and will be done automatically if the
 	 * Item was enchanted in an enchantment table or had its durability changed.
 	 */
@@ -360,7 +360,8 @@ public class CustomItemStack implements Cloneable {
 		if (!loreToRemove.isEmpty())
 			lore.removeAll(loreToRemove);
 
-		lore.addAll(cItem.getFullLore(enchantsToCheck, getFakeDurability(), getAttributes()));
+		if (cItem.getFullLore(enchantsToCheck, getFakeDurability(), getAttributes()) != null)
+			lore.addAll(cItem.getFullLore(enchantsToCheck, getFakeDurability(), getAttributes()));
 
 		meta.setLore(lore);
 		itemStack.setItemMeta(meta);

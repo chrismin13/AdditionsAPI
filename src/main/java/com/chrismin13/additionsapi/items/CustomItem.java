@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.chrismin13.additionsapi.files.ConfigFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -16,7 +17,6 @@ import com.chrismin13.additionsapi.durability.ItemDurability;
 import com.chrismin13.additionsapi.enums.ItemType;
 import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
 import com.chrismin13.additionsapi.permissions.ItemPermissions;
-import com.chrismin13.additionsapi.permissions.PermissionType;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.recipes.CustomShapedRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
@@ -168,7 +168,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	public CustomItem(final Material material, final int amount, final short durability, final String idName,
 			final ItemDurability itemDurability) {
 		this(material, amount, durability, idName, itemDurability, ItemType.getItemType(material)
-				.getItemPermissions(new String(idName).replaceAll(":", "."), PermissionType.DENY));
+				.getItemPermissions(new String(idName).replaceAll(":", "."), ConfigFile.getInstance().getPermissionConfig().getDefaultType()));
 	}
 
 	/**
