@@ -39,9 +39,6 @@ public class CustomTexturedBow extends CustomBow implements ModelInjector {
 	/**
 	 * Creates a {@link CustomTexturedBow}
 	 * 
-	 * @param dItem
-	 *            The DamageableItem that the CustomItem will be based off. This
-	 *            will determine the Material of the {@link CustomItem}.
 	 * @param idName
 	 *            the {@link CustomItem}'s ID Name. This MUST BE SIMILAR to
 	 *            "vanilla_additions:emerald_sword" as the Texture will not be
@@ -60,11 +57,7 @@ public class CustomTexturedBow extends CustomBow implements ModelInjector {
 	}
 
 	/**
-	 * Creates a {@link CustomTexturedBow}
-	 * 
-	 * @param dItem
-	 *            The DamageableItem that the CustomItem will be based off. This
-	 *            will determine the Material of the {@link CustomItem}.
+	 * Creates a {@link CustomTexturedBow}.
 	 * @param idName
 	 *            the {@link CustomItem}'s ID Name. This MUST BE SIMILAR to
 	 *            "vanilla_additions:emerald_sword" as the Texture will not be
