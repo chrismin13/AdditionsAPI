@@ -28,7 +28,8 @@ public class ResourcePackListener implements Listener {
 					link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
 							+ ResourcePackServer.path;
 				}
-				player.setResourcePack(link);
+				if (player != null && player.isOnline())
+					player.setResourcePack(link);
 			}
 		});
 	}
