@@ -29,6 +29,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.fihgu.toolbox.item.ModelInjector;
 import us.fihgu.toolbox.resourcepack.ResourcePackListener;
@@ -181,7 +183,8 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 							link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
 									+ ResourcePackServer.path;
 						}
-						if (player != null && player.isOnline())
+						if (player != null && player.isOnline()
+								&& !player.hasPermission(new Permission("additionsapi.resourcepack.disable", PermissionDefault.FALSE)))
 							player.setResourcePack(link);
 					});
 				}

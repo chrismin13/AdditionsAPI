@@ -314,6 +314,8 @@ public class CustomItemStack implements Cloneable {
 	 */
 	public CustomItemStack reduceDurability(Player player, int durabilityToReduce) {
 		GameMode gm = player.getGameMode();
+		if (itemStack == null)
+			return this;
 		if ((gm.equals(GameMode.SURVIVAL) || gm.equals(GameMode.ADVENTURE)))
 			if (cItem.hasFakeDurability())
 				Bukkit.getPluginManager()

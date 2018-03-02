@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.files.ConfigFile;
@@ -19,7 +21,8 @@ public class ResourcePackListener implements Listener {
 		final Player player = event.getPlayer();
 		Bukkit.getServer().getScheduler().runTask(AdditionsAPI.getInstance(), () -> {
 			if (ResourcePackManager.hasResource()
-					&& ConfigFile.getInstance().getConfig().getBoolean("resource-pack.send-to-player")) {
+					&& ConfigFile.getInstance().getConfig().getBoolean("resource-pack.send-to-player") && !player
+							.hasPermission(new Permission("additionsapi.resourcepack.disable", PermissionDefault.FALSE))) {
 				String link;
 				if (event.getAddress().getHostAddress().equals("127.0.0.1")) {
 					link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
@@ -42,8 +45,9 @@ public class ResourcePackListener implements Listener {
 			case DECLINED:
 			case FAILED_DOWNLOAD:
 				final Player player = event.getPlayer();
-				Bukkit.getServer().getScheduler().runTask(AdditionsAPI.getInstance(),
-						() -> player.kickPlayer(LangFileUtils.get("resource_pack_kick")));
+				if (!player.hasPermission(new Permission("additionsapi.resourcepack.bypass", PermissionDefault.FALSE)))
+					Bukkit.getServer().getScheduler().runTask(AdditionsAPI.getInstance(),
+							() -> player.kickPlayer(LangFileUtils.get("resource_pack_kick")));
 				break;
 			case ACCEPTED:
 			case SUCCESSFULLY_LOADED:

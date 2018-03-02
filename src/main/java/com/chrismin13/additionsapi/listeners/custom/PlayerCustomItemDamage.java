@@ -26,6 +26,17 @@ public class PlayerCustomItemDamage implements Listener {
 		if (event.isCancelled())
 			return;
 		Player player = event.getPlayer();
+		/*
+		 * Somehow, someone got an NPE here. No idea how, but let's just prevent it from
+		 * happening in the future. They were using PaperSpigot so it's probably
+		 * something to do with that. Or I messed something up elsewhere xD
+		 * 
+		 * EDIT: I messed up - it's treefeller that dropped the axe's durability to
+		 * below 0, it got removed and thus got nulled. Same for sickles.
+		 */
+		if (event.getCustomItem() == null)
+			return;
+
 		CustomItem cItem = event.getCustomItem();
 		ItemStack item = event.getItem();
 		CustomItemStack cStack = new CustomItemStack(item);
