@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.chrismin13</groupId>
+  <artifactId>AdditionsAPI</artifactId>
+  <version>1.2.9-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20180401.125555</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20180401125555</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.2.9-20180401.125555-1</value>
+        <updated>20180401125555</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.2.9-20180401.125555-1</value>
+        <updated>20180401125555</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

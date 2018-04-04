@@ -1,100 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.chrismin13</groupId>
-    <artifactId>AdditionsAPI</artifactId>
-    <version>1.2.9-SNAPSHOT</version>
-    <name>Additions API</name>
-    <description>Custom Items and Textures for Minecraft 1.9+ Spigot Servers! No Mods!</description>
+	<groupId>com.chrismin13</groupId>
+	<artifactId>AdditionsAPI</artifactId>
+	<version>1.2.9-SNAPSHOT</version>
+	<name>Additions API</name>
+	<description>Custom Items and Textures for Minecraft 1.9+ Spigot Servers! No Mods!</description>
 
-    <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
-    </properties>
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
+		<github.global.server>github</github.global.server>
+	</properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>org.bstats:*</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>com.chrismin13.additionsapi</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<artifactSet>
+						<includes>
+							<include>org.bstats:*</include>
+						</includes>
+					</artifactSet>
+					<relocations>
+						<relocation>
+							<pattern>org.bstats</pattern>
+							<shadedPattern>com.chrismin13.additionsapi</shadedPattern>
+						</relocation>
+					</relocations>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-    <repositories>
-        <repository>
-            <id>bstats-repo</id>
-            <url>http://repo.bstats.org/content/repositories/releases/</url>
-        </repository>
-    </repositories>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.1</version>
+				<configuration>
+					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+				</configuration>
+			</plugin>
 
-    <dependencies>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
+				<configuration>
+					<message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+					<noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+					<branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+					<includes>
+						<include>**/*</include>
+					</includes>
+					<repositoryName>AdditionsAPI</repositoryName>      		   <!-- github repo name -->
+					<repositoryOwner>chrismin13</repositoryOwner>    		   <!-- github username -->
+				</configuration>
+				<executions>
+					<!-- run site-maven-plugin's 'site' target as part of the build's normal 
+						'deploy' phase -->
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
+			</plugin>
 
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
+		</plugins>
+	</build>
 
-        <!-- If you are compiling this from the GitHub Repo, you must first install the Yamakaja Runtime Transformer local Maven repo by following the instructions on its Github page -->
-        <dependency>
-            <groupId>me.yamakaja.runtimetransformer</groupId>
-            <artifactId>api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+	<repositories>
+		<repository>
+			<id>bstats-repo</id>
+			<url>http://repo.bstats.org/content/repositories/releases/</url>
+		</repository>
+	</repositories>
 
-        <!-- If you are compiling this from the GitHub Repo, you must first install the Yamakaja Runtime Transformer local Maven repo by following the instructions on its Github page -->
-        <dependency>
-            <groupId>me.yamakaja.runtimetransformer</groupId>
-            <artifactId>agent</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+	<dependencies>
 
-        <!-- If you are compiling this from the GitHub Repo, change systemPath to a Spigot jar of that version that is located on your computer. THere is no maven repo that satisfies the dependencies in NMS, this is the best solution -->
-        <dependency>
-            <groupId>Spigot</groupId>
-            <artifactId>org.spigotmc</artifactId>
-            <version>1.12</version>
-            <scope>system</scope>
-            <systemPath>C:/Users/chris/OneDrive/Eclipse Workspace/Test Server/spigot-1.12.jar</systemPath>
-        </dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.2</version>
-        </dependency>
+		<!-- If you are compiling this from the GitHub Repo, you must first install 
+			the Yamakaja Runtime Transformer local Maven repo by following the instructions 
+			on its Github page -->
+		<dependency>
+			<groupId>me.yamakaja.runtimetransformer</groupId>
+			<artifactId>api</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
 
-    </dependencies>
+		<!-- If you are compiling this from the GitHub Repo, you must first install 
+			the Yamakaja Runtime Transformer local Maven repo by following the instructions 
+			on its Github page -->
+		<dependency>
+			<groupId>me.yamakaja.runtimetransformer</groupId>
+			<artifactId>agent</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 
+		<!-- If you are compiling this from the GitHub Repo, change systemPath 
+			to a Spigot jar of that version that is located on your computer. THere is 
+			no maven repo that satisfies the dependencies in NMS, this is the best solution -->
+		<dependency>
+			<groupId>Spigot</groupId>
+			<artifactId>org.spigotmc</artifactId>
+			<version>1.12</version>
+			<scope>system</scope>
+			<systemPath>C:/Users/chris/OneDrive/Eclipse Workspace/Test Server/spigot-1.12.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bstats</groupId>
+			<artifactId>bstats-bukkit</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+	</distributionManagement>
 
 </project>
