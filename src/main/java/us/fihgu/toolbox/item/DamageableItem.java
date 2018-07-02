@@ -117,9 +117,9 @@ public enum DamageableItem {
 			return elytraRodModel;
 		default:
 			if (DamageableItem.handHeldItems.contains(this)) {
-				return ItemModel.createSimpleItemModel("item/handheld", "items/" + this.getTextureName());
+				return ItemModel.createSimpleItemModel("item/handheld", "items/" + this.getTextureName().toLowerCase());
 			} else {
-				return ItemModel.createSimpleItemModel("item/generated", "items/" + this.getTextureName());
+				return ItemModel.createSimpleItemModel("item/generated", "items/" + this.getTextureName().toLowerCase());
 			}
 		}
 	}

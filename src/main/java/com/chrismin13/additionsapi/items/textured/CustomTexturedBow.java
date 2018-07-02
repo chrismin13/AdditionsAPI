@@ -98,6 +98,7 @@ public class CustomTexturedBow extends CustomBow implements ModelInjector {
 		pulling2.setPulling(1);
 		pulling2.setPull(0.9);
 		for (String texture : overrideModels.keySet()) {
+			texture = texture.toLowerCase();
 			map.put(new BowModelInjection(standby, name + ":item/" + texture,
 					ItemModel.createSimpleItemModel("item/bow", name + ":items/" + texture + "_standby"), true),
 					overrideModels.get(texture));
