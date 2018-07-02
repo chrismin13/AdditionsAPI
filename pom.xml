@@ -6,7 +6,7 @@
 
 	<groupId>com.chrismin13</groupId>
 	<artifactId>AdditionsAPI</artifactId>
-	<version>1.2.9-SNAPSHOT</version>
+	<version>1.2.10-SNAPSHOT</version>
 	<name>Additions API</name>
 	<description>Custom Items and Textures for Minecraft 1.9+ Spigot Servers! No Mods!</description>
 
@@ -88,6 +88,11 @@
 		<repository>
 			<id>bstats-repo</id>
 			<url>http://repo.bstats.org/content/repositories/releases/</url>
+		</repository>
+
+		<repository>
+			<id>codemc</id>
+			<url>https://repo.codemc.org/repository/maven-public/</url>
 		</repository>
 	</repositories>
 

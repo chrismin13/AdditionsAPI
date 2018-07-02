@@ -65,7 +65,7 @@ public class PlayerCustomItemDamage implements Listener {
 			PlayerCustomItemBreakEvent breakEvent = new PlayerCustomItemBreakEvent(player, item, cItem);
 			Bukkit.getPluginManager().callEvent(breakEvent);
 			if (!event.isCancelled()) {
-				item.setAmount(0);
+				player.getInventory().remove(item);
 				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1F, 1F);
 			}
 			return;

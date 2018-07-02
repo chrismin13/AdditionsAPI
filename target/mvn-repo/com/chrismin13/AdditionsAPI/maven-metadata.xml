@@ -4,8 +4,8 @@
   <artifactId>AdditionsAPI</artifactId>
   <versioning>
     <versions>
-      <version>1.2.9-SNAPSHOT</version>
+      <version>1.2.10-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20180401125555</lastUpdated>
+    <lastUpdated>20180702155629</lastUpdated>
   </versioning>
 </metadata>
