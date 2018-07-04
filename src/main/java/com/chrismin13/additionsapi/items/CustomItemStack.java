@@ -343,6 +343,9 @@ public class CustomItemStack implements Cloneable {
 	 */
 	public CustomItemStack updateLore(Map<Enchantment, Integer> enchantsToCheck) {
 		ItemMeta meta = itemStack.getItemMeta();
+		if (meta.getLore() == null || meta.getLore().isEmpty())
+			return this;
+		
 		final List<String> lore = meta.getLore();
 		final ArrayList<String> loreToRemove = new ArrayList<String>();
 
