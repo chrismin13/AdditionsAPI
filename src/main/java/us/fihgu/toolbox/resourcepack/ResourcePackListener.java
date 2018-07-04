@@ -12,27 +12,39 @@ import org.bukkit.permissions.PermissionDefault;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.files.ConfigFile;
+import com.chrismin13.additionsapi.utils.Debug;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
+
+import me.benfah.cu.init.impl.MinePackInitializationMethod;
 
 public class ResourcePackListener implements Listener {
 
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
-		final Player player = event.getPlayer();
+		sendResourcePack(event.getPlayer(), event.getAddress().getHostAddress());
+	}
+
+	public static void sendResourcePack(Player player, String hostAddress) {
 		Bukkit.getServer().getScheduler().runTask(AdditionsAPI.getInstance(), () -> {
 			if (ResourcePackManager.hasResource()
-					&& ConfigFile.getInstance().getConfig().getBoolean("resource-pack.send-to-player") && !player
-							.hasPermission(new Permission("additionsapi.resourcepack.disable", PermissionDefault.FALSE))) {
+					&& ConfigFile.getInstance().getConfig().getBoolean("resource-pack.send-to-player")
+					&& !player.hasPermission(
+							new Permission("additionsapi.resourcepack.disable", PermissionDefault.FALSE))) {
 				String link;
-				if (event.getAddress().getHostAddress().equals("127.0.0.1")) {
-					link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
-							+ ResourcePackServer.path;
+				if (!ConfigFile.getInstance().getConfig().getBoolean("resource-pack.use-minepack")) {
+					if (hostAddress != null && hostAddress.equals("127.0.0.1")) {
+						link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
+								+ ResourcePackServer.path;
+					} else {
+						link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
+								+ ResourcePackServer.path;
+					}
 				} else {
-					link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
-							+ ResourcePackServer.path;
+					link = MinePackInitializationMethod.resourcePack;
 				}
 				if (player != null && player.isOnline())
-					player.setResourcePack(link);
+					player.setResourcePack(link, ResourcePackManager.resourcePackSha1Byte);
+				Debug.saySuper("Sending Resource Pack Link to Player: " + link);
 			}
 		});
 	}

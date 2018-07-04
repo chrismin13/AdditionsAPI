@@ -2,6 +2,7 @@ package us.fihgu.toolbox.file;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,17 +13,19 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.attribute.FileTime;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FileUtils {
 
 	/**
-	 * Create the given file if it doesn't exist, will also create directories
-	 * if they do not exist.<br>
+	 * Create the given file if it doesn't exist, will also create directories if
+	 * they do not exist.<br>
 	 * If the file already exist, nothing will happen.
 	 */
 	public static void createFileAndPath(File file) throws IOException {
@@ -40,6 +43,7 @@ public class FileUtils {
 			}
 
 			file.createNewFile();
+			file.setLastModified(1500135786000L);
 		}
 	}
 
@@ -64,15 +68,13 @@ public class FileUtils {
 		int length = 0;
 
 		try {
-			while ((length 
-					= in.read
-					(buffer)) > 0) {
+			while ((length = in.read(buffer)) > 0) {
 				out.write(buffer, 0, length);
 			}
 		} finally {
 			out.flush();
 			out.close();
-            in.close();
+			in.close();
 		}
 	}
 
@@ -132,6 +134,7 @@ public class FileUtils {
 				}
 				if (tempFile.isDirectory()) {
 					ZipEntry entry = new ZipEntry(fullPath + "/");
+					entry.setTime(1500135786000L);
 					out.putNextEntry(entry);
 				}
 				addToZip(tempFile, fullPath, out);
@@ -139,6 +142,9 @@ public class FileUtils {
 		} else {
 			FileInputStream in = new FileInputStream(file);
 			ZipEntry entry = new ZipEntry(path);
+			
+			entry.setTime(1500135786000L);
+
 			out.putNextEntry(entry);
 			byte[] buffer = new byte[4096];
 			int byteRead;
@@ -194,4 +200,66 @@ public class FileUtils {
 		}
 		return path;
 	}
+
+	public static void setModifiedDate(File file, long timeInMil) {
+		if (file == null || !file.exists())
+			return;
+
+		if (!file.isDirectory()) {
+			file.setLastModified(timeInMil);
+			return;
+		}
+
+		File[] files = file.listFiles();
+		for (File currentFile : files) {
+			currentFile.setLastModified(timeInMil);
+			if (currentFile.isDirectory()) {
+				setModifiedDate(currentFile, timeInMil);
+			}
+		}
+	}
+/*
+	public static void compressZipfileWithDate(String sourceDir, String outputFile, long dateInMil) throws IOException, FileNotFoundException {
+		ZipOutputStream zipFile = new ZipOutputStream(new FileOutputStream(outputFile));
+		zipFile.setLevel(9);
+		compressDirectoryToZipfileWithDate(sourceDir, sourceDir, zipFile, dateInMil);
+		zipFile.close();
+	}
+
+	private static void compressDirectoryToZipfileWithDate(String rootDir, String sourceDir, ZipOutputStream out, long dateInMil)
+			throws IOException, FileNotFoundException {
+		for (File file : new File(sourceDir).listFiles()) {
+			file.setLastModified(dateInMil);
+			if (file.isDirectory()) {
+				ZipEntry entry = new ZipEntry(file.getAbsolutePath().replace(rootDir + File.separator, "") + File.separator);
+				entry.setTime(dateInMil);
+				FileTime time = FileTime.fromMillis(dateInMil);
+				entry.setCreationTime(time);
+				entry.setLastAccessTime(time);
+				entry.setLastModifiedTime(time);
+				out.putNextEntry(entry);
+				
+				compressDirectoryToZipfileWithDate(rootDir, file.getAbsolutePath(), out, dateInMil);
+			} else {
+				ZipEntry entry = new ZipEntry(file.getAbsolutePath().replace(rootDir + File.separator, ""));
+				entry.setTime(dateInMil);
+				FileTime time = FileTime.fromMillis(dateInMil);
+				entry.setCreationTime(time);
+				entry.setLastAccessTime(time);
+				entry.setLastModifiedTime(time);
+				out.putNextEntry(entry);
+
+				FileInputStream in = new FileInputStream(file.getAbsolutePath());
+				
+		        int n;
+		        byte[] defaultBuffer = new byte[1024 * 4];
+		        while (-1 != (n = in.read(defaultBuffer))) {
+		            out.write(defaultBuffer, 0, n);
+		        }
+				
+		        in.close();
+			}
+		}
+	}
+	*/
 }

@@ -131,6 +131,7 @@ com\chrismin13\additionsapi\files\LangFile.class
 com\chrismin13\additionsapi\listeners\custom\CustomElytraPlayerToggleGlide.class
 com\chrismin13\additionsapi\events\bow\EntityShootCustomBowEvent.class
 com\comphenix\attribute\NbtFactory$NbtList.class
+me\benfah\cu\init\impl\MinePackInitializationMethod.class
 sun\tools\attach\LinuxVirtualMachine.class
 com\comphenix\attribute\NbtFactory$ConvertedMap.class
 com\chrismin13\additionsapi\items\CustomTool$1.class

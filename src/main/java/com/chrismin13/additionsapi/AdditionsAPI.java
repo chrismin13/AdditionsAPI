@@ -1,5 +1,22 @@
 package com.chrismin13.additionsapi;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.chrismin13.additionsapi.commands.AdditionsCmd;
 import com.chrismin13.additionsapi.commands.AdditionsTab;
 import com.chrismin13.additionsapi.events.AdditionsAPIInitializationEvent;
@@ -12,36 +29,48 @@ import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
 import com.chrismin13.additionsapi.items.StorageCustomItem;
 import com.chrismin13.additionsapi.listeners.DurabilityBar;
-import com.chrismin13.additionsapi.listeners.custom.*;
-import com.chrismin13.additionsapi.listeners.vanilla.*;
+import com.chrismin13.additionsapi.listeners.custom.ArmorEquip;
+import com.chrismin13.additionsapi.listeners.custom.ArrowFromCustomBowHit;
+import com.chrismin13.additionsapi.listeners.custom.CustomElytraPlayerToggleGlide;
+import com.chrismin13.additionsapi.listeners.custom.CustomItemBlockBreak;
+import com.chrismin13.additionsapi.listeners.custom.CustomItemBlockIgnite;
+import com.chrismin13.additionsapi.listeners.custom.CustomItemFish;
+import com.chrismin13.additionsapi.listeners.custom.CustomItemFurnaceBurn;
+import com.chrismin13.additionsapi.listeners.custom.CustomItemPlayerInteract;
+import com.chrismin13.additionsapi.listeners.custom.CustomItemShearEntity;
+import com.chrismin13.additionsapi.listeners.custom.CustomShieldEntityDamageByEntity;
+import com.chrismin13.additionsapi.listeners.custom.EntityDamageByPlayerUsingCustomItem;
+import com.chrismin13.additionsapi.listeners.custom.EntityShootCustomBow;
+import com.chrismin13.additionsapi.listeners.custom.PlayerCustomItemDamage;
+import com.chrismin13.additionsapi.listeners.custom.PlayerDropCustomItem;
+import com.chrismin13.additionsapi.listeners.custom.PlayerPickupCustomItem;
+import com.chrismin13.additionsapi.listeners.vanilla.Anvil;
+import com.chrismin13.additionsapi.listeners.vanilla.BlockBreak;
+import com.chrismin13.additionsapi.listeners.vanilla.BlockIgnite;
+import com.chrismin13.additionsapi.listeners.vanilla.CraftingTable;
+import com.chrismin13.additionsapi.listeners.vanilla.EnchantItem;
+import com.chrismin13.additionsapi.listeners.vanilla.EntityDamage;
+import com.chrismin13.additionsapi.listeners.vanilla.EntityShootBow;
+import com.chrismin13.additionsapi.listeners.vanilla.EntityToggleGlide;
+import com.chrismin13.additionsapi.listeners.vanilla.Experience;
+import com.chrismin13.additionsapi.listeners.vanilla.FurnaceBurn;
+import com.chrismin13.additionsapi.listeners.vanilla.PlayerDeath;
+import com.chrismin13.additionsapi.listeners.vanilla.PlayerDropItem;
+import com.chrismin13.additionsapi.listeners.vanilla.PlayerFish;
+import com.chrismin13.additionsapi.listeners.vanilla.PlayerInteract;
+import com.chrismin13.additionsapi.listeners.vanilla.PlayerPickupItem;
+import com.chrismin13.additionsapi.listeners.vanilla.PlayerShearEntity;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
 import com.codingforcookies.armorequip.ArmorListener;
 import com.comphenix.attribute.NbtFactory;
 import com.comphenix.attribute.NbtFactory.NbtCompound;
 import com.google.common.collect.ImmutableList;
-import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.java.JavaPlugin;
+
 import us.fihgu.toolbox.item.ModelInjector;
 import us.fihgu.toolbox.resourcepack.ResourcePackListener;
 import us.fihgu.toolbox.resourcepack.ResourcePackManager;
 import us.fihgu.toolbox.resourcepack.ResourcePackServer;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class AdditionsAPI extends JavaPlugin implements Listener {
 
@@ -138,13 +167,14 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 
 	public void onDisable() {
 		// Useful when reloading!
-		ResourcePackServer.stopServer();
+		if (!ConfigFile.getInstance().getConfig().getBoolean("resource-pack.use-minepack"))
+			ResourcePackServer.stopServer();
+		
 		DurabilityBar.removeAllDurabilityBars();
 	}
 
 	private static void setupHTTPServer() {
 		try {
-			ResourcePackManager.Load();
 			ResourcePackManager.buildResourcePack();
 			Debug.sayTrue("Starting an HTTP Server for hosting the Resource Pack.");
 			ResourcePackServer.startServer();
@@ -174,19 +204,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 			if (ResourcePackManager.neededRebuild
 					&& ConfigFile.getInstance().getConfig().getBoolean("resource-pack.send-to-player")) {
 				for (Player player : Bukkit.getOnlinePlayers()) {
-					Bukkit.getScheduler().runTask(getInstance(), () -> {
-						String link;
-						if (player.getAddress().getHostString().equals("127.0.0.1")) {
-							link = "http://" + ResourcePackServer.localhost + ":" + ResourcePackServer.port
-									+ ResourcePackServer.path;
-						} else {
-							link = "http://" + ResourcePackServer.host + ":" + ResourcePackServer.port
-									+ ResourcePackServer.path;
-						}
-						if (player != null && player.isOnline()
-								&& !player.hasPermission(new Permission("additionsapi.resourcepack.disable", PermissionDefault.FALSE)))
-							player.setResourcePack(link);
-					});
+					ResourcePackListener.sendResourcePack(player, player.getAddress().getHostString());
 				}
 			}
 		}
