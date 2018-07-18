@@ -25,7 +25,7 @@ public class ResourcePackListener implements Listener {
 	}
 
 	public static void sendResourcePack(Player player, String hostAddress) {
-		Bukkit.getServer().getScheduler().runTask(AdditionsAPI.getInstance(), () -> {
+		Bukkit.getServer().getScheduler().runTaskLater(AdditionsAPI.getInstance(), () -> {
 			if (ResourcePackManager.hasResource()
 					&& ConfigFile.getInstance().getConfig().getBoolean("resource-pack.send-to-player")
 					&& !player.hasPermission(
@@ -46,7 +46,7 @@ public class ResourcePackListener implements Listener {
 					player.setResourcePack(link, ResourcePackManager.resourcePackSha1Byte);
 				Debug.saySuper("Sending Resource Pack Link to Player: " + link);
 			}
-		});
+		}, 20L);
 	}
 
 	@EventHandler
