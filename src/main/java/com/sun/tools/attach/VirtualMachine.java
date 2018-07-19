@@ -25,13 +25,12 @@
 
 package com.sun.tools.attach;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import com.sun.tools.attach.spi.AttachProvider;
-
-import java.io.IOException;
 
 
 /**

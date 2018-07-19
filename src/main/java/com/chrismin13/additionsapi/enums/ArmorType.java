@@ -2,6 +2,7 @@ package com.chrismin13.additionsapi.enums;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;

@@ -3,13 +3,13 @@ package com.chrismin13.additionsapi.files;
 import java.io.File;
 import java.io.IOException;
 
-import com.chrismin13.additionsapi.permissions.PermissionType;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
+import com.chrismin13.additionsapi.permissions.PermissionType;
 import com.chrismin13.additionsapi.utils.Debug;
 
 /**

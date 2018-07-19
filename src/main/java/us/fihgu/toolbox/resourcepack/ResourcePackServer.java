@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.files.ConfigFile;
-
 import com.chrismin13.additionsapi.utils.Debug;
 
 import me.benfah.cu.init.impl.MinePackInitializationMethod;

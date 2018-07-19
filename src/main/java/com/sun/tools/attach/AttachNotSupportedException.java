@@ -25,8 +25,6 @@
 
 package com.sun.tools.attach;
 
-import com.sun.tools.attach.spi.AttachProvider;
-
 /**
  * Thrown by {@link com.sun.tools.attach.VirtualMachine#attach
  * VirtalMachine.attach} when attempting to attach to a Java virtual machine

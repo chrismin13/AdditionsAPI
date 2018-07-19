@@ -25,7 +25,8 @@
 
 package sun.jvmstat.monitor;
 
-import java.net.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * An abstraction that identifies a target Java Virtual Machine.

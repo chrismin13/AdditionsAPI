@@ -6,10 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,10 +14,8 @@ import java.util.function.Function;
 
 import javax.xml.bind.DatatypeConverter;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.CharSet;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.additionsapi.AdditionsAPI;

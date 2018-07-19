@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.chrismin13.additionsapi.files.ConfigFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -15,6 +14,7 @@ import org.bukkit.inventory.ItemFlag;
 
 import com.chrismin13.additionsapi.durability.ItemDurability;
 import com.chrismin13.additionsapi.enums.ItemType;
+import com.chrismin13.additionsapi.files.ConfigFile;
 import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
 import com.chrismin13.additionsapi.permissions.ItemPermissions;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;

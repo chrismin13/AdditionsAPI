@@ -25,9 +25,12 @@
 
 package sun.jvmstat.monitor;
 
-import java.util.*;
-import java.net.*;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import sun.jvmstat.monitor.event.HostListener;
 

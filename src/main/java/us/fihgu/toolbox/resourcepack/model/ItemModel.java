@@ -1,7 +1,5 @@
 package us.fihgu.toolbox.resourcepack.model;
 
-import us.fihgu.toolbox.item.DamageableItem;
-
 import java.util.LinkedList;
 import java.util.List;
 
