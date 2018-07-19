@@ -2,7 +2,6 @@ package com.chrismin13.additionsapi.items.textured;
 
 import java.util.HashMap;
 
-
 import org.bukkit.Color;
 
 import com.chrismin13.additionsapi.enums.ArmorType;

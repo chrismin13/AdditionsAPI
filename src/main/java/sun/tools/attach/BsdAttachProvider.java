@@ -24,12 +24,11 @@
  */
 package sun.tools.attach;
 
+import java.io.IOException;
+
+import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
-import com.sun.tools.attach.AttachNotSupportedException;
-import com.sun.tools.attach.spi.AttachProvider;
-
-import java.io.IOException;
 
 /*
  * An AttachProvider implementation for Bsd that uses a UNIX domain

@@ -30,7 +30,6 @@ import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.files.BossBarConfig;
 import com.chrismin13.additionsapi.files.ConfigFile;
 import com.chrismin13.additionsapi.items.CustomItemStack;
-
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 
 import net.md_5.bungee.api.ChatColor;

@@ -1,9 +1,6 @@
 package tk.ivybits.agent;
 
-import com.sun.tools.attach.AgentInitializationException;
-import com.sun.tools.attach.AgentLoadException;
-import com.sun.tools.attach.AttachNotSupportedException;
-import com.sun.tools.attach.VirtualMachine;
+import static tk.ivybits.agent.Tools.getBytesFromStream;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +12,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
-import static tk.ivybits.agent.Tools.getBytesFromStream;
+import com.sun.tools.attach.AgentInitializationException;
+import com.sun.tools.attach.AgentLoadException;
+import com.sun.tools.attach.AttachNotSupportedException;
+import com.sun.tools.attach.VirtualMachine;
 
 /**
  * A utility class for loading Java agents.

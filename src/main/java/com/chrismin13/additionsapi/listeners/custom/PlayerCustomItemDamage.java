@@ -16,7 +16,6 @@ import com.chrismin13.additionsapi.events.item.PlayerCustomItemBreakEvent;
 import com.chrismin13.additionsapi.events.item.PlayerCustomItemDamageEvent;
 import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
-
 import com.chrismin13.additionsapi.utils.NumberUtils;
 
 public class PlayerCustomItemDamage implements Listener {

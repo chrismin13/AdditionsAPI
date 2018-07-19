@@ -12,6 +12,7 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+
 import us.fihgu.toolbox.file.FileUtils;
 
 public class JsonUtils
