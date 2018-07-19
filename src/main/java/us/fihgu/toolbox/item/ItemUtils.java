@@ -6,11 +6,9 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  * this class provides ItemStack/Item related shortcuts.
@@ -19,18 +17,6 @@ public class ItemUtils {
 
 	public static boolean notNullorAir(ItemStack item) {
 		return item != null && item.getType() != Material.AIR;
-	}
-
-	/**
-	 * create a player skull of given player
-	 */
-	public static ItemStack createSkull(String owner, int quantity) {
-		ItemStack item = new ItemStack(Material.SKULL_ITEM, quantity, (short) SkullType.PLAYER.ordinal());
-		ItemMeta meta = item.getItemMeta();
-		((SkullMeta) meta).setOwner(owner);
-		item.setItemMeta(meta);
-
-		return item;
 	}
 
 	/**

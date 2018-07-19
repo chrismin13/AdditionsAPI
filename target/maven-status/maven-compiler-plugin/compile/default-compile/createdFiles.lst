@@ -97,7 +97,6 @@ us\fihgu\toolbox\web\WebServer.class
 com\chrismin13\additionsapi\listeners\custom\CustomItemShearEntity.class
 tk\ivybits\agent\Tools$Platform.class
 com\chrismin13\additionsapi\listeners\vanilla\PlayerPickupItem.class
-com\chrismin13\additionsapi\transformers\CraftItemStack_1_12_Transformer.class
 com\chrismin13\additionsapi\items\CustomItemStack.class
 com\chrismin13\additionsapi\utils\EquipmentSlotUtils$1.class
 com\chrismin13\additionsapi\items\CustomBow.class
@@ -122,7 +121,6 @@ us\fihgu\toolbox\item\ItemUtils.class
 us\fihgu\toolbox\http\HTTPWriteHandler.class
 us\fihgu\toolbox\resourcepack\ResourcePackListener.class
 com\chrismin13\additionsapi\events\item\EntityDamageByPlayerUsingCustomItemEvent.class
-com\chrismin13\additionsapi\transformers\ItemStackTransformer.class
 com\comphenix\attribute\NbtFactory$LoadCompoundMethod.class
 com\chrismin13\additionsapi\events\AdditionsAPIPostInitializationEvent.class
 com\chrismin13\additionsapi\events\item\PlayerPickupCustomItemEvent.class
