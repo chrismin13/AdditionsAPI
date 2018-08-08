@@ -249,9 +249,9 @@ public class CustomTool extends CustomItem {
 					 * does not have any.
 					 */
 					if ((amount == Math.floor(amount)) && !Double.isInfinite(amount)) {
-						attributeLore.add(ChatColor.GRAY + " " + Integer.toString((int) amount) + " " + attributeName);
+						attributeLore.add(ChatColor.DARK_GREEN + " " + Integer.toString((int) amount) + " " + attributeName);
 					} else {
-						attributeLore.add(ChatColor.GRAY + " " + Double.toString(amount) + " " + attributeName);
+						attributeLore.add(ChatColor.DARK_GREEN + " " + Double.toString(amount) + " " + attributeName);
 					}
 				}
 			}
@@ -265,10 +265,10 @@ public class CustomTool extends CustomItem {
 			 * have any.
 			 */
 			if ((speed == Math.floor(speed)) && !Double.isInfinite(speed)) {
-				attributeLore.add(ChatColor.GRAY + " " + Integer.toString((int) speed) + " "
+				attributeLore.add(ChatColor.DARK_GREEN + " " + Integer.toString((int) speed) + " "
 						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_SPEED));
 			} else {
-				attributeLore.add(ChatColor.GRAY + " " + Double.toString(speed) + " "
+				attributeLore.add(ChatColor.DARK_GREEN + " " + Double.toString(speed) + " "
 						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_SPEED));
 			}
 
@@ -278,10 +278,10 @@ public class CustomTool extends CustomItem {
 			 * have any.
 			 */
 			if ((damage == Math.floor(damage)) && !Double.isInfinite(damage)) {
-				attributeLore.add(ChatColor.GRAY + " " + Integer.toString((int) damage) + " "
+				attributeLore.add(ChatColor.DARK_GREEN + " " + Integer.toString((int) damage) + " "
 						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_DAMAGE));
 			} else {
-				attributeLore.add(ChatColor.GRAY + " " + Double.toString(damage) + " "
+				attributeLore.add(ChatColor.DARK_GREEN + " " + Double.toString(damage) + " "
 						+ LangFileUtils.get(AttributeType.GENERIC_ATTACK_DAMAGE));
 			}
 		}
