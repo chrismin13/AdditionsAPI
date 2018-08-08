@@ -169,7 +169,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		// Useful when reloading!
 		if (!ConfigFile.getInstance().getConfig().getBoolean("resource-pack.use-minepack"))
 			ResourcePackServer.stopServer();
-
+		
 		DurabilityBar.removeAllDurabilityBars();
 	}
 
@@ -188,7 +188,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	public static void load() {
 		Debug.say("Starting AdditionsAPI Intialization");
 		AdditionsAPIInitializationEvent event = new AdditionsAPIInitializationEvent();
-		if (ConfigFile.getInstance().getConfig().getBoolean("resource-pack.smooth-leather-armor-texture"))
+		if (ConfigFile.getInstance().getConfig().getBoolean("resource-pack.force-on-join"))
 			event.addResourcePackFromPlugin(instance, "resource/smooth_armor.zip");
 		event.addResourcePackFromPlugin(instance, "resource/no_hoe_sound.zip");
 		instance.getServer().getPluginManager().callEvent(event);
