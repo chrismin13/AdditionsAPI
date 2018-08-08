@@ -9,6 +9,7 @@ import java.util.List;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -75,6 +76,7 @@ import us.fihgu.toolbox.resourcepack.ResourcePackServer;
 public class AdditionsAPI extends JavaPlugin implements Listener {
 
 	private static JavaPlugin instance;
+	private static String mcver = Bukkit.getServer().getVersion();
 
 	public void onEnable() {
 
@@ -221,6 +223,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 
 	// === INITIALIZATION === //
 
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onInitialization(AdditionsAPIInitializationEvent event) {
 		CustomItem[] cItems = event.getCustomItems();
@@ -271,8 +274,17 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 				ItemStack item = cStack.getItemStack();
 				cStacks.add(cStack);
 				if (cItemConfig.canBeCreated()) {
-					for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
-						cRecipe.registerBukkitRecipe(item);
+					if (mcver.contains("1.9") || mcver.contains("1.10") || mcver.contains("1.11")) {
+						for (CustomRecipe cRecipe : cItem.getCustomRecipes())
+							cRecipe.registerBukkitRecipe(item);
+					} else {
+						String[] idPart = idName.split(":");
+						int i = 1;
+						for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
+							NamespacedKey key = new NamespacedKey(idPart[0], idPart[1] + "_" + i);
+							cRecipe.registerBukkitRecipe(key, item);
+							i++;
+						}
 					}
 				}
 			}

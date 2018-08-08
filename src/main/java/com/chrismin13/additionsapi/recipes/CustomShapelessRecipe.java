@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
@@ -38,17 +39,30 @@ public class CustomShapelessRecipe extends CustomRecipe {
 		return ingredients;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public ShapelessRecipe toBukkitRecipe(ItemStack result) {
-		ShapelessRecipe recipe = new ShapelessRecipe(result);
+		return toBukkitRecipe(null, result);
+	}
 
-		for (RecipeIngredient ingredient : getIngredients()) {
-			if (ingredient != null) {
-				recipe.addIngredient(ingredient.getMaterial(), ingredient.getBlockData());
+	@SuppressWarnings("deprecation")
+	@Override
+	public ShapelessRecipe toBukkitRecipe(NamespacedKey key, ItemStack result) {
+		try {
+			ShapelessRecipe recipe;
+			if (key != null)
+				recipe = new ShapelessRecipe(key, result);
+			else
+				recipe = new ShapelessRecipe(result);
+
+			for (RecipeIngredient ingredient : getIngredients()) {
+				if (ingredient != null) {
+					recipe.addIngredient(ingredient.getMaterial(), ingredient.getBlockData());
+				}
 			}
-		}
 
-		return recipe;
+			return recipe;
+		} catch (Exception e) {
+			return toBukkitRecipe(result);
+		}
 	}
 }
