@@ -2,7 +2,6 @@ package com.chrismin13.additionsapi.items.textured;
 
 import java.util.HashMap;
 
-
 import com.chrismin13.additionsapi.durability.ItemDurability;
 import com.chrismin13.additionsapi.events.AdditionsAPIInitializationEvent;
 import com.chrismin13.additionsapi.items.CustomBow;

@@ -1,7 +1,5 @@
 package com.chrismin13.additionsapi.commands;
 
-import com.chrismin13.additionsapi.items.CustomItem;
-import com.chrismin13.additionsapi.listeners.DurabilityBar;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -13,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
+import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
+import com.chrismin13.additionsapi.listeners.DurabilityBar;
 import com.chrismin13.additionsapi.utils.NumberUtils;
 
 import net.md_5.bungee.api.ChatColor;

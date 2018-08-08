@@ -24,15 +24,15 @@
  */
 package sun.tools.attach;
 
-import com.sun.tools.attach.VirtualMachine;
-import com.sun.tools.attach.VirtualMachineDescriptor;
-import com.sun.tools.attach.AttachNotSupportedException;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sun.tools.attach.AttachNotSupportedException;
+import com.sun.tools.attach.VirtualMachine;
+import com.sun.tools.attach.VirtualMachineDescriptor;
 
 public class WindowsAttachProvider extends HotSpotAttachProvider {
 

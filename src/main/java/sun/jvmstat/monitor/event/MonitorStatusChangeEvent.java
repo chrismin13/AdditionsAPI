@@ -26,6 +26,7 @@
 package sun.jvmstat.monitor.event;
 
 import java.util.List;
+
 import sun.jvmstat.monitor.MonitoredVm;
 
 /**

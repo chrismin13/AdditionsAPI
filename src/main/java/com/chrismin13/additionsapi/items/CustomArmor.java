@@ -54,7 +54,7 @@ public class CustomArmor extends CustomItem {
 		return ArmorType.getArmorType(getMaterial());
 	}
 
-	/**
+	/** 
 	 * Adds an Attribute to the CustomItem. If you don't know what they do or
 	 * how they work, check out the Minecraft wiki. The UUID will be the one
 	 * that is found by default in Minecraft for the specified Slot. The name

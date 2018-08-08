@@ -26,6 +26,7 @@
 package sun.jvmstat.monitor.event;
 
 import java.util.EventObject;
+
 import sun.jvmstat.monitor.MonitoredHost;
 
 /**
