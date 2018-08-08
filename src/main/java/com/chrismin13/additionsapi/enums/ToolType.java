@@ -70,30 +70,21 @@ public enum ToolType {
 
 		switch (this) {
 		case SWORD:
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("100", "100", "200"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("010", "010", "020"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("001", "001", "002"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("1", "1", "2"));
 			break;
 		case AXE:
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("110", "210", "200"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("110", "120", "020"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("011", "021", "020"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("011", "012", "002"));
-
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("11", "21", "20"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("11", "12", "02"));
 			break;
 		case PICKAXE:
 			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("111", "020", "020"));
 			break;
 		case SPADE:
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("100", "200", "200"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("010", "020", "020"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("001", "002", "002"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("1", "2", "2"));
 			break;
 		case HOE:
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("110", "200", "200"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("110", "020", "020"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("011", "020", "020"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("011", "002", "002"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("11", "20", "20"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("11", "02", "02"));
 			break;
 		default:
 			Debug.sayError("Invalid Tool Type: " + this.toString() + ". Is the plugin up to date?");

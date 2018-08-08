@@ -134,8 +134,7 @@ public enum ArmorType {
 
 		switch (this) {
 		case HELMET:
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("111", "101", "000"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("000", "111", "101"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("111", "101"));
 			break;
 		case CHESTPLATE:
 			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("101", "111", "111"));
@@ -144,8 +143,7 @@ public enum ArmorType {
 			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("111", "101", "101"));
 			break;
 		case BOOTS:
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("000", "101", "101"));
-			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("101", "101", "000"));
+			recipes.add(new CustomShapedRecipe(itemRecipe).setShape("101", "101"));
 			break;
 		default:
 			Debug.sayError("Invalid Armor Type: " + this.toString() + ". Is the plugin up to date?");
