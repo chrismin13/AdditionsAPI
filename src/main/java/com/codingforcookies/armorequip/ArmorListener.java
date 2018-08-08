@@ -1,8 +1,5 @@
 package com.codingforcookies.armorequip;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +20,7 @@ import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.chrismin13.additionsapi.enums.ArmorType;
+import com.chrismin13.additionsapi.utils.MaterialUtils;
 import com.codingforcookies.armorequip.ArmorEquipEvent.EquipMethod;
 
 /**
@@ -31,20 +29,7 @@ import com.codingforcookies.armorequip.ArmorEquipEvent.EquipMethod;
  * @Website http://codingforcookies.com/
  * @since Jul 30, 2015 6:43:34 PM
  */
-public class ArmorListener implements Listener{
-
-	private final List<String> blockedMaterials = Arrays.asList("FURNACE", "CHEST", "TRAPPED_CHEST", "BEACON",
-			"DISPENSER", "DROPPER", "HOPPER", "WORKBENCH", "ENCHANTMENT_TABLE", "ENDER_CHEST", "ANVIL", "BED_BLOCK",
-			"FENCE_GATE", "SPRUCE_FENCE_GATE", "BIRCH_FENCE_GATE", "ACACIA_FENCE_GATE", "JUNGLE_FENCE_GATE",
-			"DARK_OAK_FENCE_GATE", "IRON_DOOR_BLOCK", "WOODEN_DOOR", "SPRUCE_DOOR", "BIRCH_DOOR", "JUNGLE_DOOR",
-			"ACACIA_DOOR", "DARK_OAK_DOOR", "WOOD_BUTTON", "STONE_BUTTON", "TRAP_DOOR", "IRON_TRAPDOOR",
-			"DIODE_BLOCK_OFF", "DIODE_BLOCK_ON", "REDSTONE_COMPARATOR_OFF", "REDSTONE_COMPARATOR_ON", "FENCE",
-			"SPRUCE_FENCE", "BIRCH_FENCE", "JUNGLE_FENCE", "DARK_OAK_FENCE", "ACACIA_FENCE", "NETHER_FENCE",
-			"BREWING_STAND", "CAULDRON", "SIGN_POST", "WALL_SIGN", "SIGN", "LEVER", "BLACK_SHULKER_BOX",
-			"BLUE_SHULKER_BOX", "BROWN_SHULKER_BOX", "CYAN_SHULKER_BOX", "GRAY_SHULKER_BOX", "GREEN_SHULKER_BOX",
-			"LIGHT_BLUE_SHULKER_BOX", "LIME_SHULKER_BOX", "MAGENTA_SHULKER_BOX", "ORANGE_SHULKER_BOX",
-			"PINK_SHULKER_BOX", "PURPLE_SHULKER_BOX", "RED_SHULKER_BOX", "SILVER_SHULKER_BOX", "WHITE_SHULKER_BOX",
-			"YELLOW_SHULKER_BOX");
+public class ArmorListener implements Listener {
 
 	@EventHandler
 	public final void onInventoryClick(final InventoryClickEvent e){
@@ -124,9 +109,8 @@ public class ArmorListener implements Listener{
 			if(e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK){// Having both of these checks is useless, might as well do it though.
 				// Some blocks have actions when you right click them which stops the client from equipping the armor in hand.
 				Material mat = e.getClickedBlock().getType();
-				for(String s : blockedMaterials){
-					if(mat.name().equalsIgnoreCase(s)) return;
-				}
+				if (MaterialUtils.isInteractable(mat))
+					return;
 			}
 			ArmorType newArmorType = ArmorType.getArmorType(e.getItem());
 			if(newArmorType != null){
