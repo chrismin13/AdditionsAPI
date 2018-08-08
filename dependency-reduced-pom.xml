@@ -129,9 +129,9 @@
     <dependency>
       <groupId>Spigot</groupId>
       <artifactId>org.spigotmc</artifactId>
-      <version>1.13-pre7</version>
+      <version>1.13</version>
       <scope>system</scope>
-      <systemPath>C:/Users/chris/OneDrive/Eclipse Workspace/Test Server/spigot-1.13-pre7.jar</systemPath>
+      <systemPath>C:/Users/chris/OneDrive/Eclipse Workspace/Test Server/spigot-1.13.jar</systemPath>
     </dependency>
   </dependencies>
   <distributionManagement>
