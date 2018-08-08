@@ -39,8 +39,8 @@ public class DataFile {
 	private static List<String> items;
 
 	/**
-	 * This method is run when the plugin is enabled and when reloading. Not
-	 * meant to be used in any other occasion.
+	 * This method is run when the plugin is enabled and when reloading. Not meant
+	 * to be used in any other occasion.
 	 */
 	public DataFile setup() {
 		file = new File(plugin.getDataFolder(), "data.yml");
@@ -48,13 +48,30 @@ public class DataFile {
 		data.options().copyDefaults(true);
 		DataFile.data = data;
 		DataFile.items = data.getStringList("custom-items");
+
+		// 1.13 Migration
+		if (data.getInt("data-version", 0) < 1) {
+			ArrayList<String> items = new ArrayList<String>();
+			for (String item : DataFile.items) {
+				String[] itemSplit = item.split(";");
+				itemSplit[0] = itemSplit[0].replaceAll("SPADE", "SHOVEL").replaceAll("WOOD_", "WOODEN_")
+						.replaceAll("GOLD_", "GOLDEN_");
+
+				String finalItem = "";
+				for (String string : itemSplit)
+					finalItem = finalItem + string + ";";
+				finalItem = finalItem.substring(0, finalItem.length() - 1);
+				items.add(finalItem);
+			}
+			DataFile.items = items;
+			data.set("data-version", 1);
+		}
 		saveData();
 		return this;
 	}
 
 	/**
-	 * Add a new {@link StorageCustomItem} to be saved in the data.yml file.
-	 * <br>
+	 * Add a new {@link StorageCustomItem} to be saved in the data.yml file. <br>
 	 * <b>You must also use {@link #saveData()} to save the changes that you
 	 * made.</b>
 	 * 
@@ -69,8 +86,8 @@ public class DataFile {
 	}
 
 	/**
-	 * Converts a {@link CustomItemStack} to a {@link StorageCustomItem} to be
-	 * saved in the data.yml file. <br>
+	 * Converts a {@link CustomItemStack} to a {@link StorageCustomItem} to be saved
+	 * in the data.yml file. <br>
 	 * <b>You must also use {@link #saveData()} to save the changes that you
 	 * made.</b>
 	 * 
@@ -92,8 +109,8 @@ public class DataFile {
 	 *            The ID Name of the {@link StorageCustomItem}.
 	 * @param texture
 	 *            The Texture of the {@link StorageCustomItem}
-	 * @return The {@link StorageCustomItem} with the above values, as well as
-	 *         its Material and durability.
+	 * @return The {@link StorageCustomItem} with the above values, as well as its
+	 *         Material and durability.
 	 */
 	public StorageCustomItem getCustomItem(String idName, String texture) {
 		for (String string : items) {
@@ -112,8 +129,8 @@ public class DataFile {
 	 *            The Material of the {@link StorageCustomItem}.
 	 * @param durability
 	 *            The durability of the {@link StorageCustomItem}
-	 * @return The {@link StorageCustomItem} with the above values, as well as
-	 *         its ID Name and Texture Name.
+	 * @return The {@link StorageCustomItem} with the above values, as well as its
+	 *         ID Name and Texture Name.
 	 */
 	public StorageCustomItem getCustomItem(Material material, short durability) {
 		String m = material.toString();
@@ -133,8 +150,7 @@ public class DataFile {
 	 * 
 	 * @param material
 	 *            The Material for which you want a free durability point.
-	 * @return The durability value that is available for the specified
-	 *         Material.
+	 * @return The durability value that is available for the specified Material.
 	 */
 	public short getFreeDurability(Material material) {
 		String m = material.toString();
