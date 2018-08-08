@@ -76,7 +76,6 @@ import us.fihgu.toolbox.resourcepack.ResourcePackServer;
 public class AdditionsAPI extends JavaPlugin implements Listener {
 
 	private static JavaPlugin instance;
-	private static String mcver = Bukkit.getServer().getVersion();
 
 	public void onEnable() {
 
@@ -274,17 +273,12 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 				ItemStack item = cStack.getItemStack();
 				cStacks.add(cStack);
 				if (cItemConfig.canBeCreated()) {
-					if (mcver.contains("1.9") || mcver.contains("1.10") || mcver.contains("1.11")) {
-						for (CustomRecipe cRecipe : cItem.getCustomRecipes())
-							cRecipe.registerBukkitRecipe(item);
-					} else {
-						String[] idPart = idName.split(":");
-						int i = 1;
-						for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
-							NamespacedKey key = new NamespacedKey(idPart[0], idPart[1] + "_" + i);
-							cRecipe.registerBukkitRecipe(key, item);
-							i++;
-						}
+					String[] idPart = idName.split(":");
+					int i = 1;
+					for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
+						NamespacedKey key = new NamespacedKey(idPart[0], idPart[1] + "_" + i);
+						cRecipe.registerBukkitRecipe(key, item);
+						i++;
 					}
 				}
 			}
@@ -343,7 +337,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	public static String getIdName(ItemStack item) {
 		if (item == null || item.getType().equals(Material.AIR))
 			return null;
-		
+
 		ItemStack stack = NbtFactory.getCraftItemStack(item.clone());
 		NbtCompound nbt = NbtFactory.fromItemTag(stack);
 		return nbt.getString("CustomItem.IdName", null);

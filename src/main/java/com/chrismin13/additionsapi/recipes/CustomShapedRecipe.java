@@ -94,7 +94,6 @@ public class CustomShapedRecipe extends CustomRecipe implements Cloneable {
 		if (shape == null)
 			throw new NullPointerException("The shape of a crafting recipe cannot be null!");
 
-		try {
 		ShapedRecipe recipe;
 		if (key != null)
 			recipe = new ShapedRecipe(key, result);
@@ -109,9 +108,6 @@ public class CustomShapedRecipe extends CustomRecipe implements Cloneable {
 		}
 
 		return recipe;
-		} catch (Exception e) {
-			return toBukkitRecipe(result);
-		}
 	}
 
 	@Override
