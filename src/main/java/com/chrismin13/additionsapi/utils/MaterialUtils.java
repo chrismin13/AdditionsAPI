@@ -3177,7 +3177,7 @@ public class MaterialUtils {
 	 * @return true if this material can be interacted with.
 	 */
 	@SuppressWarnings("deprecation")
-	public boolean isInteractable(Material material) {
+	public static boolean isInteractable(Material material) {
 		try {
 			return material.isInteractable();
 		} catch (Exception e) {
