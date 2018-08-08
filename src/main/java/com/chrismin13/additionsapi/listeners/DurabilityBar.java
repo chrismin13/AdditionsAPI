@@ -29,7 +29,6 @@ import org.bukkit.inventory.PlayerInventory;
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.files.BossBarConfig;
 import com.chrismin13.additionsapi.files.ConfigFile;
-import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 
@@ -166,23 +165,19 @@ public class DurabilityBar implements Listener {
 		int durability = 0;
 		int durabilityMax = 0;
 		if (AdditionsAPI.isCustomItem(item)) {
-			if (!config.showCustomItems() || item.getType().getMaxDurability() == 0) {
+			if (!config.showCustomItems()) {
 				bar.setVisible(false);
 				bar.setProgress(1.0D);
 				return;
 			}
 			CustomItemStack cStack = new CustomItemStack(item);
-			CustomItem cItem = cStack.getCustomItem();
-			if (cItem.hasFakeDurability()) {
+			if (cStack.getCustomItem().hasFakeDurability()) {
 				durability = cStack.getFakeDurability();
-				durabilityMax = cItem.getFakeDurability();
+				durabilityMax = cStack.getCustomItem().getFakeDurability();
 			} else if (cStack.getCustomItem().isUnbreakable()) {
 				bar.setVisible(false);
 				bar.setProgress(1.0D);
 				return;
-			} else {
-				durabilityMax = item.getType().getMaxDurability();
-				durability = durabilityMax - item.getDurability();
 			}
 		} else if (item.getType().getMaxDurability() != 0) {
 			if (!config.showVanillaItems()) {
