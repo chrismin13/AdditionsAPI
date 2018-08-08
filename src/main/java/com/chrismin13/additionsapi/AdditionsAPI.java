@@ -343,6 +343,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	public static String getIdName(ItemStack item) {
 		if (item == null || item.getType().equals(Material.AIR))
 			return null;
+		
 		ItemStack stack = NbtFactory.getCraftItemStack(item.clone());
 		NbtCompound nbt = NbtFactory.fromItemTag(stack);
 		return nbt.getString("CustomItem.IdName", null);
