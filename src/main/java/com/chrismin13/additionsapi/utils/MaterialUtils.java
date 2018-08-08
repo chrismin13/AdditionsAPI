@@ -3165,5 +3165,274 @@ public class MaterialUtils {
 			}
 		}
 	}
+	
+	/**
+	 * Checks if this Material can be interacted with. Interactable blocks include
+	 * those with functionality given that they are interacted with by a player such
+	 * as chests, furnaces, etc.
+	 *
+	 * Some blocks such as Piston Heads and stairs are considered intractable though
+	 * may not perform any additional functionality.
+	 *
+	 * @return true if this material can be interacted with.
+	 */
+	@SuppressWarnings("deprecation")
+	public boolean isInteractable(Material material) {
+		try {
+			return material.isInteractable();
+		} catch (Exception e) {
 
+			switch (material) {
+			// <editor-fold defaultstate="collapsed" desc="isInteractable">
+			case ACACIA_BUTTON:
+			case ACACIA_DOOR:
+			case ACACIA_FENCE:
+			case ACACIA_FENCE_GATE:
+			case ACACIA_STAIRS:
+			case ACACIA_TRAPDOOR:
+			case ANVIL:
+			case BEACON:
+			case BIRCH_BUTTON:
+			case BIRCH_DOOR:
+			case BIRCH_FENCE:
+			case BIRCH_FENCE_GATE:
+			case BIRCH_STAIRS:
+			case BIRCH_TRAPDOOR:
+			case BLACK_BED:
+			case BLACK_SHULKER_BOX:
+			case BLUE_BED:
+			case BLUE_SHULKER_BOX:
+			case BREWING_STAND:
+			case BRICK_STAIRS:
+			case BROWN_BED:
+			case BROWN_SHULKER_BOX:
+			case CAKE:
+			case CAULDRON:
+			case CHAIN_COMMAND_BLOCK:
+			case CHEST:
+			case CHIPPED_ANVIL:
+			case COBBLESTONE_STAIRS:
+			case COMMAND_BLOCK:
+			case COMPARATOR:
+			case CRAFTING_TABLE:
+			case CYAN_BED:
+			case CYAN_SHULKER_BOX:
+			case DAMAGED_ANVIL:
+			case DARK_OAK_BUTTON:
+			case DARK_OAK_DOOR:
+			case DARK_OAK_FENCE:
+			case DARK_OAK_FENCE_GATE:
+			case DARK_OAK_STAIRS:
+			case DARK_OAK_TRAPDOOR:
+			case DARK_PRISMARINE_STAIRS:
+			case DAYLIGHT_DETECTOR:
+			case DISPENSER:
+			case DRAGON_EGG:
+			case DROPPER:
+			case ENCHANTING_TABLE:
+			case ENDER_CHEST:
+			case FLOWER_POT:
+			case FURNACE:
+			case GRAY_BED:
+			case GRAY_SHULKER_BOX:
+			case GREEN_BED:
+			case GREEN_SHULKER_BOX:
+			case HOPPER:
+			case IRON_DOOR:
+			case IRON_TRAPDOOR:
+			case JUKEBOX:
+			case JUNGLE_BUTTON:
+			case JUNGLE_DOOR:
+			case JUNGLE_FENCE:
+			case JUNGLE_FENCE_GATE:
+			case JUNGLE_STAIRS:
+			case JUNGLE_TRAPDOOR:
+			case LEVER:
+			case LIGHT_BLUE_BED:
+			case LIGHT_BLUE_SHULKER_BOX:
+			case LIGHT_GRAY_BED:
+			case LIGHT_GRAY_SHULKER_BOX:
+			case LIME_BED:
+			case LIME_SHULKER_BOX:
+			case MAGENTA_BED:
+			case MAGENTA_SHULKER_BOX:
+			case MOVING_PISTON:
+			case NETHER_BRICK_FENCE:
+			case NETHER_BRICK_STAIRS:
+			case NOTE_BLOCK:
+			case OAK_BUTTON:
+			case OAK_DOOR:
+			case OAK_FENCE:
+			case OAK_FENCE_GATE:
+			case OAK_STAIRS:
+			case OAK_TRAPDOOR:
+			case ORANGE_BED:
+			case ORANGE_SHULKER_BOX:
+			case PINK_BED:
+			case PINK_SHULKER_BOX:
+			case POTTED_ACACIA_SAPLING:
+			case POTTED_ALLIUM:
+			case POTTED_AZURE_BLUET:
+			case POTTED_BIRCH_SAPLING:
+			case POTTED_BLUE_ORCHID:
+			case POTTED_BROWN_MUSHROOM:
+			case POTTED_CACTUS:
+			case POTTED_DANDELION:
+			case POTTED_DARK_OAK_SAPLING:
+			case POTTED_DEAD_BUSH:
+			case POTTED_FERN:
+			case POTTED_JUNGLE_SAPLING:
+			case POTTED_OAK_SAPLING:
+			case POTTED_ORANGE_TULIP:
+			case POTTED_OXEYE_DAISY:
+			case POTTED_PINK_TULIP:
+			case POTTED_POPPY:
+			case POTTED_RED_MUSHROOM:
+			case POTTED_RED_TULIP:
+			case POTTED_SPRUCE_SAPLING:
+			case POTTED_WHITE_TULIP:
+			case PRISMARINE_BRICK_STAIRS:
+			case PRISMARINE_STAIRS:
+			case PUMPKIN:
+			case PURPLE_BED:
+			case PURPLE_SHULKER_BOX:
+			case PURPUR_STAIRS:
+			case QUARTZ_STAIRS:
+			case REDSTONE_ORE:
+			case RED_BED:
+			case RED_SANDSTONE_STAIRS:
+			case RED_SHULKER_BOX:
+			case REPEATER:
+			case REPEATING_COMMAND_BLOCK:
+			case SANDSTONE_STAIRS:
+			case SHULKER_BOX:
+			case SIGN:
+			case SPRUCE_BUTTON:
+			case SPRUCE_DOOR:
+			case SPRUCE_FENCE:
+			case SPRUCE_FENCE_GATE:
+			case SPRUCE_STAIRS:
+			case SPRUCE_TRAPDOOR:
+			case STONE_BRICK_STAIRS:
+			case STONE_BUTTON:
+			case STRUCTURE_BLOCK:
+			case TNT:
+			case TRAPPED_CHEST:
+			case WALL_SIGN:
+			case WHITE_BED:
+			case WHITE_SHULKER_BOX:
+			case YELLOW_BED:
+			case YELLOW_SHULKER_BOX:
+				// ----- Legacy Seperator -----
+			case LEGACY_DISPENSER:
+			case LEGACY_NOTE_BLOCK:
+			case LEGACY_BED_BLOCK:
+			case LEGACY_PISTON_MOVING_PIECE:
+			case LEGACY_TNT:
+			case LEGACY_WOOD_STAIRS:
+			case LEGACY_CHEST:
+			case LEGACY_WORKBENCH:
+			case LEGACY_FURNACE:
+			case LEGACY_SIGN_POST:
+			case LEGACY_WOODEN_DOOR:
+			case LEGACY_COBBLESTONE_STAIRS:
+			case LEGACY_LEVER:
+			case LEGACY_IRON_DOOR_BLOCK:
+			case LEGACY_REDSTONE_ORE:
+			case LEGACY_GLOWING_REDSTONE_ORE:
+			case LEGACY_STONE_BUTTON:
+			case LEGACY_JUKEBOX:
+			case LEGACY_FENCE:
+			case LEGACY_CAKE_BLOCK:
+			case LEGACY_DIODE_BLOCK_OFF:
+			case LEGACY_DIODE_BLOCK_ON:
+			case LEGACY_TRAP_DOOR:
+			case LEGACY_FENCE_GATE:
+			case LEGACY_BRICK_STAIRS:
+			case LEGACY_SMOOTH_STAIRS:
+			case LEGACY_NETHER_FENCE:
+			case LEGACY_NETHER_BRICK_STAIRS:
+			case LEGACY_ENCHANTMENT_TABLE:
+			case LEGACY_BREWING_STAND:
+			case LEGACY_CAULDRON:
+			case LEGACY_DRAGON_EGG:
+			case LEGACY_SANDSTONE_STAIRS:
+			case LEGACY_ENDER_CHEST:
+			case LEGACY_SPRUCE_WOOD_STAIRS:
+			case LEGACY_BIRCH_WOOD_STAIRS:
+			case LEGACY_JUNGLE_WOOD_STAIRS:
+			case LEGACY_COMMAND:
+			case LEGACY_BEACON:
+			case LEGACY_FLOWER_POT:
+			case LEGACY_WOOD_BUTTON:
+			case LEGACY_ANVIL:
+			case LEGACY_TRAPPED_CHEST:
+			case LEGACY_REDSTONE_COMPARATOR_OFF:
+			case LEGACY_REDSTONE_COMPARATOR_ON:
+			case LEGACY_DAYLIGHT_DETECTOR:
+			case LEGACY_HOPPER:
+			case LEGACY_QUARTZ_STAIRS:
+			case LEGACY_DROPPER:
+			case LEGACY_ACACIA_STAIRS:
+			case LEGACY_DARK_OAK_STAIRS:
+			case LEGACY_IRON_TRAPDOOR:
+			case LEGACY_DAYLIGHT_DETECTOR_INVERTED:
+			case LEGACY_RED_SANDSTONE_STAIRS:
+			case LEGACY_SPRUCE_FENCE_GATE:
+			case LEGACY_BIRCH_FENCE_GATE:
+			case LEGACY_JUNGLE_FENCE_GATE:
+			case LEGACY_DARK_OAK_FENCE_GATE:
+			case LEGACY_ACACIA_FENCE_GATE:
+			case LEGACY_SPRUCE_FENCE:
+			case LEGACY_BIRCH_FENCE:
+			case LEGACY_JUNGLE_FENCE:
+			case LEGACY_DARK_OAK_FENCE:
+			case LEGACY_ACACIA_FENCE:
+			case LEGACY_SPRUCE_DOOR:
+			case LEGACY_BIRCH_DOOR:
+			case LEGACY_JUNGLE_DOOR:
+			case LEGACY_ACACIA_DOOR:
+			case LEGACY_DARK_OAK_DOOR:
+			case LEGACY_PURPUR_STAIRS:
+			case LEGACY_COMMAND_REPEATING:
+			case LEGACY_COMMAND_CHAIN:
+			case LEGACY_WHITE_SHULKER_BOX:
+			case LEGACY_ORANGE_SHULKER_BOX:
+			case LEGACY_MAGENTA_SHULKER_BOX:
+			case LEGACY_LIGHT_BLUE_SHULKER_BOX:
+			case LEGACY_YELLOW_SHULKER_BOX:
+			case LEGACY_LIME_SHULKER_BOX:
+			case LEGACY_PINK_SHULKER_BOX:
+			case LEGACY_GRAY_SHULKER_BOX:
+			case LEGACY_SILVER_SHULKER_BOX:
+			case LEGACY_CYAN_SHULKER_BOX:
+			case LEGACY_PURPLE_SHULKER_BOX:
+			case LEGACY_BLUE_SHULKER_BOX:
+			case LEGACY_BROWN_SHULKER_BOX:
+			case LEGACY_GREEN_SHULKER_BOX:
+			case LEGACY_RED_SHULKER_BOX:
+			case LEGACY_BLACK_SHULKER_BOX:
+			case LEGACY_STRUCTURE_BLOCK:
+			case LEGACY_SIGN:
+			case LEGACY_WOOD_DOOR:
+			case LEGACY_IRON_DOOR:
+			case LEGACY_CAKE:
+			case LEGACY_BED:
+			case LEGACY_DIODE:
+			case LEGACY_BREWING_STAND_ITEM:
+			case LEGACY_CAULDRON_ITEM:
+			case LEGACY_FLOWER_POT_ITEM:
+			case LEGACY_REDSTONE_COMPARATOR:
+			case LEGACY_SPRUCE_DOOR_ITEM:
+			case LEGACY_BIRCH_DOOR_ITEM:
+			case LEGACY_JUNGLE_DOOR_ITEM:
+			case LEGACY_ACACIA_DOOR_ITEM:
+			case LEGACY_DARK_OAK_DOOR_ITEM:
+				// </editor-fold>
+				return true;
+			default:
+				return false;
+			}
+		}
+	}
 }
