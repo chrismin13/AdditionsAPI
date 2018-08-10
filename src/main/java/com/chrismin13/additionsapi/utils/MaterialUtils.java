@@ -5,6 +5,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class MaterialUtils {
 
+	public static boolean useNewMethods = true;
+
 	public static boolean isInstantlyBreakable(Material material) {
 		float strength = getHardness(material);
 		if (strength == 0F)
@@ -363,9 +365,9 @@ public class MaterialUtils {
 	 */
 	@SuppressWarnings("deprecation")
 	public static float getHardness(Material material) {
-		try {
+		if (useNewMethods) {
 			return material.getHardness();
-		} catch (Exception e) {
+		} else {
 			switch (material) {
 			// <editor-fold defaultstate="collapsed" desc="getBlockHardness">
 			case BARRIER:
@@ -1764,9 +1766,9 @@ public class MaterialUtils {
 	 */
 	@SuppressWarnings("deprecation")
 	public static float getBlastResistance(Material material) {
-		try {
+		if (useNewMethods) {
 			return material.getBlastResistance();
-		} catch (Exception e) {
+		} else {
 			switch (material) {
 			// <editor-fold defaultstate="collapsed" desc="getBlastResistance">
 			case ACACIA_BOAT:
@@ -3165,7 +3167,7 @@ public class MaterialUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * Checks if this Material can be interacted with. Interactable blocks include
 	 * those with functionality given that they are interacted with by a player such
@@ -3178,10 +3180,9 @@ public class MaterialUtils {
 	 */
 	@SuppressWarnings("deprecation")
 	public static boolean isInteractable(Material material) {
-		try {
+		if (useNewMethods) {
 			return material.isInteractable();
-		} catch (Exception e) {
-
+		} else {
 			switch (material) {
 			// <editor-fold defaultstate="collapsed" desc="isInteractable">
 			case ACACIA_BUTTON:

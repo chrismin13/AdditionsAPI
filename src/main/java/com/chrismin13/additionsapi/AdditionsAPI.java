@@ -63,6 +63,7 @@ import com.chrismin13.additionsapi.listeners.vanilla.PlayerPickupItem;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerShearEntity;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
+import com.chrismin13.additionsapi.utils.MaterialUtils;
 import com.codingforcookies.armorequip.ArmorListener;
 import com.comphenix.attribute.NbtFactory;
 import com.comphenix.attribute.NbtFactory.NbtCompound;
@@ -155,6 +156,15 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		PluginCommand additions = getCommand("additions");
 		additions.setExecutor(new AdditionsCmd());
 		additions.setTabCompleter(new AdditionsTab());
+		
+		// Check if the server has the methods I added to Spigot (anything newer than around the 6th of August 2018 should be good)
+		try {
+			Material.DIAMOND_BLOCK.isInteractable();
+			Material.DIAMOND_BLOCK.getHardness();
+			Material.DIAMOND_BLOCK.getBlastResistance();
+		} catch (NoSuchMethodError e) {
+			MaterialUtils.useNewMethods = false;
+		}
 
 		// Commented out - these are not ready yet. Works on Linux but still fighting
 		// for the rest of the OSes.
