@@ -76,8 +76,14 @@ public class ResourcePackManager {
 	public static String resourcePackMd5;
 
 	public static String resourcePackSha1;
-	
+
 	public static byte[] resourcePackSha1Byte;
+
+	/**
+	 * Checks if the server has the method to send the resource pack's hash to the
+	 * player.
+	 */
+	public static boolean hasSendWithHash = true;
 
 	/**
 	 * Register a resource pack to be combined into server resource pack.<br>
@@ -141,7 +147,7 @@ public class ResourcePackManager {
 		resourcePackMd5 = DigestUtils.md5Hex(isByte);
 		resourcePackSha1 = DigestUtils.sha1Hex(isByte);
 		resourcePackSha1Byte = DatatypeConverter.parseHexBinary(resourcePackSha1);
-		
+
 		fisRP.close();
 
 		String currentMd5 = AdditionsAPI.getInstance().getConfig().getString("resource-pack.md5");
