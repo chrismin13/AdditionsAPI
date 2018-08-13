@@ -43,7 +43,16 @@ public class ResourcePackListener implements Listener {
 					link = MinePackInitializationMethod.resourcePack;
 				}
 				if (player != null && player.isOnline())
-					player.setResourcePack(link, ResourcePackManager.resourcePackSha1Byte);
+					if (ResourcePackManager.hasSendWithHash)
+						try {
+							player.setResourcePack(link, ResourcePackManager.resourcePackSha1Byte);
+						} catch (NoSuchMethodError e) {
+							ResourcePackManager.hasSendWithHash = false;
+							player.setResourcePack(link);
+						}
+					else
+						player.setResourcePack(link);
+
 				Debug.saySuper("Sending Resource Pack Link to Player: " + link);
 			}
 		}, 20L);
