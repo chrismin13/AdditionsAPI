@@ -213,7 +213,7 @@ public class Attributes {
 		}
 
 		public Attribute setSlot(@Nonnull EquipmentSlot slot) {
-			Preconditions.checkNotNull(slot, "type cannot be NULL.");
+			Preconditions.checkNotNull(slot, "slot cannot be NULL.");
 			data.put("Slot", EquipmentSlotUtils.toAttributeString(slot));
 			return this;
 		}

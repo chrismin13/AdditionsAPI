@@ -58,7 +58,7 @@
 # #                          using a permission node of the form:
 # #                          "plugin_name.item_name.allow.action"
 # #                          If this is set to deny, it will be the
-# #                          opposite. Reffer to plugin page for more
+# #                          opposite. Refer to plugin page for more
 # #                          info. Default is deny.
 # = #
 # ------=======-------=======-------=======-------=======-------=======----- #
