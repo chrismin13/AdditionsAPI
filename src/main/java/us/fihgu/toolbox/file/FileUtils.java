@@ -71,7 +71,8 @@ public class FileUtils {
 		} finally {
 			out.flush();
 			out.close();
-			in.close();
+			if (in != null)
+				in.close();
 		}
 	}
 
@@ -139,7 +140,7 @@ public class FileUtils {
 		} else {
 			FileInputStream in = new FileInputStream(file);
 			ZipEntry entry = new ZipEntry(path);
-			
+
 			entry.setTime(1500135786000L);
 
 			out.putNextEntry(entry);
@@ -215,48 +216,36 @@ public class FileUtils {
 			}
 		}
 	}
-/*
-	public static void compressZipfileWithDate(String sourceDir, String outputFile, long dateInMil) throws IOException, FileNotFoundException {
-		ZipOutputStream zipFile = new ZipOutputStream(new FileOutputStream(outputFile));
-		zipFile.setLevel(9);
-		compressDirectoryToZipfileWithDate(sourceDir, sourceDir, zipFile, dateInMil);
-		zipFile.close();
-	}
-
-	private static void compressDirectoryToZipfileWithDate(String rootDir, String sourceDir, ZipOutputStream out, long dateInMil)
-			throws IOException, FileNotFoundException {
-		for (File file : new File(sourceDir).listFiles()) {
-			file.setLastModified(dateInMil);
-			if (file.isDirectory()) {
-				ZipEntry entry = new ZipEntry(file.getAbsolutePath().replace(rootDir + File.separator, "") + File.separator);
-				entry.setTime(dateInMil);
-				FileTime time = FileTime.fromMillis(dateInMil);
-				entry.setCreationTime(time);
-				entry.setLastAccessTime(time);
-				entry.setLastModifiedTime(time);
-				out.putNextEntry(entry);
-				
-				compressDirectoryToZipfileWithDate(rootDir, file.getAbsolutePath(), out, dateInMil);
-			} else {
-				ZipEntry entry = new ZipEntry(file.getAbsolutePath().replace(rootDir + File.separator, ""));
-				entry.setTime(dateInMil);
-				FileTime time = FileTime.fromMillis(dateInMil);
-				entry.setCreationTime(time);
-				entry.setLastAccessTime(time);
-				entry.setLastModifiedTime(time);
-				out.putNextEntry(entry);
-
-				FileInputStream in = new FileInputStream(file.getAbsolutePath());
-				
-		        int n;
-		        byte[] defaultBuffer = new byte[1024 * 4];
-		        while (-1 != (n = in.read(defaultBuffer))) {
-		            out.write(defaultBuffer, 0, n);
-		        }
-				
-		        in.close();
-			}
-		}
-	}
-	*/
+	/*
+	 * public static void compressZipfileWithDate(String sourceDir, String
+	 * outputFile, long dateInMil) throws IOException, FileNotFoundException {
+	 * ZipOutputStream zipFile = new ZipOutputStream(new
+	 * FileOutputStream(outputFile)); zipFile.setLevel(9);
+	 * compressDirectoryToZipfileWithDate(sourceDir, sourceDir, zipFile, dateInMil);
+	 * zipFile.close(); }
+	 * 
+	 * private static void compressDirectoryToZipfileWithDate(String rootDir, String
+	 * sourceDir, ZipOutputStream out, long dateInMil) throws IOException,
+	 * FileNotFoundException { for (File file : new File(sourceDir).listFiles()) {
+	 * file.setLastModified(dateInMil); if (file.isDirectory()) { ZipEntry entry =
+	 * new ZipEntry(file.getAbsolutePath().replace(rootDir + File.separator, "") +
+	 * File.separator); entry.setTime(dateInMil); FileTime time =
+	 * FileTime.fromMillis(dateInMil); entry.setCreationTime(time);
+	 * entry.setLastAccessTime(time); entry.setLastModifiedTime(time);
+	 * out.putNextEntry(entry);
+	 * 
+	 * compressDirectoryToZipfileWithDate(rootDir, file.getAbsolutePath(), out,
+	 * dateInMil); } else { ZipEntry entry = new
+	 * ZipEntry(file.getAbsolutePath().replace(rootDir + File.separator, ""));
+	 * entry.setTime(dateInMil); FileTime time = FileTime.fromMillis(dateInMil);
+	 * entry.setCreationTime(time); entry.setLastAccessTime(time);
+	 * entry.setLastModifiedTime(time); out.putNextEntry(entry);
+	 * 
+	 * FileInputStream in = new FileInputStream(file.getAbsolutePath());
+	 * 
+	 * int n; byte[] defaultBuffer = new byte[1024 * 4]; while (-1 != (n =
+	 * in.read(defaultBuffer))) { out.write(defaultBuffer, 0, n); }
+	 * 
+	 * in.close(); } } }
+	 */
 }
