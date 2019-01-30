@@ -43,6 +43,7 @@
 						</relocation>
 					</relocations>
 				</configuration>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -130,63 +131,41 @@
 			<id>codemc</id>
 			<url>https://repo.codemc.org/repository/maven-public/</url>
 		</repository>
+
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
-
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- This unfortunately brings the final JAR file to almost 20mb in size. 
-			This is the most minimal selenium dependency thatI've found is still compatible. -->
+			This is the most minimal selenium dependency that I've found is still compatible. -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>htmlunit-driver</artifactId>
 			<version>2.31.0</version>
 		</dependency>
 
-		<!-- If you are compiling this from the GitHub Repo, you must first install 
-			the Yamakaja Runtime Transformer local Maven repo by following the instructions 
-			on its Github page -->
 		<dependency>
-			<groupId>me.yamakaja.runtimetransformer</groupId>
-			<artifactId>api</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- If you are compiling this from the GitHub Repo, you must first install 
-			the Yamakaja Runtime Transformer local Maven repo by following the instructions 
-			on its Github page -->
-		<dependency>
-			<groupId>me.yamakaja.runtimetransformer</groupId>
-			<artifactId>agent</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.13.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
-		</dependency>
-
-		<!-- If you are compiling this from the GitHub Repo, change systemPath 
-			to a Spigot jar of that version that is located on your computer. There is 
-			no maven repo that satisfies the dependencies in NMS, this is the best solution -->
-		<dependency>
-			<groupId>Spigot</groupId>
-			<artifactId>org.spigotmc</artifactId>
-			<version>1.13</version>
-			<scope>system</scope>
-      <systemPath>C:/Users/chris/OneDrive/Eclipse Workspace/Test Server/spigot-1.13.jar</systemPath>
 		</dependency>
 
 		<dependency>
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit</artifactId>
-			<version>1.2</version>
+			<version>1.4</version>
+			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
