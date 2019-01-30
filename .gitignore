@@ -69,3 +69,4 @@ $RECYCLE.BIN/
 */target/**
 
 dependency-reduced-pom.xml
+/target/
