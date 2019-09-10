@@ -79,6 +79,8 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	private static String mcver = Bukkit.getServer().getVersion();
 
 	public void onEnable() {
+		
+		System.out.println("Hello Tutorial World!");
 
 		instance = this;
 
