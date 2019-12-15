@@ -43,6 +43,7 @@ public class CustomItemPlayerInteract implements Listener {
 
 		if (customEvent.isCancelled()) {
 			/*
+			 * TODO:
 			 * For some crazy reason the event is always cancelled when using a Shield and
 			 * Right Clicking Air. WTF SPIGOT. Even though the event is already cancelled,
 			 * it still lowers the shield when you cancel it.

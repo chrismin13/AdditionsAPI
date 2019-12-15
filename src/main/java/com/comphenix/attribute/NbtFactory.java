@@ -335,7 +335,8 @@ public class NbtFactory {
                 
                 // Prepare NBT
                 COMPOUND_CLASS = getMethod(0, Modifier.STATIC, offlinePlayer, "getData").getReturnType();
-                BASE_CLASS = COMPOUND_CLASS.getSuperclass();
+                for (Class<?> clazz : COMPOUND_CLASS.getInterfaces())
+                	BASE_CLASS = clazz;
                 NBT_GET_TYPE = getMethod(0, Modifier.STATIC, BASE_CLASS, "getTypeId");
                 NBT_CREATE_TAG = getMethod(Modifier.STATIC, 0, BASE_CLASS, "createTag", byte.class);
                 
@@ -376,7 +377,7 @@ public class NbtFactory {
     		return name;
     	} else {
     		// Fallback
-    		return "org.bukkit.craftbukkit.v1_12_R1"; 
+    		return "org.bukkit.craftbukkit.v1_13_R1"; 
     	}
     } 
     

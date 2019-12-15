@@ -33,7 +33,7 @@ public class CustomItemBlockBreak implements Listener {
 		boolean instantlyBreakable = MaterialUtils.isInstantlyBreakable(material);
 		PlayerCustomItemDamageEvent damageEvent = new PlayerCustomItemDamageEvent(player, item, 0, cItem);
 		ItemDurability mechanics = cItem.getDurabilityMechanics();
-		
+
 		if (instantlyBreakable) {
 			damageEvent.setDamage(mechanics.getInstantBlockBreak());
 		} else {

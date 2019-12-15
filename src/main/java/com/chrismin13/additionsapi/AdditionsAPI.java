@@ -63,6 +63,7 @@ import com.chrismin13.additionsapi.listeners.vanilla.PlayerPickupItem;
 import com.chrismin13.additionsapi.listeners.vanilla.PlayerShearEntity;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
+import com.chrismin13.additionsapi.utils.MaterialUtils;
 import com.codingforcookies.armorequip.ArmorListener;
 import com.comphenix.attribute.NbtFactory;
 import com.comphenix.attribute.NbtFactory.NbtCompound;
@@ -76,11 +77,8 @@ import us.fihgu.toolbox.resourcepack.ResourcePackServer;
 public class AdditionsAPI extends JavaPlugin implements Listener {
 
 	private static JavaPlugin instance;
-	private static String mcver = Bukkit.getServer().getVersion();
 
 	public void onEnable() {
-		
-		System.out.println("Hello Tutorial World!");
 
 		instance = this;
 
@@ -158,6 +156,15 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		PluginCommand additions = getCommand("additions");
 		additions.setExecutor(new AdditionsCmd());
 		additions.setTabCompleter(new AdditionsTab());
+		
+		// Check if the server has the methods I added to Spigot (anything newer than around the 6th of August 2018 should be good)
+		try {
+			Material.DIAMOND_BLOCK.isInteractable();
+			Material.DIAMOND_BLOCK.getHardness();
+			Material.DIAMOND_BLOCK.getBlastResistance();
+		} catch (NoSuchMethodError e) {
+			MaterialUtils.useNewMethods = false;
+		}
 
 		// Commented out - these are not ready yet. Works on Linux but still fighting
 		// for the rest of the OSes.
@@ -276,17 +283,12 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 				ItemStack item = cStack.getItemStack();
 				cStacks.add(cStack);
 				if (cItemConfig.canBeCreated()) {
-					if (mcver.contains("1.9") || mcver.contains("1.10") || mcver.contains("1.11")) {
-						for (CustomRecipe cRecipe : cItem.getCustomRecipes())
-							cRecipe.registerBukkitRecipe(item);
-					} else {
-						String[] idPart = idName.split(":");
-						int i = 1;
-						for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
-							NamespacedKey key = new NamespacedKey(idPart[0], idPart[1] + "_" + i);
-							cRecipe.registerBukkitRecipe(key, item);
-							i++;
-						}
+					String[] idPart = idName.split(":");
+					int i = 1;
+					for (CustomRecipe cRecipe : cItem.getCustomRecipes()) {
+						NamespacedKey key = new NamespacedKey(idPart[0], idPart[1] + "_" + i);
+						cRecipe.registerBukkitRecipe(key, item);
+						i++;
 					}
 				}
 			}
@@ -345,6 +347,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	public static String getIdName(ItemStack item) {
 		if (item == null || item.getType().equals(Material.AIR))
 			return null;
+
 		ItemStack stack = NbtFactory.getCraftItemStack(item.clone());
 		NbtCompound nbt = NbtFactory.fromItemTag(stack);
 		return nbt.getString("CustomItem.IdName", null);

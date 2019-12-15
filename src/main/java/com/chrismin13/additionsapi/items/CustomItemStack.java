@@ -163,7 +163,7 @@ public class CustomItemStack implements Cloneable {
 		ItemMeta meta = item.getItemMeta();
 
 		// Unbreakable
-		meta.spigot().setUnbreakable(cItem.isUnbreakable());
+		meta.setUnbreakable(cItem.isUnbreakable());
 
 		// Display Name
 		meta.setDisplayName(cItem.getDisplayName());

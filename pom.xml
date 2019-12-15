@@ -14,7 +14,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -41,6 +41,11 @@
 							<shadedPattern>com.chrismin13.additionsapi.apache.http</shadedPattern>
 						</relocation>
 					</relocations>
+					<artifactSet>
+             	   <includes>
+           		      <include>commons-io:commons-io</include>
+                  </includes>
+               </artifactSet>
 				</configuration>
 				<version>3.2.1</version>
 				<executions>
@@ -58,7 +63,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<finalName>AdditionsAPI-for-1.9-1.12</finalName>                   
+					<finalName>AdditionsAPI-for-1.15</finalName>                   
 				</configuration>
 			</plugin> 
 		</plugins>
@@ -93,8 +98,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.12.2-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
+			<version>1.15-R0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -115,6 +119,13 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+		
+		<!-- This library is included in 1.13, but not in 1.14. -->
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
 	</dependencies>
-	
 </project>
