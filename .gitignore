@@ -66,3 +66,7 @@ $RECYCLE.BIN/
 *.class
 *.prefs
 .project
+*/target/**
+
+dependency-reduced-pom.xml
+/target/

@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
+import com.chrismin13.additionsapi.permissions.PermissionType;
 import com.chrismin13.additionsapi.utils.Debug;
 
 /**
@@ -105,5 +106,12 @@ public class ConfigFile {
 	public BossBarConfig getBossBarConfig() {
 		return new BossBarConfig(config.getBoolean("bossbar.show"), config.getBoolean("bossbar.vanilla-items"),
 				config.getBoolean("bossbar.custom-items"));
+	}
+
+    /**
+     * @return The Config sub-section for the Permission System.
+     */
+	public PermissionConfig getPermissionConfig() {
+        return new PermissionConfig(PermissionType.valueOf(config.getString("permissions.default-permission-type").toUpperCase()));
 	}
 }

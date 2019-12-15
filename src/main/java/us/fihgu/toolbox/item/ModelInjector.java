@@ -1,17 +1,17 @@
 package us.fihgu.toolbox.item;
 
+import java.io.File;
+import java.util.HashMap;
+
+import com.chrismin13.additionsapi.items.CustomItem;
+import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
+
 import us.fihgu.toolbox.json.JsonUtils;
 import us.fihgu.toolbox.resourcepack.model.DisplayEntry;
 import us.fihgu.toolbox.resourcepack.model.DisplayOptions;
 import us.fihgu.toolbox.resourcepack.model.ItemModel;
 import us.fihgu.toolbox.resourcepack.model.OverrideEntry;
 import us.fihgu.toolbox.resourcepack.model.Predicate;
-
-import java.io.File;
-import java.util.HashMap;
-
-import com.chrismin13.additionsapi.items.CustomItem;
-import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
 
 /**
  * Can be implemented by a {@link CustomItem} or a class that extends the

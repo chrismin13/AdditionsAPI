@@ -3,6 +3,7 @@ package com.chrismin13.additionsapi.recipes;
 import java.util.HashMap;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
@@ -82,22 +83,35 @@ public class CustomShapedRecipe extends CustomRecipe implements Cloneable {
 		return ingredients;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public ShapedRecipe toBukkitRecipe(ItemStack result) {
+		return toBukkitRecipe(null, result);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public ShapedRecipe toBukkitRecipe(NamespacedKey key, ItemStack result) {
 		if (shape == null)
-			new NullPointerException("The shape of a crafting recipe cannot be null!").printStackTrace();
+			throw new NullPointerException("The shape of a crafting recipe cannot be null!");
 
-		ShapedRecipe recipe = new ShapedRecipe(result);
+		try {
+		ShapedRecipe recipe;
+		if (key != null)
+			recipe = new ShapedRecipe(key, result);
+		else
+			recipe = new ShapedRecipe(result);
 
 		recipe.shape(getShape());
 
 		HashMap<Character, RecipeIngredient> map = getIngredients();
-		for (char key : map.keySet()) {
-			recipe.setIngredient(key, map.get(key).getMaterial(), map.get(key).getBlockData());
+		for (char mapKey : map.keySet()) {
+			recipe.setIngredient(mapKey, map.get(mapKey).getMaterial(), map.get(mapKey).getBlockData());
 		}
 
 		return recipe;
+		} catch (Exception e) {
+			return toBukkitRecipe(result);
+		}
 	}
 
 	@Override

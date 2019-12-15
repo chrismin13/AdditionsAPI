@@ -1,6 +1,7 @@
 package com.chrismin13.additionsapi.recipes;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,10 +56,16 @@ public class CustomFurnaceRecipe extends CustomRecipe {
 		return this;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public FurnaceRecipe toBukkitRecipe(ItemStack result) {
-		FurnaceRecipe recipe = new FurnaceRecipe(result, getInput().getMaterial(), getInput().getBlockData());
+		return toBukkitRecipe(null, result);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public FurnaceRecipe toBukkitRecipe(NamespacedKey key, ItemStack result) {
+		FurnaceRecipe recipe;
+		recipe = new FurnaceRecipe(result, getInput().getMaterial(), getInput().getBlockData());
 
 		recipe.setExperience(getExperience());
 

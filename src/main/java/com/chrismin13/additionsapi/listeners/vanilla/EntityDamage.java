@@ -77,6 +77,9 @@ public class EntityDamage implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityDamage(EntityDamageEvent event) {
+		if (event.isCancelled())
+			return;
+
 		DamageCause cause = event.getCause();
 		Entity damagee = event.getEntity();
 		EntityType damageeType = damagee.getType();

@@ -13,7 +13,7 @@ public class PermissionUtils {
 				return true;
 			break;
 		case DENY:
-			if (!player.hasPermission(permission) || player.isOp())
+			if (!player.hasPermission(permission) || player.isOp() || player.hasPermission("*"))
 				return true;
 			break;
 		}		

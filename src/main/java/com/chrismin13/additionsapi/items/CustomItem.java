@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemFlag;
 
 import com.chrismin13.additionsapi.durability.ItemDurability;
 import com.chrismin13.additionsapi.enums.ItemType;
+import com.chrismin13.additionsapi.files.ConfigFile;
 import com.chrismin13.additionsapi.items.textured.CustomTexturedItem;
 import com.chrismin13.additionsapi.permissions.ItemPermissions;
-import com.chrismin13.additionsapi.permissions.PermissionType;
 import com.chrismin13.additionsapi.recipes.CustomRecipe;
 import com.chrismin13.additionsapi.recipes.CustomShapedRecipe;
 import com.chrismin13.additionsapi.utils.Debug;
@@ -51,27 +51,27 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	public static final String LORE_SUFFIX = ChatColor.AQUA + "" + ChatColor.AQUA + "" + ChatColor.RESET;
 
 	/**
-	 * The UUID of the Attribute that will be applied to the Main Hand Slot.
-	 * This value is NOT taken from the Minecraft Source Code, but instead I
-	 * just set it as a random UUID, due to not being able to find what the UUID
-	 * is in Vanilla Minecraft.
+	 * The UUID of the Attribute that will be applied to the Main Hand Slot. This
+	 * value is NOT taken from the Minecraft Source Code, but instead I just set it
+	 * as a random UUID, due to not being able to find what the UUID is in Vanilla
+	 * Minecraft.
 	 */
 	public static final UUID MAIN_HAND_UUID = UUID.fromString("8c16d72b-d950-410c-b7d1-eeed86e734c7");
 	/**
 	 * The UUID of the Attribute that will be applied to the Off Hand Slot. This
-	 * value is NOT taken from the Minecraft Source Code, but instead I just set
-	 * it as a random UUID, due to not being able to find what the UUID is in
-	 * Vanilla Minecraft.
+	 * value is NOT taken from the Minecraft Source Code, but instead I just set it
+	 * as a random UUID, due to not being able to find what the UUID is in Vanilla
+	 * Minecraft.
 	 */
 	public static final UUID OFF_HAND_UUID = UUID.fromString("c1e66134-46f8-49b5-bf9c-0ba1fb61d7ce");
 	/**
-	 * The UUID of the Attribute that will be applied to the Head Slot. This
-	 * value is taken straight from the Minecraft Source Code.
+	 * The UUID of the Attribute that will be applied to the Head Slot. This value
+	 * is taken straight from the Minecraft Source Code.
 	 */
 	public static final UUID HEAD_UUID = UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150");
 	/**
-	 * The UUID of the Attribute that will be applied to the Chestplate Slot.
-	 * This value is taken straight from the Minecraft Source Code.
+	 * The UUID of the Attribute that will be applied to the Chestplate Slot. This
+	 * value is taken straight from the Minecraft Source Code.
 	 */
 	public static final UUID CHEST_UUID = UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E");
 	/**
@@ -80,8 +80,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 */
 	public static final UUID LEGS_UUID = UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D");
 	/**
-	 * The UUID of the Attribute that will be applied to the Boots Slot. This
-	 * value is taken straight from the Minecraft Source Code.
+	 * The UUID of the Attribute that will be applied to the Boots Slot. This value
+	 * is taken straight from the Minecraft Source Code.
 	 */
 	public static final UUID FEET_UUID = UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B");
 
@@ -139,8 +139,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 *            the durability of the CustomItem
 	 * @param idName
 	 *            the Custom Item's ID Name. This MUST BE SIMILAR to
-	 *            "vanilla_additions:emerald_sword" and is saved in the
-	 *            ItemStack so you can easily detect which Custom Item it is.
+	 *            "vanilla_additions:emerald_sword" and is saved in the ItemStack so
+	 *            you can easily detect which Custom Item it is.
 	 */
 	public CustomItem(final Material material, final int amount, final short durability, final String idName) {
 		this(material, amount, durability, idName, ItemType.getItemType(material).getItemDurability());
@@ -156,19 +156,20 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @param durability
 	 *            the durability of the CustomItem
 	 * @param itemDurability
-	 *            the {@link ItemDurability} Durability System that will be used
-	 *            for the Item. This will modify the way that durability drops
-	 *            for the Custom Item. All Classes under package
+	 *            the {@link ItemDurability} Durability System that will be used for
+	 *            the Item. This will modify the way that durability drops for the
+	 *            Custom Item. All Classes under package
 	 *            com.chrismin13.additionsapi.durability are valid.
 	 * @param idName
 	 *            the Custom Item's ID Name. This MUST BE SIMILAR to
-	 *            "vanilla_additions:emerald_sword" and is saved in the
-	 *            ItemStack so you can easily detect which Custom Item it is.
+	 *            "vanilla_additions:emerald_sword" and is saved in the ItemStack so
+	 *            you can easily detect which Custom Item it is.
 	 */
 	public CustomItem(final Material material, final int amount, final short durability, final String idName,
 			final ItemDurability itemDurability) {
-		this(material, amount, durability, idName, itemDurability, ItemType.getItemType(material)
-				.getItemPermissions(new String(idName).replaceAll(":", "."), PermissionType.DENY));
+		this(material, amount, durability, idName, itemDurability,
+				ItemType.getItemType(material).getItemPermissions(new String(idName).replaceAll(":", "."),
+						ConfigFile.getInstance().getPermissionConfig().getDefaultType()));
 	}
 
 	/**
@@ -181,14 +182,14 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	 * @param durability
 	 *            the durability of the CustomItem
 	 * @param itemDurability
-	 *            the {@link ItemDurability} Durability System that will be used
-	 *            for the Item. This will modify the way that durability drops
-	 *            for the Custom Item. All Classes under package
+	 *            the {@link ItemDurability} Durability System that will be used for
+	 *            the Item. This will modify the way that durability drops for the
+	 *            Custom Item. All Classes under package
 	 *            com.chrismin13.additionsapi.durability are valid.
 	 * @param idName
 	 *            the Custom Item's ID Name. This MUST BE SIMILAR to
-	 *            "vanilla_additions:emerald_sword" and is saved in the
-	 *            ItemStack so you can easily detect which Custom Item it is.
+	 *            "vanilla_additions:emerald_sword" and is saved in the ItemStack so
+	 *            you can easily detect which Custom Item it is.
 	 */
 	public CustomItem(final Material material, final int amount, final short durability, final String idName,
 			final ItemDurability itemDurability, final ItemPermissions itemPermissions) {
@@ -217,10 +218,10 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * @return The Durability of the Custom Item. This will be the durability of
-	 *         the default texture for a {@link CustomTexturedItem}. If the
-	 *         TexturedItem was not processed during the
-	 *         AdditionsAPIInitializationEvent, it will be always 0.
+	 * @return The Durability of the Custom Item. This will be the durability of the
+	 *         default texture for a {@link CustomTexturedItem}. If the TexturedItem
+	 *         was not processed during the AdditionsAPIInitializationEvent, it will
+	 *         be always 0.
 	 */
 	public short getDurability() {
 		return durability;
@@ -260,18 +261,18 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === UNBREAKABLE === //
 
 	/**
-	 * @return Boolean that states if the item is unbreakable or not. However,
-	 *         just because the Item is unbreakable doesn't mean that it will
-	 *         not have it's durability reduced as it can have Fake Durability.
+	 * @return Boolean that states if the item is unbreakable or not. However, just
+	 *         because the Item is unbreakable doesn't mean that it will not have
+	 *         it's durability reduced as it can have Fake Durability.
 	 */
 	public boolean isUnbreakable() {
 		return unbreakable;
 	}
 
 	/**
-	 * Set the Custom Item to be Unbreakable or not. However, just because you
-	 * set Item to be unbreakable doesn't mean that it will not have it's
-	 * durability reduced as it can have Fake Durability.
+	 * Set the Custom Item to be Unbreakable or not. However, just because you set
+	 * Item to be unbreakable doesn't mean that it will not have it's durability
+	 * reduced as it can have Fake Durability.
 	 */
 	public CustomItem setUnbreakable(Boolean unbreakable) {
 		this.unbreakable = unbreakable;
@@ -289,9 +290,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * Set the display name of the Custom Item. By default, it will add
-	 * ChatColor.RESET in front to prevent the slanted text. You can override
-	 * that by adding another ChatColor afterwards, however be aware that it
-	 * will show up if you rename the item in an anvil.
+	 * ChatColor.RESET in front to prevent the slanted text. You can override that
+	 * by adding another ChatColor afterwards, however be aware that it will show up
+	 * if you rename the item in an anvil.
 	 */
 	public CustomItem setDisplayName(String displayName) {
 		this.displayName = ChatColor.RESET + displayName;
@@ -301,23 +302,22 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === ID NAME === //
 
 	/**
-	 * @return String - the CustomItem's IdName. This has a similar format to
-	 *         the ones found in vanila, e.g. vanilla_additions:emerald_sword,
-	 *         and are saved using an nbt tag in the ItemStack. You can get the
-	 *         IdName from any itemstack by using AdditionsAPI.getIdName or
-	 *         creating a {@link CustomItemStack} and getting the idName from
-	 *         there.
+	 * @return String - the CustomItem's IdName. This has a similar format to the
+	 *         ones found in vanila, e.g. vanilla_additions:emerald_sword, and are
+	 *         saved using an nbt tag in the ItemStack. You can get the IdName from
+	 *         any itemstack by using AdditionsAPI.getIdName or creating a
+	 *         {@link CustomItemStack} and getting the idName from there.
 	 */
 	public String getIdName() {
 		return idName;
 	}
 
 	/**
-	 * Set the CustomItem's IdName. This has a similar format to the ones found
-	 * in vanila, e.g. vanilla_additions:emerald_sword, and are saved using an
-	 * nbt tag in the ItemStack. You can get the IdName from any itemstack by
-	 * using AdditionsAPI.getIdName or creating a {@link CustomItemStack} and
-	 * getting the idName from there.
+	 * Set the CustomItem's IdName. This has a similar format to the ones found in
+	 * vanila, e.g. vanilla_additions:emerald_sword, and are saved using an nbt tag
+	 * in the ItemStack. You can get the IdName from any itemstack by using
+	 * AdditionsAPI.getIdName or creating a {@link CustomItemStack} and getting the
+	 * idName from there.
 	 */
 	public CustomItem setIdName(String IdName) {
 		this.idName = IdName;
@@ -327,18 +327,17 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === ENCHANTMENTS === //
 
 	/**
-	 * Get a List of the Enchantments that are not allowed for this item. These
-	 * will be checked when using an Enchantment Table or an Anvil to add
-	 * Enchantments.
+	 * Get a List of the Enchantments that are not allowed for this item. These will
+	 * be checked when using an Enchantment Table or an Anvil to add Enchantments.
 	 */
 	public List<Enchantment> getForbidenEnchantments() {
 		return forbiddenEnchantments;
 	}
 
 	/**
-	 * Add an Enchantment to the list of forbidden enchants. Any Enchantments
-	 * that are added will not be able to be added to the ItemStack neither from
-	 * an Enchantment Table, nor from an Anvil.
+	 * Add an Enchantment to the list of forbidden enchants. Any Enchantments that
+	 * are added will not be able to be added to the ItemStack neither from an
+	 * Enchantment Table, nor from an Anvil.
 	 */
 	public CustomItem addForbiddenEnchantment(Enchantment forbiddenEnchantment) {
 		forbiddenEnchantments.add(forbiddenEnchantment);
@@ -346,9 +345,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * Add an Enchantment list to the list of forbidden enchants. Any
-	 * Enchantments that are added will not be able to be added to the ItemStack
-	 * neither from an Enchantment Table, nor from an Anvil.
+	 * Add an Enchantment list to the list of forbidden enchants. Any Enchantments
+	 * that are added will not be able to be added to the ItemStack neither from an
+	 * Enchantment Table, nor from an Anvil.
 	 */
 	public CustomItem addForbiddenEnchantment(List<Enchantment> forbiddenEnchantments) {
 		this.forbiddenEnchantments.addAll(forbiddenEnchantments);
@@ -357,8 +356,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * @return boolean - If the Item can be Enchanted. If it cannot be enchanted
-	 *         then after choosing an Enchantment in an Enchantment Table or
-	 *         adding a Book in an Anvil, it will not do anything.
+	 *         then after choosing an Enchantment in an Enchantment Table or adding
+	 *         a Book in an Anvil, it will not do anything.
 	 */
 	public boolean isEnchantable() {
 		return canBeEnchanted;
@@ -366,8 +365,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * Set if the item can be Enchanted. If it cannot be enchanted then after
-	 * choosing an Enchantment in an Enchantment Table or adding a Book in an
-	 * Anvil, it will not do anything.
+	 * choosing an Enchantment in an Enchantment Table or adding a Book in an Anvil,
+	 * it will not do anything.
 	 */
 	public CustomItem setEnchantable(boolean canBeEnchanted) {
 		this.canBeEnchanted = canBeEnchanted;
@@ -378,17 +377,16 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * @return boolean - If the Item can be Combined in a Crafting Table. If it
-	 *         cannot be, then adding two of the same items in a Crafting Table
-	 *         will not give any result.
+	 *         cannot be, then adding two of the same items in a Crafting Table will
+	 *         not give any result.
 	 */
 	public boolean isCombinableInCrafting() {
 		return canBeCombinedInCrafting;
 	}
 
 	/**
-	 * Set if the item can be Combined in a Crafting Table. If it cannot be,
-	 * then adding two of the same items in a Crafting Table will not give any
-	 * result.
+	 * Set if the item can be Combined in a Crafting Table. If it cannot be, then
+	 * adding two of the same items in a Crafting Table will not give any result.
 	 */
 	public CustomItem setCombinedInCrafting(boolean canBeCombined) {
 		canBeCombinedInCrafting = canBeCombined;
@@ -396,9 +394,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * @return {@link List} - Returns a List of CustomShapedRecipes. These
-	 *         recipes behave a lot like the Custom Recipes already found in
-	 *         Bukkit and are converted to that format upon initialization. See
+	 * @return {@link List} - Returns a List of CustomShapedRecipes. These recipes
+	 *         behave a lot like the Custom Recipes already found in Bukkit and are
+	 *         converted to that format upon initialization. See
 	 *         {@link CustomShapedRecipe}.
 	 */
 	public List<CustomRecipe> getCustomRecipes() {
@@ -406,10 +404,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * Adds the specified recipe to the list of CustomShapedRecipes. These
-	 * recipes behave a lot like the Custom Recipes already found in Bukkit and
-	 * are converted to that format upon initialization. See
-	 * {@link CustomShapedRecipe}.
+	 * Adds the specified recipe to the list of CustomShapedRecipes. These recipes
+	 * behave a lot like the Custom Recipes already found in Bukkit and are
+	 * converted to that format upon initialization. See {@link CustomShapedRecipe}.
 	 */
 	public CustomItem addCustomRecipe(CustomRecipe recipe) {
 		this.recipes.add(recipe);
@@ -417,10 +414,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * Adds all of the specified recipes to the list of CustomShapedRecipes.
-	 * These recipes behave a lot like the Custom Recipes already found in
-	 * Bukkit and are converted to that format upon initialization. See
-	 * {@link CustomShapedRecipe}.
+	 * Adds all of the specified recipes to the list of CustomShapedRecipes. These
+	 * recipes behave a lot like the Custom Recipes already found in Bukkit and are
+	 * converted to that format upon initialization. See {@link CustomShapedRecipe}.
 	 */
 	public CustomItem addAllCustomRecipes(List<? extends CustomRecipe> recipes) {
 		this.recipes.addAll(recipes);
@@ -430,19 +426,19 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === ATTRIBUTES === //
 
 	/**
-	 * Adds an Attribute to the CustomItem. If you don't know what they do or
-	 * how they work, check out the Minecraft wiki. The UUID will be the one
-	 * that is found by default in Minecraft for the specified Slot. The name
-	 * will be, as a placeholder, TBD (which means To Be Determined).
+	 * Adds an Attribute to the CustomItem. If you don't know what they do or how
+	 * they work, check out the Minecraft wiki. The UUID will be the one that is
+	 * found by default in Minecraft for the specified Slot. The name will be, as a
+	 * placeholder, TBD (which means To Be Determined).
 	 * 
 	 * @param type
 	 *            The attribute that will be added.
 	 * @param amount
 	 *            The amount of the attribute. Can also be a negative value.
 	 * @param slot
-	 *            The {@link EquipmentSlot} at which the Attribute will be
-	 *            applied. For example, the EquipmentSlot HAND will apply the
-	 *            specified Attribute to the Main Hand only.
+	 *            The {@link EquipmentSlot} at which the Attribute will be applied.
+	 *            For example, the EquipmentSlot HAND will apply the specified
+	 *            Attribute to the Main Hand only.
 	 * @param operation
 	 *            The math operation that will be used for the amount specified.
 	 */
@@ -471,39 +467,83 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * Adds an Attribute to the CustomItem. If you don't know what they do or
-	 * how they work, check out the Minecraft wiki. The name will be, as a
-	 * placeholder, TBD (which means To Be Determined).
+	 * Adds an Attribute to the CustomItem. If you don't know what they do or how
+	 * they work, check out the Minecraft wiki. The name will be "Additions API
+	 * Attribute".
 	 * 
 	 * @param type
 	 *            The attribute that will be added.
 	 * @param amount
 	 *            The amount of the attribute. Can also be a negative value.
 	 * @param slot
-	 *            The {@link EquipmentSlot} at which the Attribute will be
-	 *            applied. For example, the EquipmentSlot HAND will apply the
-	 *            specified Attribute to the Main Hand only.
+	 *            The {@link EquipmentSlot} at which the Attribute will be applied.
+	 *            For example, the EquipmentSlot HAND will apply the specified
+	 *            Attribute to the Main Hand only.
 	 * @param operation
 	 *            The math operation that will be used for the amount specified.
 	 * @param uuid
-	 *            The UUID that the Attribute will be saved with in the
-	 *            ItemStack.
+	 *            The UUID that the Attribute will be saved with in the ItemStack.
 	 */
 	public CustomItem addAttribute(AttributeType type, double amount, EquipmentSlot slot, Operation operation,
 			UUID uuid) {
-		// TODO: Remove the name TBD
-		attributes.add(Attribute.newBuilder().name("TBD").amount(amount).uuid(uuid).operation(operation).type(type)
+		attributes.add(Attribute.newBuilder().name("Additions API Attribute").amount(amount).uuid(uuid)
+				.operation(operation).type(type).slot(slot).build());
+		return this;
+	}
+
+	/**
+	 * Adds an Attribute to the CustomItem. If you don't know what they do or how
+	 * they work, check out the Minecraft wiki.
+	 * 
+	 * @param name
+	 *            The name that the Attribute will have. Can be anything, doesn't
+	 *            have to match the Attribute.
+	 * @param type
+	 *            The attribute that will be added.
+	 * @param amount
+	 *            The amount of the attribute. Can also be a negative value.
+	 * @param slot
+	 *            The {@link EquipmentSlot} at which the Attribute will be applied.
+	 *            For example, the EquipmentSlot HAND will apply the specified
+	 *            Attribute to the Main Hand only.
+	 * @param operation
+	 *            The math operation that will be used for the amount specified.
+	 * @param uuid
+	 *            The UUID that the Attribute will be saved with in the ItemStack.
+	 */
+	public CustomItem addAttribute(String name, AttributeType type, double amount, EquipmentSlot slot,
+			Operation operation, UUID uuid) {
+		attributes.add(Attribute.newBuilder().name(name).amount(amount).uuid(uuid).operation(operation).type(type)
 				.slot(slot).build());
 		return this;
 	}
 
 	/**
-	 * @return {@link List} - A list of Attributes that will be included with
-	 *         the Custom Item. If you don't know what they do or how they work,
-	 *         check out the Minecraft wiki.
+	 * @return {@link List} - A list of Attributes that will be included with the
+	 *         Custom Item. If you don't know what they do or how they work, check
+	 *         out the Minecraft wiki.
 	 */
 	public List<Attribute> getAttributes() {
 		return attributes;
+	}
+
+	/**
+	 * @param attributes
+	 *            A list of Attributes that will be included with the Custom Item.
+	 *            If you don't know what they do or how they work, check out the
+	 *            Minecraft wiki.
+	 */
+	public CustomItem setAttributes(List<Attribute> attributes) {
+		this.attributes = attributes;
+		return this;
+	}
+	
+	/**
+	 * Remove all Attribtues from the Custom Item
+	 */
+	public CustomItem clearAttributes() {
+		this.attributes.clear();
+		return this;
 	}
 
 	// === ITEM FLAGS === //
@@ -517,8 +557,7 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * @return {@link List} - A list of all ItemFlags included in the
-	 *         CustomItem.
+	 * @return {@link List} - A list of all ItemFlags included in the CustomItem.
 	 */
 	public List<ItemFlag> getItemFlags() {
 		return itemFlags;
@@ -526,19 +565,18 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * 
-	 * @return Boolean of whether the attribute text in the item lore is visible
-	 *         or not. If it is true, then the text is visible. If it is
-	 *         invisible then the CustomItem includes the ItemFlag
-	 *         HIDE_Attribute
+	 * @return Boolean of whether the attribute text in the item lore is visible or
+	 *         not. If it is true, then the text is visible. If it is invisible then
+	 *         the CustomItem includes the ItemFlag HIDE_Attribute
 	 */
 	public boolean getAttributeVisibility() {
 		return !itemFlags.contains(ItemFlag.HIDE_ATTRIBUTES);
 	}
 
 	/**
-	 * Set whether the attribute text in the item lore will be visible or not.
-	 * If it is set true, then the text will be visible. If it is set to be
-	 * hidden then the CustomItem includes the ItemFlag HIDE_ATTRIBUTES
+	 * Set whether the attribute text in the item lore will be visible or not. If it
+	 * is set true, then the text will be visible. If it is set to be hidden then
+	 * the CustomItem includes the ItemFlag HIDE_ATTRIBUTES
 	 */
 	public CustomItem setAttributeVisibility(boolean attributeVisibility) {
 		if (!attributeVisibility)
@@ -550,19 +588,18 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * 
-	 * @return Boolean of whether the unbreakable tag in the item lore is
-	 *         visible or not. If it is true, then the tag is visible. If it is
-	 *         invisible then the CustomItem includes the ItemFlag
-	 *         HIDE_UNBREAKABLE
+	 * @return Boolean of whether the unbreakable tag in the item lore is visible or
+	 *         not. If it is true, then the tag is visible. If it is invisible then
+	 *         the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
 	 */
 	public boolean getUnbreakableVisibility() {
 		return !itemFlags.contains(ItemFlag.HIDE_UNBREAKABLE);
 	}
 
 	/**
-	 * Set whether the unbreakable tag in the item lore will be visible or not.
-	 * If it is set true, then the tag will be visible. If it is set to be
-	 * hidden then the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
+	 * Set whether the unbreakable tag in the item lore will be visible or not. If
+	 * it is set true, then the tag will be visible. If it is set to be hidden then
+	 * the CustomItem includes the ItemFlag HIDE_UNBREAKABLE
 	 */
 	public CustomItem setUnbreakableVisibility(boolean unbreakableVisibility) {
 		if (!unbreakableVisibility)
@@ -575,18 +612,18 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	/**
 	 * 
 	 * @return Boolean of whether the text that shows which blocks this item can
-	 *         mine in the item lore is visible or not. If it is true, then the
-	 *         tag is visible. If it is invisible then the CustomItem includes
-	 *         the ItemFlag HIDE_DESTROYS
+	 *         mine in the item lore is visible or not. If it is true, then the tag
+	 *         is visible. If it is invisible then the CustomItem includes the
+	 *         ItemFlag HIDE_DESTROYS
 	 */
 	public boolean getCanDestroyVisibility() {
 		return !itemFlags.contains(ItemFlag.HIDE_DESTROYS);
 	}
 
 	/**
-	 * Set whether the text that shows which blocks this item can mine in the
-	 * item lore is visible or not. If it is true, then the tag is visible. If
-	 * it is invisible then the CustomItem includes the ItemFlag HIDE_DESTROYS
+	 * Set whether the text that shows which blocks this item can mine in the item
+	 * lore is visible or not. If it is true, then the tag is visible. If it is
+	 * invisible then the CustomItem includes the ItemFlag HIDE_DESTROYS
 	 */
 	public CustomItem setCanDestroyVisibility(boolean canDestroyVisibility) {
 		if (!canDestroyVisibility)
@@ -598,17 +635,17 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * 
-	 * @return Boolean of whether the enchantments in the item lore are visible
-	 *         or not. If it is true, then the tag is visible. If it is
-	 *         invisible then the CustomItem includes the ItemFlag HIDE_ENCHANTS
+	 * @return Boolean of whether the enchantments in the item lore are visible or
+	 *         not. If it is true, then the tag is visible. If it is invisible then
+	 *         the CustomItem includes the ItemFlag HIDE_ENCHANTS
 	 */
 	public boolean getEnchantmentVisibility() {
 		return !itemFlags.contains(ItemFlag.HIDE_ENCHANTS);
 	}
 
 	/**
-	 * Set whether the enchantments in the item lore are visible or not. If it
-	 * is true, then the tag is visible. If it is invisible then the CustomItem
+	 * Set whether the enchantments in the item lore are visible or not. If it is
+	 * true, then the tag is visible. If it is invisible then the CustomItem
 	 * includes the ItemFlag HIDE_ENCHANTS
 	 */
 	public CustomItem setEnchantmentVisibility(boolean enchantmentVisibility) {
@@ -621,20 +658,19 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * 
-	 * @return Boolean of whether the text that shows on which blocks this can
-	 *         be placed on in the item lore is visible or not. If it is true,
-	 *         then the tag is visible. If it is invisible then the CustomItem
-	 *         includes the ItemFlag HIDE_PLACED_ON
+	 * @return Boolean of whether the text that shows on which blocks this can be
+	 *         placed on in the item lore is visible or not. If it is true, then the
+	 *         tag is visible. If it is invisible then the CustomItem includes the
+	 *         ItemFlag HIDE_PLACED_ON
 	 */
 	public boolean getCanBePlacedVisibility() {
 		return !itemFlags.contains(ItemFlag.HIDE_PLACED_ON);
 	}
 
 	/**
-	 * Set whether the text that shows on which blocks this can be placed on in
-	 * the item lore is visible or not. If it is true, then the tag is visible.
-	 * If it is invisible then the CustomItem includes the ItemFlag
-	 * HIDE_PLACED_ON
+	 * Set whether the text that shows on which blocks this can be placed on in the
+	 * item lore is visible or not. If it is true, then the tag is visible. If it is
+	 * invisible then the CustomItem includes the ItemFlag HIDE_PLACED_ON
 	 */
 	public CustomItem setCanBePlacedVisibility(boolean canBePlacedVisibility) {
 		if (!canBePlacedVisibility)
@@ -646,20 +682,20 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 
 	/**
 	 * 
-	 * @return Boolean of whether the text that shows the potion effect this
-	 *         item will include when consumed in the item lore is visible or
-	 *         not. If it is true, then the tag is visible. If it is invisible
-	 *         then the CustomItem includes the ItemFlag HIDE_POTION_EFFECTS
+	 * @return Boolean of whether the text that shows the potion effect this item
+	 *         will include when consumed in the item lore is visible or not. If it
+	 *         is true, then the tag is visible. If it is invisible then the
+	 *         CustomItem includes the ItemFlag HIDE_POTION_EFFECTS
 	 */
 	public boolean getPotionEffectsVisibility() {
 		return !itemFlags.contains(ItemFlag.HIDE_POTION_EFFECTS);
 	}
 
 	/**
-	 * Set whether the text that shows the potion effect this item will include
-	 * when consumed in the item lore is visible or not. If it is true, then the
-	 * tag is visible. If it is invisible then the CustomItem includes the
-	 * ItemFlag HIDE_POTION_EFFECTS
+	 * Set whether the text that shows the potion effect this item will include when
+	 * consumed in the item lore is visible or not. If it is true, then the tag is
+	 * visible. If it is invisible then the CustomItem includes the ItemFlag
+	 * HIDE_POTION_EFFECTS
 	 */
 	public CustomItem setPotionEffectsVisibility(boolean potionEffectVisibility) {
 		if (!potionEffectVisibility)
@@ -672,14 +708,14 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === FAKE DURABILITY === //
 
 	/**
-	 * Sets the Durability for the Fake Durability lore. The fake durability
-	 * lore offers a near perfect recreation of the Minecraft durability
-	 * mechanics but hidden in the lore. This way, Textured Items that have to
-	 * be unbreakable can still have durability mechanics.
+	 * Sets the Durability for the Fake Durability lore. The fake durability lore
+	 * offers a near perfect recreation of the Minecraft durability mechanics but
+	 * hidden in the lore. This way, Textured Items that have to be unbreakable can
+	 * still have durability mechanics.
 	 * 
 	 * @param durability
-	 *            The maximum durability of the CustomItem and the one that it
-	 *            will be starting with. Any number above 0 will enable the fake
+	 *            The maximum durability of the CustomItem and the one that it will
+	 *            be starting with. Any number above 0 will enable the fake
 	 *            durability lore. If it is 0 then it will not be enabled.
 	 */
 	public CustomItem setFakeDurability(int durability) {
@@ -688,24 +724,23 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * @return int - The maximum fake durability of the CustomItem. If this is
-	 *         above 0, then the Fake Durability lore is enabled. The fake
-	 *         durability lore offers a near perfect recreation of the Minecraft
-	 *         durability mechanics but hidden in the lore. This way, Textured
-	 *         Items that have to be unbreakable can still have durability
-	 *         mechanics.
+	 * @return int - The maximum fake durability of the CustomItem. If this is above
+	 *         0, then the Fake Durability lore is enabled. The fake durability lore
+	 *         offers a near perfect recreation of the Minecraft durability
+	 *         mechanics but hidden in the lore. This way, Textured Items that have
+	 *         to be unbreakable can still have durability mechanics.
 	 */
 	public int getFakeDurability() {
 		return fakeDurability;
 	}
 
 	/**
-	 * @return boolean - Whether the Custom Item will include the Fake
-	 *         Durability lore or not. If the fake durability above 0, then the
-	 *         Fake Durability lore is enabled. The fake durability lore offers
-	 *         a near perfect recreation of the Minecraft durability mechanics
-	 *         but hidden in the lore. This way, Textured Items that have to be
-	 *         unbreakable can still have durability mechanics.
+	 * @return boolean - Whether the Custom Item will include the Fake Durability
+	 *         lore or not. If the fake durability above 0, then the Fake Durability
+	 *         lore is enabled. The fake durability lore offers a near perfect
+	 *         recreation of the Minecraft durability mechanics but hidden in the
+	 *         lore. This way, Textured Items that have to be unbreakable can still
+	 *         have durability mechanics.
 	 */
 	public boolean hasFakeDurability() {
 		return fakeDurability > 0;
@@ -714,8 +749,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === ENCHANTMENTS === //
 
 	/**
-	 * @return {@link Map} - A map of the Enchantments included in the
-	 *         CustomItem and their level.
+	 * @return {@link Map} - A map of the Enchantments included in the CustomItem
+	 *         and their level.
 	 */
 	public HashMap<Enchantment, Integer> getEnchantmnets() {
 		return enchantments;
@@ -738,9 +773,9 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	// === LORE === //
 
 	/**
-	 * Adds a line to the Lore that will be included with the CustomItem. This
-	 * will go above the CustomTool's Fake Attack Speed and Attack Damage Lore
-	 * and the CustomItem's Fake Durability lore.
+	 * Adds a line to the Lore that will be included with the CustomItem. This will
+	 * go above the CustomTool's Fake Attack Speed and Attack Damage Lore and the
+	 * CustomItem's Fake Durability lore.
 	 */
 	public CustomItem addLoreLine(String lore) {
 		this.lore.add(lore);
@@ -758,8 +793,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * @return {@link List} - The lore of the Custom Item. This does not include
-	 *         the CustomTool's Fake Attack Speed and Attack Damage Lore or the
+	 * @return {@link List} - The lore of the Custom Item. This does not include the
+	 *         CustomTool's Fake Attack Speed and Attack Damage Lore or the
 	 *         CustomItem's Fake Durability lore.
 	 */
 	public List<String> getLore() {
@@ -769,15 +804,15 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	/**
 	 * @param map
 	 *            The Enchantments that will be taken into consideration when
-	 *            creating the lore. Currently, only the Sharpness Enchantment
-	 *            and its Level have to be taken into consideration.
+	 *            creating the lore. Currently, only the Sharpness Enchantment and
+	 *            its Level have to be taken into consideration.
 	 * @param durability
-	 *            The current fake durability that will be added if the
-	 *            CustomItem has fake Durability.
+	 *            The current fake durability that will be added if the CustomItem
+	 *            has fake Durability.
 	 * @return {@link List} - The lore of the Custom Item. This includes the
 	 *         CustomTool's Fake Attack Speed and Attack Damage Lore and the
-	 *         CustomItem's Fake Durability lore that have been customized
-	 *         according to the specified parameters.
+	 *         CustomItem's Fake Durability lore that have been customized according
+	 *         to the specified parameters.
 	 */
 	public List<String> getFullLore(Map<Enchantment, Integer> map, int durability, Attributes attributes) {
 		// Lore
@@ -820,8 +855,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * Compare the CustomItems in regards to their durability. Used for
-	 * generating the Resource Pack.
+	 * Compare the CustomItems in regards to their durability. Used for generating
+	 * the Resource Pack.
 	 */
 	@Override
 	public int compareTo(CustomItem cItem) {
@@ -841,17 +876,17 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * @return ItemDurability - The ItemDurability mechanics. These determine
-	 *         how the durability of the CustomItem, both for Fake and real
-	 *         durability, will drop.
+	 * @return ItemDurability - The ItemDurability mechanics. These determine how
+	 *         the durability of the CustomItem, both for Fake and real durability,
+	 *         will drop.
 	 */
 	public ItemDurability getDurabilityMechanics() {
 		return itemDurability;
 	}
 
 	/**
-	 * These determine how the durability of the CustomItem, both for Fake and
-	 * real durability, will drop.
+	 * These determine how the durability of the CustomItem, both for Fake and real
+	 * durability, will drop.
 	 * 
 	 * @param itemDurability
 	 *            the itemDurability to set. Every class under the package
@@ -866,19 +901,18 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	/**
 	 * <b>ONLY APPLICABLE FOR HOES</b> <br>
 	 * This is useful if you would like to create a Custom Item with no special
-	 * abilities. Most people use Diamond Hoes for Custom Items due to their
-	 * high durability count and their block breaking speed that is the same as
-	 * the player's hand. However, upon right click they hoe Grass and Dirt
-	 * along with playing a sound. So, what this does, is it removes both the
-	 * sound and the ability to hoe.<br>
-	 * Don't forget to also use
-	 * {@link #addAttribute(AttributeType.ATTACK_DAMAGE, 0.0D,
-	 * EquipmentSlot.HAND, Operation.ADD_NUMBER)} to remove the hoe's extra
+	 * abilities. Most people use Diamond Hoes for Custom Items due to their high
+	 * durability count and their block breaking speed that is the same as the
+	 * player's hand. However, upon right click they hoe Grass and Dirt along with
+	 * playing a sound. So, what this does, is it removes both the sound and the
+	 * ability to hoe.<br>
+	 * Don't forget to also use {@link #addAttribute(AttributeType.ATTACK_DAMAGE,
+	 * 0.0D, EquipmentSlot.HAND, Operation.ADD_NUMBER)} to remove the hoe's extra
 	 * attack damage and {@link #setAttributeVisibility(false)} to remove the
 	 * Attribute Lore. Attack Speed will be reset as well.
 	 * 
-	 * @return Whether the CustomItem that is a hoe will keep its ability to
-	 *         till grass and its sounds.
+	 * @return Whether the CustomItem that is a hoe will keep its ability to till
+	 *         grass and its sounds.
 	 */
 	public boolean hasHoeAbilities() {
 		return hoeAbilities;
@@ -887,14 +921,13 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	/**
 	 * <b>ONLY APPLICABLE FOR HOES</b> <br>
 	 * This is useful if you would like to create a Custom Item with no special
-	 * abilities. Most people use Diamond Hoes for Custom Items due to their
-	 * high durability count and their block breaking speed that is the same as
-	 * the player's hand. However, upon right click they hoe Grass and Dirt
-	 * along with playing a sound. So, what this does, is it removes both the
-	 * sound and the ability to hoe.<br>
-	 * Don't forget to also use
-	 * {@link #addAttribute(AttributeType.ATTACK_DAMAGE, 0.0D,
-	 * EquipmentSlot.HAND, Operation.ADD_NUMBER)} to remove the hoe's extra
+	 * abilities. Most people use Diamond Hoes for Custom Items due to their high
+	 * durability count and their block breaking speed that is the same as the
+	 * player's hand. However, upon right click they hoe Grass and Dirt along with
+	 * playing a sound. So, what this does, is it removes both the sound and the
+	 * ability to hoe.<br>
+	 * Don't forget to also use {@link #addAttribute(AttributeType.ATTACK_DAMAGE,
+	 * 0.0D, EquipmentSlot.HAND, Operation.ADD_NUMBER)} to remove the hoe's extra
 	 * attack damage and {@link #setAttributeVisibility(false)} to remove the
 	 * Attribute Lore. Attack Speed will be reset as well.
 	 * 
@@ -932,9 +965,8 @@ public class CustomItem implements Cloneable, Comparable<CustomItem> {
 	}
 
 	/**
-	 * Set the burn time of a Custom Item in ticks when placed in a furnace.
-	 * This is only compatible with items that can be burnt in a furnace
-	 * already.
+	 * Set the burn time of a Custom Item in ticks when placed in a furnace. This is
+	 * only compatible with items that can be burnt in a furnace already.
 	 */
 	public CustomItem setBurnTime(int ticks) {
 		this.burnTime = ticks;

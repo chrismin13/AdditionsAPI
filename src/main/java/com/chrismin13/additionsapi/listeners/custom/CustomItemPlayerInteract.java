@@ -27,6 +27,8 @@ import com.chrismin13.additionsapi.utils.PermissionUtils;
 
 public class CustomItemPlayerInteract implements Listener {
 
+	String version = Bukkit.getServer().getVersion();
+
 	@EventHandler
 	public void onCustomItemPlayerInteract(CustomItemPlayerInteractEvent customEvent) {
 		PlayerInteractEvent event = customEvent.getPlayerInteractEvent();
@@ -41,10 +43,9 @@ public class CustomItemPlayerInteract implements Listener {
 
 		if (customEvent.isCancelled()) {
 			/*
-			 * For some crazy reason the event is always cancelled when using a
-			 * Shield and Right Clicking Air. WTF SPIGOT. Even though the event
-			 * is already cancelled, it still lowers the shield when you cancel
-			 * it.
+			 * For some crazy reason the event is always cancelled when using a Shield and
+			 * Right Clicking Air. WTF SPIGOT. Even though the event is already cancelled,
+			 * it still lowers the shield when you cancel it.
 			 */
 			if (action.equals(Action.RIGHT_CLICK_AIR)) {
 
@@ -61,7 +62,11 @@ public class CustomItemPlayerInteract implements Listener {
 				if (check && cItem.getPermissions() instanceof ShieldPermissions) {
 					ShieldPermissions perm = (ShieldPermissions) cItem.getPermissions();
 
-					if (!player.isHandRaised()
+					/*
+					 * The isHandRaised method doesn't exist below 1.11, so shield blocking will not
+					 * be blocked by permissions
+					 */
+					if (!(version.contains("1.9") || version.contains("1.10")) && !player.isHandRaised()
 							&& !PermissionUtils.allowedAction(player, perm.getType(), perm.getBlock()))
 						customEvent.setCancelled(true);
 				}
@@ -87,7 +92,12 @@ public class CustomItemPlayerInteract implements Listener {
 			if (check && cItem.getPermissions() instanceof ShieldPermissions) {
 				ShieldPermissions perm = (ShieldPermissions) cItem.getPermissions();
 
-				if (!player.isHandRaised() && !PermissionUtils.allowedAction(player, perm.getType(), perm.getBlock()))
+				/*
+				 * The isHandRaised method doesn't exist below 1.11, so shield blocking will not
+				 * be blocked by permissions
+				 */
+				if ((version.contains("1.9") || version.contains("1.10")) && !player.isHandRaised()
+						&& !PermissionUtils.allowedAction(player, perm.getType(), perm.getBlock()))
 					customEvent.setCancelled(true);
 			}
 

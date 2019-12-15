@@ -1,12 +1,26 @@
 package us.fihgu.toolbox.resourcepack;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.function.Function;
+
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.files.ConfigFile;
-import com.chrismin13.additionsapi.files.ConfigFile.DebugType;
 import com.chrismin13.additionsapi.items.CustomItem;
-
 import com.chrismin13.additionsapi.utils.Debug;
 
 import us.fihgu.toolbox.file.FileUtils;
@@ -18,17 +32,6 @@ import us.fihgu.toolbox.resourcepack.model.ItemModel;
 import us.fihgu.toolbox.resourcepack.model.OverrideEntry;
 import us.fihgu.toolbox.resourcepack.model.Predicate;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.function.Function;
-
 /**
  * This class is in charge of A generated server resource pack
  * <p>
@@ -39,8 +42,7 @@ import java.util.function.Function;
  */
 public class ResourcePackManager {
 	/**
-	 * True if player will be forced to download the resource pack from
-	 * server.<br>
+	 * True if player will be forced to download the resource pack from server.<br>
 	 * Players that refuse to download the resource pack will be kicked.
 	 */
 	private static boolean force = false;
@@ -51,29 +53,15 @@ public class ResourcePackManager {
 	public static final HashMap<String, String> resourceUsers = new HashMap<>();
 
 	/**
-	 * A map that contains information about previously registered resource
-	 * users. <br>
-	 * Key: plugin name, Value: plugin version.
-	 */
-	private static HashMap<String, String> oldResourceUsers;
-
-	/**
-	 * The file location for saving resource pack.
-	 */
-	private static File saveFile = new File(
-			AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/resourceUsers.json");
-
-	/**
 	 * The file path for saving the final resource pack.
 	 */
 	private static File resourceFile = new File(
 			AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/resource.zip");
 
 	/**
-	 * A list of resources that needs to be merged to the final resource pack.
-	 * <br>
-	 * Each resource has to be a zip file, the content will be unzipped and
-	 * included in the final resource pack.
+	 * A list of resources that needs to be merged to the final resource pack. <br>
+	 * Each resource has to be a zip file, the content will be unzipped and included
+	 * in the final resource pack.
 	 */
 	private static LinkedList<InputStream> resources = new LinkedList<>();
 
@@ -83,12 +71,27 @@ public class ResourcePackManager {
 	public static boolean neededRebuild = false;
 
 	/**
+	 * The md5 of the current resource pack, used to check resource pack changes.
+	 */
+	public static String resourcePackMd5;
+
+	public static String resourcePackSha1;
+
+	public static byte[] resourcePackSha1Byte;
+
+	/**
+	 * Checks if the server has the method to send the resource pack's hash to the
+	 * player.
+	 */
+	public static boolean hasSendWithHash = true;
+
+	/**
 	 * Register a resource pack to be combined into server resource pack.<br>
 	 * <p>
-	 * You may only use this method inside your onEnable() method, else the
-	 * resource will not be registered correctly.<br>
-	 * When a new resource being registered the first time, the server cache
-	 * will be reconstructed.<br>
+	 * You may only use this method inside your onEnable() method, else the resource
+	 * will not be registered correctly.<br>
+	 * When a new resource being registered the first time, the server cache will be
+	 * reconstructed.<br>
 	 * </p>
 	 */
 	public static void registerResource(JavaPlugin plugin, InputStream source) throws IOException {
@@ -97,111 +100,64 @@ public class ResourcePackManager {
 	}
 
 	/**
-	 * register the given plugin as a resource pack user, if the version or
-	 * presence of the plugin change, a new resource pack will be build on
-	 * server start up.
+	 * register the given plugin as a resource pack user, if the version or presence
+	 * of the plugin change, a new resource pack will be build on server start up.
 	 */
 	public static void registerResourceUser(JavaPlugin plugin) {
 		resourceUsers.put(plugin.getName(), plugin.getDescription().getVersion());
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void Load() {
-		if (saveFile.exists()) {
-			oldResourceUsers = (HashMap<String, String>) JsonUtils.fromFile(saveFile, HashMap.class);
-		}
-	}
-
-	/**
-	 * save the list of resource users
-	 */
-	public static void save() {
-		JsonUtils.toFile(saveFile, resourceUsers);
-	}
-
-	/**
-	 * determines if the server needs to rebuild a resource pack, if saved
-	 * resource info is different than saved resource info, then a rebuild is
-	 * needed.
-	 *
-	 * @return true if server needs to build a new resource pack.<br>
-	 */
-	private static boolean needsRebuild() {
-		// get current user defined resource pack.
-		String resourcePack = getServerResourcePack();
-
-		// get last user defined resource pack.
-		String oldResourcePack = AdditionsAPI.getInstance().getConfig()
-				.getString("resource-pack.lastServerResourcePack");
-
-		if (oldResourcePack != null) {
-			if (!oldResourcePack.equals(resourcePack)) {
-				return true;
-			}
-		} else {
-			if (resourcePack != null && !resourcePack.equals("")) {
-				return true;
-			}
-		}
-
-		if (oldResourceUsers == null) {
-			if (hasResource()) {
-				return true;
-			}
-		} else {
-			if (resourceUsers.size() != oldResourceUsers.size()) {
-				return true;
-			}
-
-			for (String key : resourceUsers.keySet()) {
-				String value = resourceUsers.get(key);
-				String oldValue = oldResourceUsers.get(key);
-
-				if (!value.equals(oldValue)) {
-					return true;
-				}
-			}
-		}
-
-		// debug mode
-		if (ConfigFile.getInstance().getDebug() == DebugType.SUPER) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public static void buildResourcePack() throws IOException {
-		if (needsRebuild()) {
+		// initialize work space
+		File work = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/work/");
+		FileUtils.deleteFolder(work);
+		// a temporary file used for downloading resource pack files.
+		File temp = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/download/temp.zip");
+		FileUtils.createFileAndPath(temp);
+		// check and download server's original resource pack.
+		downloadResourcePack(work, temp);
+		// process plugin resource packs.
+		processPluginResource(work, temp);
+		// inject custom item model into work space
+		injectCustomItemModels(work);
+		// copy resource pack.meta and logo.png
+		FileUtils.copyResource(AdditionsAPI.getInstance(), "resource/pack.mcmeta", new File(work, "pack.mcmeta"));
+		FileUtils.copyResource(AdditionsAPI.getInstance(), "resource/pack.png", new File(work, "pack.png"));
+
+		// pack up result resource pack.
+		Debug.sayTrue("Packing complete resource pack.");
+		FileUtils.zip(work, resourceFile);
+		Debug.sayTrue("Resource pack has been constructed.");
+
+		// remove temporary folder.
+		FileUtils.deleteFolder(work);
+		FileUtils.deleteFolder(temp.getParentFile());
+
+		// change last modified date to avoid different md5 for the same contents
+		resourceFile.setLastModified(1500135786000L);
+
+		FileInputStream fisRP = new FileInputStream(resourceFile);
+
+		// md5Hex converts an array of bytes into an array of characters representing
+		// the hexadecimal values of each byte in order.
+		// The returned array will be double the length of the passed array, as it takes
+		// two characters to represent any given byte.
+
+		byte[] isByte = IOUtils.toByteArray(fisRP);
+		resourcePackMd5 = DigestUtils.md5Hex(isByte);
+		resourcePackSha1 = DigestUtils.sha1Hex(isByte);
+		resourcePackSha1Byte = DatatypeConverter.parseHexBinary(resourcePackSha1);
+
+		fisRP.close();
+
+		String currentMd5 = AdditionsAPI.getInstance().getConfig().getString("resource-pack.md5");
+		if (currentMd5 == null || !currentMd5.equals(resourcePackMd5)) {
 			neededRebuild = true;
-			Debug.say("Creating Resource Pack.");
-			Debug.sayTrue("Resource pack change detected, building new resource pack.");
+			Debug.say("Changes were detected in the Resource Pack, so it has been rebuilt.");
 			int build = AdditionsAPI.getInstance().getConfig().getInt("resource-pack.build", 0);
 			build++;
 			AdditionsAPI.getInstance().getConfig().set("resource-pack.build", build);
-			// initialize work space
-			File work = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/work/");
-			FileUtils.deleteFolder(work);
-			// a temporary file used for downloading resource pack files.
-			File temp = new File(AdditionsAPI.getInstance().getDataFolder() + "/resource-pack/download/temp.zip");
-			FileUtils.createFileAndPath(temp);
-			// check and download server's original resource pack.
-			downloadResourcePack(work, temp);
-			// process plugin resource packs.
-			processPluginResource(work, temp);
-			// inject custom item model into work space
-			injectCustomItemModels(work);
-			// copy resource pack.meta and logo.png
-			FileUtils.copyResource(AdditionsAPI.getInstance(), "resource/pack.mcmeta", new File(work, "pack.mcmeta"));
-			FileUtils.copyResource(AdditionsAPI.getInstance(), "resource/pack.png", new File(work, "pack.png"));
-			// pack up result resource pack.
-			Debug.sayTrue("Packing complete resource pack.");
-			FileUtils.zip(work, resourceFile);
-			Debug.sayTrue("Resource pack has been constructed.");
-
-			// remove temporary folder.
-			FileUtils.deleteFolder(work);
-			FileUtils.deleteFolder(temp.getParentFile());
+			AdditionsAPI.getInstance().getConfig().set("resource-pack.md5", resourcePackMd5);
 		} else {
 			Debug.sayTrue("No resource pack change, using cached resource pack.");
 		}
@@ -210,10 +166,8 @@ public class ResourcePackManager {
 		for (InputStream in : resources)
 			if (in != null)
 				in.close();
-		
-		resources.clear();
 
-		ResourcePackManager.save();
+		resources.clear();
 	}
 
 	/**

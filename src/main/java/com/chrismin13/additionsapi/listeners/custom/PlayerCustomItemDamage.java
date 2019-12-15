@@ -16,7 +16,6 @@ import com.chrismin13.additionsapi.events.item.PlayerCustomItemBreakEvent;
 import com.chrismin13.additionsapi.events.item.PlayerCustomItemDamageEvent;
 import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
-
 import com.chrismin13.additionsapi.utils.NumberUtils;
 
 public class PlayerCustomItemDamage implements Listener {
@@ -26,6 +25,17 @@ public class PlayerCustomItemDamage implements Listener {
 		if (event.isCancelled())
 			return;
 		Player player = event.getPlayer();
+		/*
+		 * Somehow, someone got an NPE here. No idea how, but let's just prevent it from
+		 * happening in the future. They were using PaperSpigot so it's probably
+		 * something to do with that. Or I messed something up elsewhere xD
+		 * 
+		 * EDIT: I messed up - it's treefeller that dropped the axe's durability to
+		 * below 0, it got removed and thus got nulled. Same for sickles.
+		 */
+		if (event.getCustomItem() == null)
+			return;
+
 		CustomItem cItem = event.getCustomItem();
 		ItemStack item = event.getItem();
 		CustomItemStack cStack = new CustomItemStack(item);
@@ -34,7 +44,6 @@ public class PlayerCustomItemDamage implements Listener {
 			durability = cStack.getFakeDurability();
 		else
 			durability = item.getType().getMaxDurability() - item.getDurability();
-		// TODO: Add support for mending.
 		// TODO: Check if you can modify the durability for items that are not
 		// unbreakable and with Fake Durability.
 		if (!item.containsEnchantment(Enchantment.DURABILITY)) {
@@ -55,7 +64,7 @@ public class PlayerCustomItemDamage implements Listener {
 			PlayerCustomItemBreakEvent breakEvent = new PlayerCustomItemBreakEvent(player, item, cItem);
 			Bukkit.getPluginManager().callEvent(breakEvent);
 			if (!event.isCancelled()) {
-				item.setAmount(0);
+				player.getInventory().remove(item);
 				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1F, 1F);
 			}
 			return;

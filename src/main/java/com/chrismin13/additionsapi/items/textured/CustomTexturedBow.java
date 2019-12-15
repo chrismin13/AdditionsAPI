@@ -2,7 +2,6 @@ package com.chrismin13.additionsapi.items.textured;
 
 import java.util.HashMap;
 
-
 import com.chrismin13.additionsapi.durability.ItemDurability;
 import com.chrismin13.additionsapi.events.AdditionsAPIInitializationEvent;
 import com.chrismin13.additionsapi.items.CustomBow;
@@ -39,9 +38,6 @@ public class CustomTexturedBow extends CustomBow implements ModelInjector {
 	/**
 	 * Creates a {@link CustomTexturedBow}
 	 * 
-	 * @param dItem
-	 *            The DamageableItem that the CustomItem will be based off. This
-	 *            will determine the Material of the {@link CustomItem}.
 	 * @param idName
 	 *            the {@link CustomItem}'s ID Name. This MUST BE SIMILAR to
 	 *            "vanilla_additions:emerald_sword" as the Texture will not be
@@ -60,11 +56,7 @@ public class CustomTexturedBow extends CustomBow implements ModelInjector {
 	}
 
 	/**
-	 * Creates a {@link CustomTexturedBow}
-	 * 
-	 * @param dItem
-	 *            The DamageableItem that the CustomItem will be based off. This
-	 *            will determine the Material of the {@link CustomItem}.
+	 * Creates a {@link CustomTexturedBow}.
 	 * @param idName
 	 *            the {@link CustomItem}'s ID Name. This MUST BE SIMILAR to
 	 *            "vanilla_additions:emerald_sword" as the Texture will not be
@@ -105,6 +97,7 @@ public class CustomTexturedBow extends CustomBow implements ModelInjector {
 		pulling2.setPulling(1);
 		pulling2.setPull(0.9);
 		for (String texture : overrideModels.keySet()) {
+			texture = texture.toLowerCase();
 			map.put(new BowModelInjection(standby, name + ":item/" + texture,
 					ItemModel.createSimpleItemModel("item/bow", name + ":items/" + texture + "_standby"), true),
 					overrideModels.get(texture));

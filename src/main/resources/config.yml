@@ -11,6 +11,7 @@
 # ------=======-------=======-------=======-------=======-------=======----- #
 # = #
 # HTTP: 
+# # This is not needed if you are using Minepack!
 # # Recommended to leave as default, apart from the following values.
 # # localhost: This is picked automatically by default so it does not appear.
 # #            However, if you are having issues with the texture pack, try
@@ -23,6 +24,9 @@
 # ------=======-------=======-------=======-------=======-------=======----- #
 # = #
 # Resource Pack:
+# # use-minepack: Whether the plugin should use the online service Minepack
+# #               to host the resource pack, rather than the built in
+# #               HTTP File Server.
 # # send-to-player: Whether the player will receive the Resource Pack when
 # #                 they join the server. 
 # # force-on-join: Whether the players will be kicked if they do not
@@ -44,6 +48,21 @@
 # = #
 # ------=======-------=======-------=======-------=======-------=======----- #
 
+# ------=======-------=======-------=======-------=======-------=======----- #
+# = #
+# Permissions:
+# # default-permission-type: Determines whether the default permission is
+# #                          allow or deny. If this is set to allow, all
+# #                          items that do not specify otherwise will be
+# #                          disabled and you will have to enable them
+# #                          using a permission node of the form:
+# #                          "plugin_name.item_name.allow.action"
+# #                          If this is set to deny, it will be the
+# #                          opposite. Refer to plugin page for more
+# #                          info. Default is deny.
+# = #
+# ------=======-------=======-------=======-------=======-------=======----- #
+
 enable-debug: false
 
 http:
@@ -54,6 +73,7 @@ http:
  numWriteThread: 4
  
 resource-pack:
+ use-minepack: true
  send-to-player: true
  force-on-join: true
  overwrite-files: true
@@ -63,3 +83,6 @@ bossbar:
  show: true
  vanilla-items: true
  custom-items: true
+
+permissions:
+  default-permission-type: deny

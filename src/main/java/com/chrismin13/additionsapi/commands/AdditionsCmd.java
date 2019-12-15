@@ -6,17 +6,21 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.chrismin13.additionsapi.AdditionsAPI;
+import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
+import com.chrismin13.additionsapi.listeners.DurabilityBar;
 import com.chrismin13.additionsapi.utils.NumberUtils;
 
 import net.md_5.bungee.api.ChatColor;
 
 public class AdditionsCmd implements CommandExecutor {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
@@ -26,6 +30,9 @@ public class AdditionsCmd implements CommandExecutor {
 			sender.sendMessage("");
 			sender.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "/additions give");
 			sender.sendMessage("  Give the Custom Item with the Specified ID Name.");
+			sender.sendMessage("");
+			sender.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "/additions repair");
+			sender.sendMessage("  Repair the item you are currently holding.");
 			return true;
 		}
 		if (args[0].equals("give") && sender.hasPermission("additionsapi.give")) {
@@ -143,6 +150,62 @@ public class AdditionsCmd implements CommandExecutor {
 				return notValidArgMsg(sender);
 
 			}
+		}
+
+		if (args[0].equals("repair") && sender.hasPermission("additionsapi.repair")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");
+				sender.sendMessage(ChatColor.GREEN + "             ---=== Repair Command ===---");
+				sender.sendMessage("");
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You are not an online player!");
+				return true;
+			}
+
+			Player player = (Player) sender;
+			ItemStack item = player.getInventory().getItemInMainHand();
+
+			if (item == null || item.getType().equals(Material.AIR)) {
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");
+				sender.sendMessage(ChatColor.GREEN + "             ---=== Repair Command ===---");
+				sender.sendMessage("");
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Invalid Item in Main Hand!");
+				return true;
+			}
+
+			if (AdditionsAPI.isCustomItem(item)) {
+				CustomItemStack cStack = new CustomItemStack(item);
+				CustomItem cItem = cStack.getCustomItem();
+
+				if (!cItem.hasFakeDurability()) {
+					if (cItem.isUnbreakable()) {
+						sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");
+						sender.sendMessage(ChatColor.GREEN + "             ---=== Repair Command ===---");
+						sender.sendMessage("");
+						sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "This item is unbreakable!");
+						return true;
+					}
+
+					item.setDurability((short) 0);
+				} else {
+					cStack.setFakeDurability(cStack.getMaxFakeDurability());
+				}
+			} else if (item.getItemMeta().spigot().isUnbreakable() || item.getType().getMaxDurability() == (short) 0) {
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");
+				sender.sendMessage(ChatColor.GREEN + "             ---=== Repair Command ===---");
+				sender.sendMessage("");
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "This item is unbreakable!");
+				return true;
+			} else {
+				item.setDurability((short) 0);
+			}
+
+            DurabilityBar.sendDurabilityBossBar(player, player.getInventory().getItemInMainHand(), EquipmentSlot.HAND);
+			sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");
+			sender.sendMessage(ChatColor.GREEN + "             ---=== Repair Command ===---");
+			sender.sendMessage("");
+			sender.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Item Repaired!");
+			return true;
+
 		}
 
 		sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");

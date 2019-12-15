@@ -29,8 +29,8 @@ import org.bukkit.inventory.PlayerInventory;
 import com.chrismin13.additionsapi.AdditionsAPI;
 import com.chrismin13.additionsapi.files.BossBarConfig;
 import com.chrismin13.additionsapi.files.ConfigFile;
+import com.chrismin13.additionsapi.items.CustomItem;
 import com.chrismin13.additionsapi.items.CustomItemStack;
-
 import com.chrismin13.additionsapi.utils.LangFileUtils;
 
 import net.md_5.bungee.api.ChatColor;
@@ -166,19 +166,23 @@ public class DurabilityBar implements Listener {
 		int durability = 0;
 		int durabilityMax = 0;
 		if (AdditionsAPI.isCustomItem(item)) {
-			if (!config.showCustomItems()) {
+			if (!config.showCustomItems() || item.getType().getMaxDurability() == 0) {
 				bar.setVisible(false);
 				bar.setProgress(1.0D);
 				return;
 			}
 			CustomItemStack cStack = new CustomItemStack(item);
-			if (cStack.getCustomItem().hasFakeDurability()) {
+			CustomItem cItem = cStack.getCustomItem();
+			if (cItem.hasFakeDurability()) {
 				durability = cStack.getFakeDurability();
-				durabilityMax = cStack.getCustomItem().getFakeDurability();
+				durabilityMax = cItem.getFakeDurability();
 			} else if (cStack.getCustomItem().isUnbreakable()) {
 				bar.setVisible(false);
 				bar.setProgress(1.0D);
 				return;
+			} else {
+				durabilityMax = item.getType().getMaxDurability();
+				durability = durabilityMax - item.getDurability();
 			}
 		} else if (item.getType().getMaxDurability() != 0) {
 			if (!config.showVanillaItems()) {
@@ -204,7 +208,9 @@ public class DurabilityBar implements Listener {
 			progress = 0;
 		else if (progress > 1)
 			progress = 1;
-		bar.setProgress(progress);
+		try {
+			bar.setProgress(progress);
+		} catch (IllegalArgumentException event) {}
 		if (progress >= 0.5) {
 			bar.setColor(BarColor.GREEN);
 			bar.setTitle(title + ChatColor.GREEN + durability + " / " + durabilityMax);
