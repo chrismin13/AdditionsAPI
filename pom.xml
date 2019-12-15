@@ -41,11 +41,6 @@
 							<shadedPattern>com.chrismin13.additionsapi.apache.http</shadedPattern>
 						</relocation>
 					</relocations>
-					<artifactSet>
-             	   <includes>
-           		      <include>commons-io:commons-io</include>
-                  </includes>
-               </artifactSet>
 				</configuration>
 				<version>3.2.1</version>
 				<executions>
