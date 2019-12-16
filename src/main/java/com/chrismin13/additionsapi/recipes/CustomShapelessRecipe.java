@@ -47,22 +47,18 @@ public class CustomShapelessRecipe extends CustomRecipe {
 	@SuppressWarnings("deprecation")
 	@Override
 	public ShapelessRecipe toBukkitRecipe(NamespacedKey key, ItemStack result) {
-		try {
-			ShapelessRecipe recipe;
-			if (key != null)
-				recipe = new ShapelessRecipe(key, result);
-			else
-				recipe = new ShapelessRecipe(result);
+		ShapelessRecipe recipe;
+		if (key != null)
+			recipe = new ShapelessRecipe(key, result);
+		else
+			recipe = new ShapelessRecipe(result);
 
-			for (RecipeIngredient ingredient : getIngredients()) {
-				if (ingredient != null) {
-					recipe.addIngredient(ingredient.getMaterial(), ingredient.getBlockData());
-				}
+		for (RecipeIngredient ingredient : getIngredients()) {
+			if (ingredient != null) {
+				recipe.addIngredient(ingredient.getMaterial(), ingredient.getBlockData());
 			}
-
-			return recipe;
-		} catch (Exception e) {
-			return toBukkitRecipe(result);
 		}
+
+		return recipe;
 	}
 }

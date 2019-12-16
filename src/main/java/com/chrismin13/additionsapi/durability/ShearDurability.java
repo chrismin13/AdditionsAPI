@@ -21,10 +21,28 @@ public class ShearDurability extends ItemDurability {
 
 	public ShearDurability() {
 		super.setInstantBlockBreak(1);
-		super.addSpecialBlock(Material.WEB, 1);
-		super.addSpecialBlock(Material.LEAVES, 1);
-		super.addSpecialBlock(Material.LEAVES_2, 1);
-		super.addSpecialBlock(Material.WOOL, 1);
+		super.addSpecialBlock(Material.COBWEB, 1);
+		super.addSpecialBlock(Material.ACACIA_LEAVES, 1);
+		super.addSpecialBlock(Material.BIRCH_LEAVES, 1);
+		super.addSpecialBlock(Material.JUNGLE_LEAVES, 1);
+		super.addSpecialBlock(Material.OAK_LEAVES, 1);
+		super.addSpecialBlock(Material.SPRUCE_LEAVES, 1);
+		super.addSpecialBlock(Material.BLACK_WOOL, 1);
+		super.addSpecialBlock(Material.BLUE_WOOL, 1);
+		super.addSpecialBlock(Material.BROWN_WOOL, 1);
+		super.addSpecialBlock(Material.CYAN_WOOL, 1);
+		super.addSpecialBlock(Material.GRAY_WOOL, 1);
+		super.addSpecialBlock(Material.GREEN_WOOL, 1);
+		super.addSpecialBlock(Material.LIME_WOOL, 1);
+		super.addSpecialBlock(Material.MAGENTA_WOOL, 1);
+		super.addSpecialBlock(Material.ORANGE_WOOL, 1);
+		super.addSpecialBlock(Material.PINK_WOOL, 1);
+		super.addSpecialBlock(Material.PURPLE_WOOL, 1);
+		super.addSpecialBlock(Material.RED_WOOL, 1);
+		super.addSpecialBlock(Material.WHITE_WOOL, 1);
+		super.addSpecialBlock(Material.YELLOW_WOOL, 1);
+		super.addSpecialBlock(Material.LIGHT_BLUE_WOOL, 1);
+		super.addSpecialBlock(Material.LIGHT_GRAY_WOOL, 1);
 		super.addSpecialBlock(Material.VINE, 1);
 	}
 

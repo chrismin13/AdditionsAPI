@@ -2,6 +2,7 @@ name: AdditionsAPI
 version: 1.3.3
 main: com.chrismin13.additionsapi.AdditionsAPI
 author: chrismin13
+api-version: 1.13
 
 commands:
   additions:
