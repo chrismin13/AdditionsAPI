@@ -16,17 +16,19 @@ public class PlayerDeath implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		String msg = event.getDeathMessage();
-		Debug.saySuper("Original Death Message: " + msg);
-		for (CustomItem cItem : AdditionsAPI.getAllCustomItems()) {
-			if (msg.contains(cItem.getDisplayName())) {
-				msg.replaceFirst(LangFileUtils.get("death_message").replaceFirst("CustomItem", cItem.getDisplayName()),
-						"");
-				Debug.saySuper("Replaced " + cItem.getDisplayName());
-				break;
+		if(msg!=null) {
+			Debug.saySuper("Original Death Message: " + msg);
+			for (CustomItem cItem : AdditionsAPI.getAllCustomItems()) {
+				if (msg.contains(cItem.getDisplayName())) {
+					msg.replaceFirst(LangFileUtils.get("death_message").replaceFirst("CustomItem", cItem.getDisplayName()),
+							"");
+					Debug.saySuper("Replaced " + cItem.getDisplayName());
+					break;
+				}
 			}
-		}
-		Debug.saySuper("Final Death Message: " + msg);
-		event.setDeathMessage(msg);
+			Debug.saySuper("Final Death Message: " + msg);
+			event.setDeathMessage(msg);
+		}	
 	}
 
 	// TODO: Make the same for every entity that dies e.g. Wolf

@@ -189,7 +189,7 @@ public class AdditionsCmd implements CommandExecutor {
 				} else {
 					cStack.setFakeDurability(cStack.getMaxFakeDurability());
 				}
-			} else if (item.getItemMeta().spigot().isUnbreakable() || item.getType().getMaxDurability() == (short) 0) {
+			} else if (item.getItemMeta().isUnbreakable() || item.getType().getMaxDurability() == (short) 0) {
 				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "===--- Additions API by chrismin13 ---===");
 				sender.sendMessage(ChatColor.GREEN + "             ---=== Repair Command ===---");
 				sender.sendMessage("");

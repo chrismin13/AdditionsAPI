@@ -79,8 +79,6 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 	private static JavaPlugin instance;
 
 	public void onEnable() {
-		
-		System.out.println("Hello Tutorial World!");
 
 		instance = this;
 

@@ -421,7 +421,6 @@ public class MaterialUtils {
 			case BUBBLE_CORAL_FAN:
 			case BUBBLE_CORAL_WALL_FAN:
 			case BUCKET:
-			case CACTUS_GREEN:
 			case CARROT:
 			case CARROTS:
 			case CARROT_ON_A_STICK:
@@ -458,7 +457,6 @@ public class MaterialUtils {
 			case CREEPER_SPAWN_EGG:
 			case CYAN_DYE:
 			case DANDELION:
-			case DANDELION_YELLOW:
 			case DARK_OAK_BOAT:
 			case DARK_OAK_SAPLING:
 			case DEAD_BRAIN_CORAL_FAN:
@@ -540,6 +538,7 @@ public class MaterialUtils {
 			case GOLD_NUGGET:
 			case GRASS:
 			case GRAY_DYE:
+			case GREEN_DYE:
 			case GUARDIAN_SPAWN_EGG:
 			case GUNPOWDER:
 			case HEART_OF_THE_SEA:
@@ -687,7 +686,7 @@ public class MaterialUtils {
 			case RED_TULIP:
 			case REPEATER:
 			case ROSE_BUSH:
-			case ROSE_RED:
+			case RED_DYE:
 			case ROTTEN_FLESH:
 			case SADDLE:
 			case SALMON:
@@ -764,6 +763,7 @@ public class MaterialUtils {
 			case WOODEN_SWORD:
 			case WRITABLE_BOOK:
 			case WRITTEN_BOOK:
+			case YELLOW_DYE:
 			case ZOMBIE_HORSE_SPAWN_EGG:
 			case ZOMBIE_PIGMAN_SPAWN_EGG:
 			case ZOMBIE_SPAWN_EGG:
@@ -998,10 +998,22 @@ public class MaterialUtils {
 			case PURPLE_WALL_BANNER:
 			case RED_BANNER:
 			case RED_WALL_BANNER:
-			case SIGN:
+			case ACACIA_SIGN:
+			case BIRCH_SIGN:
+			case DARK_OAK_SIGN:
+			case OAK_SIGN:
+			case JUNGLE_SIGN:
+			case SPRUCE_SIGN:
 			case SKELETON_SKULL:
 			case SKELETON_WALL_SKULL:
-			case WALL_SIGN:
+			case ACACIA_WALL_SIGN:
+			case BIRCH_WALL_SIGN:
+			case DARK_OAK_WALL_SIGN:
+			case OAK_WALL_SIGN:
+			case JUNGLE_WALL_SIGN:
+			case SPRUCE_WALL_SIGN:
+			case SKELETON_SKULL:
+			case SKELETON_WALL_SKULL:
 			case WHITE_BANNER:
 			case WHITE_WALL_BANNER:
 			case WITHER_SKELETON_SKULL:
@@ -1810,7 +1822,6 @@ public class MaterialUtils {
 			case BUBBLE_CORAL_FAN:
 			case BUBBLE_CORAL_WALL_FAN:
 			case BUCKET:
-			case CACTUS_GREEN:
 			case CARROT:
 			case CARROTS:
 			case CARROT_ON_A_STICK:
@@ -1847,7 +1858,6 @@ public class MaterialUtils {
 			case CREEPER_SPAWN_EGG:
 			case CYAN_DYE:
 			case DANDELION:
-			case DANDELION_YELLOW:
 			case DARK_OAK_BOAT:
 			case DARK_OAK_SAPLING:
 			case DEAD_BRAIN_CORAL_FAN:
@@ -1929,6 +1939,7 @@ public class MaterialUtils {
 			case GOLD_NUGGET:
 			case GRASS:
 			case GRAY_DYE:
+			case GREEN_DYE:
 			case GUARDIAN_SPAWN_EGG:
 			case GUNPOWDER:
 			case HEART_OF_THE_SEA:
@@ -2072,7 +2083,7 @@ public class MaterialUtils {
 			case RED_TULIP:
 			case REPEATER:
 			case ROSE_BUSH:
-			case ROSE_RED:
+			case RED_DYE:
 			case ROTTEN_FLESH:
 			case SADDLE:
 			case SALMON:
@@ -2149,6 +2160,7 @@ public class MaterialUtils {
 			case WOODEN_SWORD:
 			case WRITABLE_BOOK:
 			case WRITTEN_BOOK:
+			case YELLOW_DYE:
 			case ZOMBIE_HORSE_SPAWN_EGG:
 			case ZOMBIE_PIGMAN_SPAWN_EGG:
 			case ZOMBIE_SPAWN_EGG:
@@ -2388,10 +2400,22 @@ public class MaterialUtils {
 			case PURPLE_WALL_BANNER:
 			case RED_BANNER:
 			case RED_WALL_BANNER:
-			case SIGN:
+			case ACACIA_SIGN:
+			case BIRCH_SIGN:
+			case DARK_OAK_SIGN:
+			case OAK_SIGN:
+			case JUNGLE_SIGN:
+			case SPRUCE_SIGN:
 			case SKELETON_SKULL:
 			case SKELETON_WALL_SKULL:
-			case WALL_SIGN:
+			case ACACIA_WALL_SIGN:
+			case BIRCH_WALL_SIGN:
+			case DARK_OAK_WALL_SIGN:
+			case OAK_WALL_SIGN:
+			case JUNGLE_WALL_SIGN:
+			case SPRUCE_WALL_SIGN:
+			case SKELETON_SKULL:
+			case SKELETON_WALL_SKULL:
 			case WHITE_BANNER:
 			case WHITE_WALL_BANNER:
 			case WITHER_SKELETON_SKULL:
@@ -3307,7 +3331,12 @@ public class MaterialUtils {
 			case REPEATING_COMMAND_BLOCK:
 			case SANDSTONE_STAIRS:
 			case SHULKER_BOX:
-			case SIGN:
+			case ACACIA_SIGN:
+			case BIRCH_SIGN:
+			case DARK_OAK_SIGN:
+			case OAK_SIGN:
+			case JUNGLE_SIGN:
+			case SPRUCE_SIGN:
 			case SPRUCE_BUTTON:
 			case SPRUCE_DOOR:
 			case SPRUCE_FENCE:
@@ -3319,7 +3348,12 @@ public class MaterialUtils {
 			case STRUCTURE_BLOCK:
 			case TNT:
 			case TRAPPED_CHEST:
-			case WALL_SIGN:
+			case ACACIA_WALL_SIGN:
+			case BIRCH_WALL_SIGN:
+			case DARK_OAK_WALL_SIGN:
+			case OAK_WALL_SIGN:
+			case JUNGLE_WALL_SIGN:
+			case SPRUCE_WALL_SIGN:
 			case WHITE_BED:
 			case WHITE_SHULKER_BOX:
 			case YELLOW_BED:
@@ -3429,6 +3463,7 @@ public class MaterialUtils {
 			case LEGACY_JUNGLE_DOOR_ITEM:
 			case LEGACY_ACACIA_DOOR_ITEM:
 			case LEGACY_DARK_OAK_DOOR_ITEM:
+			case LEGACY_WALL_SIGN:
 				// </editor-fold>
 				return true;
 			default:

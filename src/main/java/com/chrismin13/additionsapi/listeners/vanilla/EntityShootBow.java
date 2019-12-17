@@ -34,8 +34,7 @@ public class EntityShootBow implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onArrowHit(ProjectileHitEvent event) {
-		if (event.getEntityType() != EntityType.ARROW && event.getEntityType() != EntityType.TIPPED_ARROW
-				&& event.getEntityType() != EntityType.SPECTRAL_ARROW)
+		if (event.getEntityType() != EntityType.ARROW && event.getEntityType() != EntityType.SPECTRAL_ARROW)
 			return;
 		if (ArrowFromCustomBowHit.containsArrow(event.getEntity())) {
 			BowStackContainer container = ArrowFromCustomBowHit.getBowStackContainer(event.getEntity());
