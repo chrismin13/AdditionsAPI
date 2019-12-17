@@ -7,12 +7,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.chrismin13.additionsapi.enums.ArmorType;
-
 /**
- * @Author Borlea
- * @Github https://github.com/borlea/
- * @Website http://codingforcookies.com/
+ * @author Arnah
  * @since Jul 30, 2015
  */
 public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
@@ -109,7 +105,7 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		return equipType;
 	}
 
-	public enum EquipMethod{
+	public enum EquipMethod{// These have got to be the worst documentations ever.
 	    /**
 	     * When you shift click an armor piece to equip or unequip
 	     */
@@ -119,6 +115,10 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		 */
 		DRAG,
 		/**
+		 * When you manually equip or unequip the item. Use to be DRAG
+		 */
+		PICK_DROP,
+		/**
 		 * When you right click an armor piece in the hotbar without the inventory open to equip.
 		 */
 		HOTBAR,
@@ -127,11 +127,12 @@ public final class ArmorEquipEvent extends PlayerEvent implements Cancellable{
 		 */
 		HOTBAR_SWAP,
 		/**
-		 * When in range of a dispenser that shoots an armor piece to equip.
+		 * When in range of a dispenser that shoots an armor piece to equip.<br>
+		 * Requires the spigot version to have {@link org.bukkit.event.block.BlockDispenseArmorEvent} implemented.
 		 */
 		DISPENSER,
 		/**
-		 * When an armor piece breaks to unequip
+		 * When an armor piece is removed due to it losing all durability.
 		 */
 		BROKE,
 		/**
