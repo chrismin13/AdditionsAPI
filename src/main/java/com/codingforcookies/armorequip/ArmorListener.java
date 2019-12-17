@@ -1,7 +1,5 @@
 package com.codingforcookies.armorequip;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,7 +28,6 @@ public class ArmorListener implements Listener{
 	//Event Priority is highest because other plugins might cancel the events before we check.
 
 	@EventHandler(priority =  EventPriority.HIGHEST, ignoreCancelled = true)
-	public final void inventoryClick(final InventoryClickEvent e){
 		boolean shift = false, numberkey = false;
 		if(e.isCancelled()) return;
 		if(e.getAction() == InventoryAction.NOTHING) return;// Why does this get called if nothing happens??
@@ -101,7 +98,7 @@ public class ArmorListener implements Listener{
 			}
 		}
 	}
-	
+
 	@EventHandler(priority =  EventPriority.HIGHEST, ignoreCancelled = true)
 	public void playerInteractEvent(PlayerInteractEvent e){
 		if(e.getAction() == Action.PHYSICAL) return;

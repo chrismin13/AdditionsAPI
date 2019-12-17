@@ -1012,6 +1012,8 @@ public class MaterialUtils {
 			case OAK_WALL_SIGN:
 			case JUNGLE_WALL_SIGN:
 			case SPRUCE_WALL_SIGN:
+			case SKELETON_SKULL:
+			case SKELETON_WALL_SKULL:
 			case WHITE_BANNER:
 			case WHITE_WALL_BANNER:
 			case WITHER_SKELETON_SKULL:
@@ -2412,6 +2414,8 @@ public class MaterialUtils {
 			case OAK_WALL_SIGN:
 			case JUNGLE_WALL_SIGN:
 			case SPRUCE_WALL_SIGN:
+			case SKELETON_SKULL:
+			case SKELETON_WALL_SKULL:
 			case WHITE_BANNER:
 			case WHITE_WALL_BANNER:
 			case WITHER_SKELETON_SKULL:
