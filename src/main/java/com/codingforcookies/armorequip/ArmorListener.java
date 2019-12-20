@@ -1,7 +1,5 @@
 package com.codingforcookies.armorequip;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
