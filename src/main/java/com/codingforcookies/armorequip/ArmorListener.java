@@ -28,6 +28,7 @@ public class ArmorListener implements Listener{
 	//Event Priority is highest because other plugins might cancel the events before we check.
 
 	@EventHandler(priority =  EventPriority.HIGHEST, ignoreCancelled = true)
+	public final void inventoryClick(final InventoryClickEvent e){
 		boolean shift = false, numberkey = false;
 		if(e.isCancelled()) return;
 		if(e.getAction() == InventoryAction.NOTHING) return;// Why does this get called if nothing happens??
