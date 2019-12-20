@@ -11,6 +11,7 @@
 	<description>Custom Items and Textures for Minecraft 1.9+ Spigot Servers! No Mods!</description>
 
 	<properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
@@ -78,6 +79,11 @@
 		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		
+		<repository>
+			<id>drkmatr-repo</id>
+			<url>https://minevolt.net/repo/</url>
 		</repository>
 	</repositories>
 
