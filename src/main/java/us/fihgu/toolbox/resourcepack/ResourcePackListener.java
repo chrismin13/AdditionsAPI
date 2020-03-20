@@ -42,6 +42,8 @@ public class ResourcePackListener implements Listener {
 				} else {
 					link = MinePackInitializationMethod.resourcePack;
 				}
+				// nodecraft requires HTTPS, so let's just force theme here so MC will play nice
+				link = link.replace("http:", "https:");
 				if (player != null && player.isOnline())
 					if (ResourcePackManager.hasSendWithHash)
 						try {
