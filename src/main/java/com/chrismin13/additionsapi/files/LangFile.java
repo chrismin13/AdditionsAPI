@@ -23,30 +23,25 @@ import com.chrismin13.additionsapi.utils.Debug;
  */
 public class LangFile {
 	private LangFile() {
+		file = new File(plugin.getDataFolder(), "lang.yml");
+		data = YamlConfiguration.loadConfiguration(file);
+		data.options().copyDefaults(true);
+		saveLang();
 	}
 
-	private static LangFile instance = new LangFile();
+	private static volatile LangFile instance;
 
 	public static LangFile getInstance() {
-		return instance;
+		LangFile cached = instance;
+		if (cached == null){
+			cached = instance = new LangFile();
+		}
+		return cached;
 	}
 
 	private static JavaPlugin plugin = AdditionsAPI.getInstance();
-	private static YamlConfiguration data;
-	private static File file;
-
-	/**
-	 * This method is run when the plugin is enabled and when reloading. Not
-	 * meant to be used in any other occasion.
-	 */
-	public LangFile setup() {
-		file = new File(plugin.getDataFolder(), "lang.yml");
-		YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
-		data.options().copyDefaults(true);
-		LangFile.data = data;
-		saveLang();
-		return this;
-	}
+	private YamlConfiguration data;
+	private File file;
 
 	/**
 	 * Add a lang.yml entry.

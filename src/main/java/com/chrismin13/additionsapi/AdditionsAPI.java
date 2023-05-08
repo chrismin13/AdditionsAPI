@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.http.annotation.Obsolete;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -76,24 +77,29 @@ import us.fihgu.toolbox.resourcepack.ResourcePackServer;
 
 public class AdditionsAPI extends JavaPlugin implements Listener {
 
-	private static JavaPlugin instance;
+	private static AdditionsAPI instance;
 
-	public void onEnable() {
+	public static AdditionsAPI getInstance() {
+		return instance;
+	}
 
+	@Override
+	public void onLoad(){
 		instance = this;
+	}
 
+	@Override
+	public void onEnable() {
 		// Initializing Config
 		ConfigFile config = ConfigFile.getInstance();
-		config.setup();
 		if (config.getConfig().getBoolean("resource-pack.force-on-join"))
 			ResourcePackManager.setForceResourcePack();
 
 		// Initializing Data File
-		DataFile.getInstance().setup();
+		DataFile.getInstance();
 
 		// Initializing Lang File and adding all entries
 		LangFile lang = LangFile.getInstance();
-		lang.setup();
 
 		String pluginName = "more_minecraft";
 		lang.addEntry(pluginName, "sword", "Sword");
@@ -136,7 +142,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		lang.saveLang();
 
 		// Initialize Metrics
-		new Metrics(this);
+		//new Metrics(this, 0000);
 
 		// Registering listeners
 		for (Listener listener : Arrays.asList(new EnchantItem(), new Anvil(), new CraftingTable(), new BlockBreak(),
@@ -176,6 +182,7 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 		getServer().getScheduler().scheduleSyncDelayedTask(this, () -> load());
 	}
 
+	@Override
 	public void onDisable() {
 		// Useful when reloading!
 		if (!ConfigFile.getInstance().getConfig().getBoolean("resource-pack.use-minepack"))
@@ -219,10 +226,6 @@ public class AdditionsAPI extends JavaPlugin implements Listener {
 				}
 			}
 		}
-	}
-
-	public static JavaPlugin getInstance() {
-		return instance;
 	}
 
 	// === VARIABLES === //

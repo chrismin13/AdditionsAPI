@@ -124,7 +124,7 @@ public class NbtFactory {
     private Method SAVE_COMPOUND;
     
     // Shared instance
-    private static NbtFactory INSTANCE;
+    private static volatile NbtFactory INSTANCE;
     
     /**
      * Represents a root NBT compound.
@@ -315,9 +315,10 @@ public class NbtFactory {
      * @return The factory.
      */
     private static NbtFactory get() {
-        if (INSTANCE == null)
-            INSTANCE = new NbtFactory();
-        return INSTANCE;
+        NbtFactory cached = INSTANCE;
+        if (cached == null)
+            cached = INSTANCE = new NbtFactory();
+        return cached;
     }
     
     /**

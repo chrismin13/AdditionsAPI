@@ -100,12 +100,13 @@
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
 			<version>1.15-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit</artifactId>
-			<version>1.4</version>
+			<version>3.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -118,7 +119,7 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.3.0</version>
+			<version>2.4.0-b180830.0359</version>
 		</dependency>
 		
 		<!-- This library is included in 1.13, but not in 1.14. -->
@@ -126,7 +127,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
+			<version>2.11.0</version>
 		</dependency>
 	</dependencies>
 </project>
