@@ -26,35 +26,17 @@ import com.chrismin13.additionsapi.utils.Debug;
  *
  */
 public class DataFile {
+
 	private DataFile() {
-	}
-
-	private static DataFile instance = new DataFile();
-
-	public static DataFile getInstance() {
-		return instance;
-	}
-
-	private static JavaPlugin plugin = AdditionsAPI.getInstance();
-	private static YamlConfiguration data;
-	private static File file;
-	private static List<String> items;
-
-	/**
-	 * This method is run when the plugin is enabled and when reloading. Not meant
-	 * to be used in any other occasion.
-	 */
-	public DataFile setup() {
 		file = new File(plugin.getDataFolder(), "data.yml");
-		YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
+		data = YamlConfiguration.loadConfiguration(file);
 		data.options().copyDefaults(true);
-		DataFile.data = data;
-		DataFile.items = data.getStringList("custom-items");
+		items = data.getStringList("custom-items");
 
 		// 1.13 Migration
 		if (data.getInt("data-version", 0) < 1) {
-			ArrayList<String> items = new ArrayList<String>();
-			for (String item : DataFile.items) {
+			//ArrayList<String> items = new ArrayList<String>();
+			for (String item : items) {
 				String[] itemSplit = item.split(";");
 				itemSplit[0] = itemSplit[0].replaceAll("SPADE", "SHOVEL").replaceAll("WOOD_", "WOODEN_")
 						.replaceAll("GOLD_", "GOLDEN_");
@@ -65,12 +47,25 @@ public class DataFile {
 				finalItem = finalItem.substring(0, finalItem.length() - 1);
 				items.add(finalItem);
 			}
-			DataFile.items = items;
 			data.set("data-version", 1);
 		}
 		saveData();
-		return this;
 	}
+
+	private static volatile DataFile instance;
+
+	public static DataFile getInstance() {
+		DataFile cached = instance;
+		if (cached == null){
+			cached = instance = new DataFile();
+		}
+		return cached;
+	}
+
+	private static JavaPlugin plugin = AdditionsAPI.getInstance();
+	private YamlConfiguration data;
+	private File file;
+	private List<String> items;
 
 	/**
 	 * Add a new {@link StorageCustomItem} to be saved in the data.yml file. <br>

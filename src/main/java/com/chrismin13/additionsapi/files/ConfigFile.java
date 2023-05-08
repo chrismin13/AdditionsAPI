@@ -24,29 +24,24 @@ import com.chrismin13.additionsapi.utils.Debug;
  */
 public class ConfigFile {
 
-	private ConfigFile() {
-	}
-
-	private static ConfigFile instance = new ConfigFile();
-
-	public static ConfigFile getInstance() {
-		return instance;
-	}
-
 	private static JavaPlugin plugin = AdditionsAPI.getInstance();
-	private static FileConfiguration config;
-	private static File cfile;
+	private static volatile ConfigFile instance;
+	private FileConfiguration config;
+	private File cfile;
 
-	/**
-	 * This method is run when the plugin is enabled and when reloading. Not
-	 * meant to be used in any other occasion.
-	 */
-	public ConfigFile setup() {
+	private ConfigFile() {
 		config = plugin.getConfig();
 		config.options().copyDefaults(true);
 		cfile = new File(plugin.getDataFolder(), "config.yml");
 		saveConfig();
-		return this;
+	}
+
+	public static ConfigFile getInstance() {
+		ConfigFile cached = instance;
+		if (cached == null){
+			cached = instance = new ConfigFile();
+		}
+		return cached;
 	}
 
 	/**
